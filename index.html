@@ -1,214 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tughal Khel | Digital Heritage Dashboard</title>
+    <title>Tughal Khel Heritage Vault</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        
-        body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
-        .glass-sidebar { background: rgba(26, 31, 54, 0.95); backdrop-filter: blur(10px); transition: 0.3s ease-in-out; }
-        .urdu-font { direction: rtl; font-family: 'Segoe UI', Tahoma; }
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 10px; }
-        .sidebar-active { background: #2d3748; border-left: 4px solid #60a5fa; }
-
-        @media (max-width: 768px) {
-            .glass-sidebar { position: fixed; left: -100%; top: 0; height: 100%; width: 280px; z-index: 50; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
-            .sidebar-open { left: 0; }
-            #profileView h2 { font-size: 1.5rem; }
-        }
-
-        #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; }
-        #overlay.active { display: block; }
-        
-        /* Image upload button styling */
-        input[type="file"]::file-selector-button {
-            background: #2563eb; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; margin: 0; }
+        .sidebar { background-color: #1a202c; height: 100vh; position: fixed; width: 300px; overflow-y: auto; color: white; z-index: 50; }
+        .main-content { margin-left: 300px; padding: 2rem; min-height: 100vh; }
+        .hidden { display: none !important; }
+        /* Tree Layout */
+        .tree ul { padding-top: 20px; display: flex; justify-content: center; }
+        .tree li { text-align: center; list-style-type: none; position: relative; padding: 20px 5px; }
+        .tree li a { border: 1px solid #ccc; padding: 8px 12px; border-radius: 5px; background: white; color: black; display: inline-block; font-size: 12px; font-weight: bold; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden">
+<body>
 
-    <div id="overlay" onclick="toggleSidebar()"></div>
-
-    <div class="w-80 glass-sidebar text-white flex flex-col z-50">
-        <div class="p-6 border-b border-gray-700 flex justify-between items-center">
-            <div>
-                <h1 class="text-lg font-bold tracking-widest text-blue-400 uppercase">Tughal Khel</h1>
-                <p class="text-[10px] text-gray-400">Heritage Vault</p>
-            </div>
-            <button onclick="toggleSidebar()" class="md:hidden text-gray-400"><i class="fas fa-times"></i></button>
+    <aside class="sidebar flex flex-col">
+        <div class="p-6 border-b border-gray-700">
+            <h1 class="text-xl font-bold tracking-tight">TUGHAL <span class="text-blue-400">KHEL</span></h1>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Digital Heritage Archive</p>
         </div>
         
-        <div class="p-4 border-b border-gray-800">
-            <input type="text" id="sidebarSearch" placeholder="Search..." class="w-full bg-gray-800 text-sm border border-gray-600 p-2 rounded-lg outline-none text-white">
+        <div class="p-4">
+            <input type="text" id="searchInput" placeholder="Search lineage..." class="w-full bg-gray-800 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
         </div>
 
-        <div class="flex-1 overflow-y-auto custom-scrollbar p-4" id="sidebarList"></div>
+        <div id="sidebarList" class="flex-1 px-2 space-y-1 overflow-y-auto">
+            </div>
 
         <div class="p-4 border-t border-gray-700">
-            <button onclick="openModal()" class="w-full bg-blue-600 text-white py-3 rounded-lg flex items-center justify-center gap-2 font-bold shadow-lg">
-                <i class="fas fa-plus-circle"></i> Add New
-            </button>
+            <div id="adminPanel">
+                <button onclick="showLoginModal()" id="loginStateBtn" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg text-xs font-bold transition">
+                    <i class="fas fa-user-shield mr-2"></i> ADMIN LOGIN
+                </button>
+            </div>
         </div>
-    </div>
+    </aside>
 
-    <div class="flex-1 flex flex-col relative overflow-hidden">
-        <header class="h-16 bg-white border-b flex items-center justify-between px-6 shadow-sm z-10">
-            <button onclick="toggleSidebar()" class="md:hidden text-gray-600 text-xl"><i class="fas fa-bars"></i></button>
-            <div class="text-gray-500 italic text-xs truncate max-w-[200px]"><span id="breadCrumb">Select member</span></div>
-            <span class="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-full">VERIFIED</span>
+    <main class="main-content">
+        <header class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm mb-6 border border-gray-100">
+            <div class="flex items-center space-x-3">
+                <button onclick="goBack()" class="text-gray-400 hover:text-blue-600 transition"><i class="fas fa-arrow-left text-xl"></i></button>
+                <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">Archive / <span id="bc-name" class="text-blue-600">Home</span></div>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="toggleTreeView()" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-100 transition">
+                    <i class="fas fa-sitemap mr-2"></i> VISUAL TREE
+                </button>
+            </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-4 md:p-10">
-            <div id="welcomeScreen" class="h-full flex flex-col items-center justify-center text-center text-gray-400">
-                <i class="fas fa-users text-5xl mb-4 opacity-20"></i>
-                <h2 class="text-xl">Select a Family Branch</h2>
+        <div id="welcomeView" class="bg-white rounded-3xl shadow-sm border border-gray-100 p-12 text-center">
+            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-500 text-3xl">
+                <i class="fas fa-vihara"></i>
             </div>
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-4">Tughal Khel Digital Shajrah</h2>
+            <p class="text-gray-500 max-w-md mx-auto leading-relaxed">Select a family member from the sidebar to view their full biography, direct descendants, and historical background.</p>
+        </div>
 
-            <div id="profileView" class="hidden max-w-2xl mx-auto pb-10">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-                    <div class="h-20 bg-gradient-to-r from-blue-600 to-indigo-800"></div>
-                    <div class="px-6 pb-6 relative">
-                        <div class="absolute -top-10 left-6">
-                            <img id="viewImg" src="" class="w-20 h-20 rounded-xl border-4 border-white shadow-md object-cover bg-gray-100">
+        <div id="profileView" class="hidden animate-in fade-in duration-500">
+            <div class="bg-white rounded-3xl shadow-md overflow-hidden border border-gray-100">
+                <div class="h-32 bg-gradient-to-r from-slate-800 to-slate-900"></div>
+                <div class="px-8 pb-8">
+                    <div class="relative -mt-12 mb-6 flex justify-between items-end">
+                        <div class="p-1 bg-white rounded-2xl shadow-lg">
+                            <div id="profInitial" class="w-24 h-24 bg-blue-600 rounded-xl flex items-center justify-center text-3xl font-bold text-white uppercase"></div>
                         </div>
-                        <div class="flex justify-end gap-2 pt-4">
-                            <button id="editBtn" class="text-blue-600 p-2 bg-blue-50 rounded-lg"><i class="fas fa-edit"></i></button>
-                            <button id="deleteBtn" class="text-red-600 p-2 bg-red-50 rounded-lg"><i class="fas fa-trash"></i></button>
+                        <div id="urduNameDisplay" class="text-4xl font-serif text-gray-300">نام</div>
+                    </div>
+                    
+                    <h2 id="engNameDisplay" class="text-4xl font-black text-gray-800 tracking-tight">Name</h2>
+                    <p id="relDisplay" class="text-blue-600 font-bold text-xs uppercase tracking-widest mt-1 mb-6">Relation</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2">
+                            <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-3"><i class="fas fa-book-open mr-2"></i> Biography</h3>
+                            <div id="bioDisplay" class="text-gray-600 leading-relaxed text-lg bg-gray-50 p-6 rounded-2xl italic"></div>
                         </div>
-                        <div class="pt-8">
-                            <h2 class="text-2xl font-bold text-gray-800" id="viewEngName"></h2>
-                            <p class="text-lg text-gray-500 urdu-font" id="viewUrduName"></p>
-                            <p class="mt-2 inline-block text-blue-600 bg-blue-50 px-2 py-1 rounded text-[10px] font-bold uppercase" id="viewRole"></p>
+                        <div>
+                            <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-3"><i class="fas fa-users mr-2"></i> Descendants</h3>
+                            <div id="childList" class="space-y-2"></div>
                         </div>
                     </div>
                 </div>
-                <div id="descendantsContainer" class="mt-6"></div>
-            </div>
-        </main>
-    </div>
-
-    <div id="addModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[60] p-4 flex items-center justify-center">
-        <div class="bg-white w-full max-w-md rounded-xl overflow-hidden shadow-2xl">
-            <div class="p-4 border-b flex justify-between items-center bg-gray-50">
-                <h3 id="modalTitle" class="font-bold text-gray-800">Add Member</h3>
-                <button onclick="closeModal()" class="text-gray-400"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="text" id="inEng" placeholder="English Name" class="border p-2 rounded text-sm outline-none focus:border-blue-500">
-                    <input type="text" id="inUrdu" placeholder="اردو نام" class="border p-2 rounded text-sm urdu-font text-right outline-none focus:border-blue-500">
-                </div>
-                <input type="text" id="inLineage" placeholder="Lineage (Son of...)" class="w-full border p-2 rounded text-sm outline-none focus:border-blue-500">
-                
-                <div class="flex items-center gap-3 bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <div id="imagePreview" class="w-12 h-12 rounded bg-white border flex items-center justify-center overflow-hidden shrink-0">
-                        <i class="fas fa-camera text-gray-300"></i>
-                    </div>
-                    <div class="flex-1">
-                        <label class="text-[10px] font-bold text-blue-600 uppercase block mb-1">Upload Photo</label>
-                        <input type="file" id="inPhoto" accept="image/*" onchange="handleImage(event)" class="text-[10px] w-full">
-                    </div>
-                </div>
-
-                <textarea id="inChildren" rows="2" placeholder="Descendants (Comma separated)" class="w-full border p-2 rounded text-sm outline-none focus:border-blue-500"></textarea>
-                <button onclick="saveRecord()" id="saveBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold shadow-lg">Save</button>
             </div>
         </div>
-    </div>
+
+        <div id="treeView" class="hidden bg-white p-10 rounded-3xl shadow-md overflow-x-auto min-h-[500px]">
+            <h3 class="text-center font-black text-gray-800 mb-10 uppercase tracking-widest">Family Lineage Map</h3>
+            <div class="tree" id="treeContainer"></div>
+        </div>
+    </main>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('TughalVaultFinal')) || [
-            { id: 1, eng: "Tughal Khan", urdu: "طغل خان", lineage: "Founder", img: "", sons: ["Bajal", "Kamal", "Sadrak", "Deegan"] }
-        ];
-        let currentEditId = null;
-        let tempImage = "";
+        // --- 1. DATA ---
+        const familyData = {
+            "tk1": { id: "tk1", name: "Tughal Khan", urdu: "طغل خان", rel: "ANCESTOR", bio: "The foundation of the Tughal Khel lineage.", parent: null },
+            "shaukat": { id: "shaukat", name: "Shaukat Ali Khan", urdu: "شوکت علی خان", rel: "SON OF TK", bio: "A respected figure in the family history.", parent: "tk1" },
+            "abdul": { id: "abdul", name: "Abdul Ahad", urdu: "عبدالواحد", rel: "SON OF SHAUKAT", bio: "Developer of this digital vault.", parent: "shaukat" },
+            "anas": { id: "anas", name: "Anas Khan", urdu: "انس خان", rel: "SON OF SHAUKAT", bio: "Member of the Shaukat Ali branch.", parent: "shaukat" },
+            "hasnain": { id: "hasnain", name: "Hasnain Khan", urdu: "حنین خان", rel: "SON OF SHAUKAT", bio: "Member of the Shaukat Ali branch.", parent: "shaukat" }
+        };
 
-        function toggleSidebar() {
-            document.querySelector('.glass-sidebar').classList.toggle('sidebar-open');
-            document.getElementById('overlay').classList.toggle('active');
+        // --- 2. NAVIGATION & BACK BUTTON ---
+        function goBack() {
+            document.getElementById('profileView').classList.add('hidden');
+            document.getElementById('treeView').classList.add('hidden');
+            document.getElementById('welcomeView').classList.remove('hidden');
+            document.getElementById('bc-name').innerText = "Home";
         }
 
-        function handleImage(e) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                tempImage = event.target.result;
-                document.getElementById('imagePreview').innerHTML = `<img src="${tempImage}" class="w-full h-full object-cover">`;
-            };
-            if(e.target.files[0]) reader.readAsDataURL(e.target.files[0]);
+        // --- 3. SHOW PROFILE ---
+        function showProfile(id) {
+            const m = familyData[id];
+            if(!m) return;
+
+            document.getElementById('welcomeView').classList.add('hidden');
+            document.getElementById('treeView').classList.add('hidden');
+            document.getElementById('profileView').classList.remove('hidden');
+
+            document.getElementById('bc-name').innerText = m.name;
+            document.getElementById('engNameDisplay').innerText = m.name;
+            document.getElementById('urduNameDisplay').innerText = m.urdu;
+            document.getElementById('relDisplay').innerText = m.rel;
+            document.getElementById('bioDisplay').innerText = m.bio;
+            document.getElementById('profInitial').innerText = m.name.charAt(0);
+
+            // Children Logic
+            const cList = document.getElementById('childList');
+            cList.innerHTML = "";
+            const children = Object.values(familyData).filter(c => c.parent === id);
+            
+            if(children.length === 0) {
+                cList.innerHTML = "<p class='text-gray-400 text-xs italic'>No records found.</p>";
+            } else {
+                children.forEach(child => {
+                    const d = document.createElement('div');
+                    d.className = "p-3 bg-gray-50 border border-gray-100 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition";
+                    d.onclick = () => showProfile(child.id);
+                    d.innerHTML = `<p class='font-bold text-gray-800 text-sm'>${child.name}</p><p class='text-[10px] text-blue-500'>VIEW PROFILE</p>`;
+                    cList.appendChild(d);
+                });
+            }
         }
 
-        function refreshUI() {
-            localStorage.setItem('TughalVaultFinal', JSON.stringify(db));
+        // --- 4. ADMIN LOGIN SYSTEM ---
+        function showLoginModal() {
+            const email = prompt("Enter Admin Email (Optional):");
+            const pin = prompt("Enter Secret Pin (Default: 7860):");
+            
+            if(pin === "7860") {
+                alert("Login Successful! Account created for: " + (email || "Admin"));
+                document.getElementById('loginStateBtn').innerHTML = `<i class="fas fa-check-circle mr-2"></i> LOGGED IN`;
+                document.getElementById('loginStateBtn').className = "w-full bg-green-600 py-2 rounded-lg text-xs font-bold";
+            } else {
+                alert("Wrong Pin!");
+            }
+        }
+
+        // --- 5. RENDER SIDEBAR ---
+        function renderSidebar(search = "") {
             const list = document.getElementById('sidebarList');
-            list.innerHTML = '';
-            db.forEach(m => {
-                const div = document.createElement('div');
-                div.className = 'sidebar-item p-3 mb-1 rounded-lg cursor-pointer flex items-center gap-3 border border-transparent';
-                div.innerHTML = `<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-[10px] font-bold">${m.eng[0]}</div>
-                                 <div class="flex-1 overflow-hidden"><div class="text-xs font-bold truncate">${m.eng}</div><div class="text-[9px] text-gray-400 urdu-font truncate">${m.urdu}</div></div>`;
-                div.onclick = () => { showProfile(m); if(window.innerWidth < 768) toggleSidebar(); };
-                list.appendChild(div);
+            list.innerHTML = "";
+            Object.values(familyData).forEach(m => {
+                if(m.name.toLowerCase().includes(search.toLowerCase())) {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left p-3 rounded-xl hover:bg-gray-800 transition group flex items-center space-x-3";
+                    btn.onclick = () => showProfile(m.id);
+                    btn.innerHTML = `
+                        <div class="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center text-xs font-bold group-hover:bg-blue-600">${m.name.charAt(0)}</div>
+                        <div>
+                            <p class="text-xs font-bold">${m.name}</p>
+                            <p class="text-[9px] text-gray-500 uppercase">${m.rel}</p>
+                        </div>
+                    `;
+                    list.appendChild(btn);
+                }
             });
         }
 
-        function showProfile(m) {
-            document.getElementById('welcomeScreen').classList.add('hidden');
-            document.getElementById('profileView').classList.remove('hidden');
-            document.getElementById('viewEngName').innerText = m.eng;
-            document.getElementById('viewUrduName').innerText = `(${m.urdu})`;
-            document.getElementById('viewRole').innerText = m.lineage;
-            document.getElementById('viewImg').src = m.img || "https://www.w3schools.com/howto/img_avatar.png";
-            document.getElementById('breadCrumb').innerText = m.eng;
-            
-            const container = document.getElementById('descendantsContainer');
-            container.innerHTML = `<div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                <h4 class="text-[10px] font-bold text-blue-500 uppercase mb-3 border-b pb-1">Descendants</h4>
-                <ul class="space-y-1">${m.sons.map(s => `<li class="text-xs bg-gray-50 p-2 rounded"><i class="fas fa-caret-right mr-2 text-blue-300"></i>${s}</li>`).join('')}</ul>
-            </div>`;
-
-            document.getElementById('editBtn').onclick = () => openModal(m);
-            document.getElementById('deleteBtn').onclick = () => { if(confirm("Delete?")) { db = db.filter(x => x.id !== m.id); refreshUI(); location.reload(); }};
+        // --- 6. TREE LOGIC ---
+        function toggleTreeView() {
+            document.getElementById('profileView').classList.add('hidden');
+            document.getElementById('welcomeView').classList.add('hidden');
+            document.getElementById('treeView').classList.remove('hidden');
+            const founder = Object.values(familyData).find(f => f.parent === null);
+            document.getElementById('treeContainer').innerHTML = `<ul>${buildTree(founder.id)}</ul>`;
         }
 
-        function openModal(m = null) {
-            currentEditId = m ? m.id : null;
-            tempImage = m ? m.img : "";
-            document.getElementById('inEng').value = m ? m.eng : '';
-            document.getElementById('inUrdu').value = m ? m.urdu : '';
-            document.getElementById('inLineage').value = m ? m.lineage : '';
-            document.getElementById('inChildren').value = m ? m.sons.join(', ') : '';
-            document.getElementById('imagePreview').innerHTML = tempImage ? `<img src="${tempImage}" class="w-full h-full object-cover">` : '<i class="fas fa-camera text-gray-300"></i>';
-            document.getElementById('addModal').classList.remove('hidden');
+        function buildTree(id) {
+            const m = familyData[id];
+            const kids = Object.values(familyData).filter(c => c.parent === id);
+            let h = `<li><a href="#" onclick="showProfile('${m.id}')">${m.name}</a>`;
+            if(kids.length > 0) {
+                h += "<ul>";
+                kids.forEach(k => h += buildTree(k.id));
+                h += "</ul>";
+            }
+            return h + "</li>";
         }
 
-        function saveRecord() {
-            const eng = document.getElementById('inEng').value;
-            const urdu = document.getElementById('inUrdu').value;
-            if(!eng || !urdu) return alert("Fill required fields");
-
-            const data = {
-                id: currentEditId || Date.now(),
-                eng, urdu, 
-                lineage: document.getElementById('inLineage').value,
-                img: tempImage,
-                sons: document.getElementById('inChildren').value.split(',').map(s => s.trim()).filter(s => s)
-            };
-
-            if(currentEditId) db[db.findIndex(x => x.id === currentEditId)] = data;
-            else db.unshift(data);
-            
-            refreshUI(); closeModal(); showProfile(data);
-        }
-
-        function closeModal() { document.getElementById('addModal').classList.add('hidden'); }
-
-        refreshUI();
+        // Init
+        document.getElementById('searchInput').oninput = (e) => renderSidebar(e.target.value);
+        renderSidebar();
     </script>
 </body>
 </html>
