@@ -1,525 +1,1829 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tughal Khel Heritage Vault - Official v2.0</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Tughal Khel Heritage Vault v3.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow-x: hidden; }
-        
-        /* Dynamic Sidebar for Desktop & Mobile */
-        .sidebar { 
-            background-color: #1e293b; 
-            color: white; 
-            z-index: 50; 
-            overflow-y: auto; 
-            transition: all 0.3s ease;
+        :root {
+            --bg: #0d0f14;
+            --surface: #13161e;
+            --surface2: #1a1f2c;
+            --surface3: #222840;
+            --border: rgba(255,255,255,0.06);
+            --border2: rgba(255,255,255,0.1);
+            --accent: #b8860b;
+            --accent2: #d4a843;
+            --accent-glow: rgba(184,134,11,0.15);
+            --text: #e8e2d5;
+            --text2: #9a9080;
+            --text3: #5a5248;
+            --green: #4a9c6e;
+            --red: #c0504d;
+            --sidebar-w: 300px;
         }
 
-        @media (min-width: 1024px) {
-            .sidebar { height: 100vh; position: fixed; width: 320px; }
-            .main-content { margin-left: 320px; padding: 2rem; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        @media (max-width: 1023px) {
-            .sidebar { position: relative; width: 100%; height: auto; border-bottom: 1px solid #334155; }
-            .main-content { margin-left: 0; padding: 1rem; }
-            #sidebarList { display: flex; overflow-x: auto; padding: 1rem; white-space: nowrap; gap: 10px; }
-            #sidebarList > button { width: auto; min-width: 160px; margin-bottom: 0; }
+        /* Grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
         }
 
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .brand-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--bg);
+            flex-shrink: 0;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text);
+        }
+
+        .brand-sub {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text3);
+            font-weight: 700;
+            padding-left: 48px;
+        }
+
+        .sidebar-nav {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text2);
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--surface2);
+            color: var(--accent2);
+        }
+
+        .nav-btn i { width: 14px; text-align: center; font-size: 11px; }
+
+        .sidebar-search {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .sidebar-search input:focus { border-color: var(--accent); }
+        .sidebar-search input::placeholder { color: var(--text3); }
+
+        .sidebar-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .sidebar-list::-webkit-scrollbar { width: 3px; }
+        .sidebar-list::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-list::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            border: 1px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background: var(--surface2);
+            border-color: var(--border);
+        }
+
+        .sidebar-item.active {
+            background: var(--accent-glow);
+            border-color: rgba(184,134,11,0.3);
+        }
+
+        .sidebar-avatar {
+            width: 32px; height: 32px;
+            background: var(--surface3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent2);
+            flex-shrink: 0;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .sidebar-avatar.sarparast {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: var(--bg);
+        }
+
+        .sidebar-item-info p:first-child {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px;
+        }
+
+        .sidebar-item-info p:last-child {
+            font-size: 8px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+            padding: 32px 40px;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; animation: fadeUp 0.3s ease; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== DASHBOARD ===== */
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header .eyebrow {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--accent2);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            line-height: 1;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .stat-card:hover { border-color: var(--border2); }
+
+        .stat-card .label {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text3);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .stat-card .value.accent { color: var(--accent2); }
+
+        /* Heritage Banner */
+        .heritage-banner {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heritage-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 300px; height: 100%;
+            background: linear-gradient(to left, var(--accent-glow), transparent);
+        }
+
+        .heritage-banner .territory-tag {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent2);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .heritage-banner h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ===== SARPARAST SECTION ===== */
+        .sarparast-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text3);
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .lineage-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .lineage-bar::-webkit-scrollbar { height: 3px; }
+        .lineage-bar::-webkit-scrollbar-thumb { background: var(--surface3); }
+
+        .lineage-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .lineage-node:hover { background: var(--surface2); }
+
+        .lineage-node .node-id {
+            font-size: 7px;
+            color: var(--accent2);
+            font-weight: 700;
+        }
+
+        .lineage-node .node-name {
+            font-size: 9px;
+            color: var(--text);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .lineage-arrow {
+            color: var(--text3);
+            font-size: 10px;
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+
+        .sarparast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .sarparast-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sarparast-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .sarparast-card:hover { border-color: rgba(184,134,11,0.4); transform: translateY(-2px); }
+        .sarparast-card:hover::before { opacity: 1; }
+        .sarparast-card.current { border-color: rgba(184,134,11,0.4); background: var(--accent-glow); }
+        .sarparast-card.current::before { opacity: 1; }
+
+        .sarparast-card .s-role {
+            font-size: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent2);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .sarparast-card .s-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .sarparast-card .s-id {
+            font-size: 8px;
+            color: var(--text3);
+            margin-top: 4px;
+        }
+
+        .current-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(74,156,110,0.15);
+            border: 1px solid rgba(74,156,110,0.3);
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--green);
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* ===== PROFILE VIEW ===== */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text2);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 24px;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .back-btn:hover { border-color: var(--border2); color: var(--text); }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+        }
+
+        .profile-main {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .profile-avatar {
+            width: 80px; height: 80px;
+            border-radius: 16px;
+            background: var(--surface3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent2);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .profile-avatar img {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .profile-avatar .upload-btn {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+            font-size: 10px;
+            color: white;
+        }
+
+        .profile-avatar:hover .upload-btn { opacity: 1; }
+
+        .profile-meta .profile-id {
+            font-size: 9px;
+            color: var(--accent2);
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verified-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(74,156,110,0.12);
+            border: 1px solid rgba(74,156,110,0.25);
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 7px;
+            color: var(--green);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .sarparast-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(184,134,11,0.12);
+            border: 1px solid rgba(184,134,11,0.3);
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 7px;
+            color: var(--accent2);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .profile-meta h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .profile-meta .urdu-name {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            font-size: 22px;
+            color: var(--text3);
+            direction: rtl;
+        }
+
+        .profile-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 11px;
+        }
+
+        .icon-btn:hover { border-color: var(--border2); color: var(--text); }
+        .icon-btn.danger:hover { border-color: rgba(192,80,77,0.4); color: var(--red); background: rgba(192,80,77,0.1); }
+
+        .ancestors-chain {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+            padding: 14px 18px;
+            background: var(--surface2);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .ancestor-chip {
+            font-size: 9px;
+            color: var(--text3);
+            cursor: pointer;
+            transition: color 0.2s;
+            font-weight: 700;
+        }
+
+        .ancestor-chip:hover { color: var(--accent2); }
+
+        .ancestor-sep { color: var(--text3); font-size: 8px; }
+        .ancestor-chip.current { color: var(--text2); cursor: default; }
+
+        .bio-label {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text3);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .bio-text {
+            font-size: 13px;
+            color: var(--text2);
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        /* Sidebar panel */
+        .profile-sidebar-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .panel-title {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text3);
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-title i { color: var(--accent); }
+
+        .child-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .child-item:hover {
+            background: var(--surface2);
+            border-color: var(--border);
+        }
+
+        .child-avatar {
+            width: 28px; height: 28px;
+            background: var(--surface3);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent2);
+            font-family: 'Cormorant Garamond', serif;
+            flex-shrink: 0;
+        }
+
+        .child-item p:first-child { font-size: 10px; font-weight: 700; color: var(--text); }
+        .child-item p:last-child { font-size: 8px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* ===== ADD FORM ===== */
+        .form-card {
+            max-width: 680px;
+            margin: 0 auto;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+        }
+
+        .form-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 32px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-label {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text3);
+            font-weight: 700;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+        .form-input::placeholder, .form-textarea::placeholder { color: var(--text3); }
+
+        .form-select option { background: var(--surface2); }
+
+        .form-textarea { resize: vertical; min-height: 90px; }
+
+        .form-input.rtl {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            font-size: 16px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            border-radius: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            color: var(--bg);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(184,134,11,0.3); }
+
+        /* ===== TREE VIEW ===== */
+        .tree-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .tree-ctrl-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 10px;
+            color: var(--text2);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .tree-ctrl-btn:hover { border-color: var(--border2); color: var(--text); }
+
+        .tree-wrapper {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: calc(100vh - 220px);
+            min-height: 400px;
+            cursor: grab;
+        }
+
+        .tree-wrapper:active { cursor: grabbing; }
+
+        #treeCanvas {
+            position: absolute;
+            transform-origin: 0 0;
+            user-select: none;
+            padding: 60px;
+        }
+
+        /* Tree nodes */
+        .tree-node {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface2);
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .tree-node:hover, .tree-node.highlight {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+            box-shadow: 0 0 16px var(--accent-glow);
+        }
+
+        .tree-node.dim { opacity: 0.2; }
+
+        .tree-node.sarparast-node {
+            border-color: rgba(184,134,11,0.5);
+            background: rgba(184,134,11,0.08);
+        }
+
+        .tree-node .n-id { font-size: 7px; color: var(--accent2); font-weight: 700; }
+        .tree-node .n-name { font-size: 9px; color: var(--text); font-weight: 700; white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+        .tree-node .n-urdu { font-family: 'Noto Nastaliq Urdu', serif; font-size: 9px; color: var(--text3); direction: rtl; }
+
+        /* CSS Tree layout */
+        .tree-ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+        }
+
+        .tree-children {
+            display: flex;
+            gap: 20px;
+            padding-top: 32px;
+            position: relative;
+        }
+
+        .tree-children::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%; right: 50%;
+            height: 16px;
+            border-left: 1px solid var(--border2);
+        }
+
+        .tree-li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-top: 16px;
+        }
+
+        .tree-li::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            width: 1px; height: 16px;
+            background: var(--border2);
+        }
+
+        .tree-children-wrap {
+            display: flex;
+            gap: 0;
+            position: relative;
+        }
+
+        .tree-children-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            height: 1px;
+            background: var(--border2);
+        }
+
+        /* ===== UTILITY ===== */
         .hidden { display: none !important; }
-        
-        .profile-banner { background-color: #1a1f2c; height: 180px; position: relative; border-radius: 1.5rem 1.5rem 0 0; }
-        @media (min-width: 768px) { .profile-banner { height: 240px; border-radius: 2rem 2rem 0 0; } }
 
-        .profile-card-container { margin-top: -60px; position: relative; z-index: 10; padding: 0 1rem; }
-        @media (min-width: 768px) { .profile-card-container { margin-top: -80px; padding: 0 3rem; } }
+        .tag-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
 
-        .profile-main-card { background: white; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05); }
-        @media (min-width: 768px) { .profile-main-card { border-radius: 2.5rem; padding: 3rem; } }
+        .tag {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text3);
+            font-weight: 700;
+        }
 
-        /* Tree View Responsive Scroll */
-        #treeView { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .tree ul { padding-top: 20px; display: flex; justify-content: center; }
-        .tree li { text-align: center; list-style-type: none; position: relative; padding: 20px 5px 0 5px; transition: all 0.3s; }
-        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #cbd5e1; width: 50%; height: 20px; }
-        .tree li::after { right: auto; left: 50%; border-left: 2px solid #cbd5e1; }
-        .tree li:only-child::after, .tree li:only-child::before { display: none; }
-        .tree li a { border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 10px; background: white; color: #1e293b; display: inline-block; font-size: 10px; font-weight: 800; white-space: nowrap; }
-        
-        #profileImgDisplay { object-fit: cover; border-radius: 1.5rem; width: 100%; height: 100%; }
+        /* Mobile responsive */
+        @media (max-width: 1024px) {
+            :root { --sidebar-w: 0px; }
+            .sidebar { transform: translateX(-300px); transition: transform 0.3s; }
+            .sidebar.open { transform: translateX(0); --sidebar-w: 300px; }
+            .main { margin-left: 0; padding: 20px; }
+            .profile-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .main { padding: 16px; }
+        }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar flex flex-col shadow-2xl border-r border-slate-800">
-        <div class="p-6 lg:p-8 border-b border-slate-800">
-            <div class="flex items-center space-x-3 mb-2">
-                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shrink-0">
-                    <i class="fas fa-shield-halved text-white"></i>
-                </div>
-                <h1 class="text-lg lg:text-xl font-black tracking-tighter text-white">TUGHAL KHEL</h1>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="brand">
+            <div class="brand-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="brand-name">Tughal Khel</div>
+        </div>
+        <div class="brand-sub">Verified Heritage Archive · v3.0</div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <button class="nav-btn active" onclick="navigateTo('dashboard')" id="nav-dashboard">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </button>
+        <button class="nav-btn" onclick="navigateTo('addRecord'); resetForm();" id="nav-addRecord">
+            <i class="fas fa-plus-circle"></i> Register Member
+        </button>
+        <button class="nav-btn" onclick="navigateTo('treeView'); renderTree();" id="nav-treeView">
+            <i class="fas fa-sitemap"></i> Visual Tree
+        </button>
+    </nav>
+
+    <div class="sidebar-search">
+        <input type="text" id="searchInput" placeholder="Search by name or ID…" oninput="filterSidebar(this.value)">
+    </div>
+
+    <div class="sidebar-list" id="sidebarList"></div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+    <!-- DASHBOARD -->
+    <section class="section active" id="dashboard">
+        <div class="page-header">
+            <div class="eyebrow">Main Archive</div>
+            <h1>Heritage Dashboard</h1>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="label">Verified Records</div>
+                <div class="value accent" id="statCount">0</div>
             </div>
-            <p class="text-[8px] lg:text-[9px] text-slate-500 uppercase tracking-widest font-bold">Verified Heritage Archive</p>
+            <div class="stat-card">
+                <div class="label">Generations Tracked</div>
+                <div class="value accent" id="statGen">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Active Lineages</div>
+                <div class="value accent" id="statLineages">0</div>
+            </div>
         </div>
 
-        <nav class="p-2 lg:p-4 flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-2 overflow-x-auto lg:overflow-x-visible">
-            <button onclick="showSection('dashboard')" class="shrink-0 lg:w-full flex items-center space-x-3 p-3 lg:p-4 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all">
-                <i class="fas fa-chart-line text-sm"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wider">Dashboard</span>
-            </button>
-            <button onclick="resetForm(); showSection('addRecord')" class="shrink-0 lg:w-full flex items-center space-x-3 p-3 lg:p-4 rounded-xl bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
-                <i class="fas fa-plus-circle text-sm"></i>
-                <span class="text-[10px] font-bold uppercase tracking-wider">Add New</span>
-            </button>
-        </nav>
-        
-        <div class="hidden lg:block p-5 border-t border-slate-800 mt-4">
-            <label class="text-[9px] font-black text-slate-500 uppercase mb-3 block">Quick Filter</label>
-            <select id="villageFilter" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none">
-                <option value="all">All Villages</option>
-            </select>
+        <div class="heritage-banner">
+            <div class="territory-tag">Official Territory — Khyber Pakhtunkhwa</div>
+            <h2>Tughal Khel Village</h2>
+            <p style="font-size:11px;color:var(--text3);margin-top:6px;">Descendants of Jalat · Founded from the lineage of Tughal Khan</p>
         </div>
-        <div id="sidebarList" class="flex-1 px-4 pb-6 lg:pb-10 space-y-1 lg:space-y-2 overflow-y-auto"></div>
-    </aside>
 
-    <main class="main-content">
-        
-        <section id="dashboard" class="animate-in fade-in duration-500">
-            <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 lg:mb-8 gap-4">
+        <!-- SARPARAST SECTION -->
+        <div class="sarparast-section">
+            <div class="section-title"><i class="fas fa-crown" style="color:var(--accent)"></i> Village Leaders (Sarparast)</div>
+
+            <div class="lineage-bar" id="mandatoryLineage">
+                <!-- filled by JS -->
+            </div>
+
+            <div class="sarparast-grid" id="sarparastGrid">
+                <!-- filled by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ADD/EDIT RECORD -->
+    <section class="section" id="addRecord">
+        <button class="back-btn" onclick="navigateBack()"><i class="fas fa-arrow-left"></i> Go Back</button>
+        <div class="form-card">
+            <div class="form-title" id="formTitle">Register New Member</div>
+            <div class="form-grid">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label class="form-label">English Name</label>
+                    <input type="text" id="newName" class="form-input" placeholder="Full name…">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" style="text-align:right">اردو نام</label>
+                    <input type="text" id="newUrdu" class="form-input rtl" placeholder="نام">
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Father / Ancestor</label>
+                    <select id="parentSelect" class="form-select"></select>
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Sarparast Role</label>
+                    <select id="sarparastRole" class="form-select">
+                        <option value="">-- No Special Role --</option>
+                        <option value="current">Current Sarparast</option>
+                        <option value="historical">Historical Sarparast</option>
+                        <option value="founder">Village Founder</option>
+                        <option value="ancestor">Founding Ancestor</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Personal Biography</label>
+                    <textarea id="newBio" class="form-textarea" placeholder="Historical notes, role, era…"></textarea>
+                </div>
+                <div class="form-group full">
+                    <button type="button" class="submit-btn" onclick="saveMember()">
+                        <i class="fas fa-check-circle"></i> &nbsp;Verify & Save to Archive
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFILE VIEW -->
+    <section class="section" id="profileView">
+        <button class="back-btn" onclick="navigateBack()"><i class="fas fa-arrow-left"></i> Go Back</button>
+
+        <div class="profile-grid">
+            <div class="profile-main">
+                <div class="profile-top">
+                    <div class="profile-avatar" id="profAvatarBox">
+                        <span id="profInitial"></span>
+                        <img id="profileImgDisplay" alt="">
+                        <label class="upload-btn">
+                            <i class="fas fa-camera"></i>
+                            <input type="file" id="profileImgInput" class="hidden" accept="image/*" onchange="uploadProfileImage(this)">
+                        </label>
+                    </div>
+                    <div class="profile-meta">
+                        <div class="profile-id">
+                            <span id="bIdTag">#ID</span>
+                            <span class="verified-tag"><i class="fas fa-check-circle"></i> Verified</span>
+                            <span id="sarparastBadge" class="sarparast-tag hidden"><i class="fas fa-crown"></i> Sarparast</span>
+                        </div>
+                        <h2 id="engName">Name</h2>
+                        <div class="urdu-name" id="urduName">نام</div>
+                    </div>
+                    <div class="profile-actions">
+                        <div class="icon-btn" id="editBtn" title="Edit"><i class="fas fa-edit"></i></div>
+                        <div class="icon-btn danger" id="deleteBtn" title="Delete"><i class="fas fa-trash"></i></div>
+                    </div>
+                </div>
+
+                <div class="ancestors-chain" id="ancestorsChain"></div>
+
+                <div class="bio-label"><i class="fas fa-book-open" style="color:var(--accent);margin-right:6px"></i>Biography</div>
+                <div class="bio-text" id="bio"></div>
+            </div>
+
+            <div class="profile-sidebar-panel">
+                <div class="panel">
+                    <div class="panel-title"><i class="fas fa-user"></i> Parent</div>
+                    <div id="parentInfo"></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title"><i class="fas fa-users"></i> Descendants</div>
+                    <div id="childList"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TREE VIEW -->
+    <section class="section" id="treeView">
+        <div class="page-header">
+            <div class="eyebrow">Genealogy</div>
+            <h1>Visual Tree</h1>
+        </div>
+        <div class="tree-controls">
+            <button class="tree-ctrl-btn" onclick="zoomTree(1.2)"><i class="fas fa-plus"></i> Zoom In</button>
+            <button class="tree-ctrl-btn" onclick="zoomTree(0.8)"><i class="fas fa-minus"></i> Zoom Out</button>
+            <button class="tree-ctrl-btn" onclick="resetTreeView()"><i class="fas fa-compress-arrows-alt"></i> Reset</button>
+            <span style="font-size:9px;color:var(--text3);margin-left:8px;">Drag to pan · Hover to highlight lineage</span>
+        </div>
+        <div class="tree-wrapper" id="treeWrapper">
+            <div id="treeCanvas"></div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+// ======================================================
+// DATA — with hierarchical IDs + sarparast roles
+// ======================================================
+let familyData = {
+    "ID-1":  { id:"ID-1",  hId:"#T1",   name:"Tughal Khan",              urdu:"تغل خان",          parent:null,    bio:"The Supreme Ancestor and founder of the Tughal Khan lineage.",  image:null, role:"ancestor" },
+    "ID-2":  { id:"ID-2",  hId:"#B1",   name:"Bajal",                    urdu:"باجل",             parent:"ID-1",  bio:"",  image:null, role:null },
+    "ID-3":  { id:"ID-3",  hId:"#M1",   name:"Malik",                    urdu:"ملک",              parent:"ID-2",  bio:"",  image:null, role:null },
+    "ID-4":  { id:"ID-4",  hId:"#S1",   name:"Sadr",                     urdu:"صدر",              parent:"ID-3",  bio:"",  image:null, role:null },
+    "ID-5":  { id:"ID-5",  hId:"#P1",   name:"Polak",                    urdu:"پولک",             parent:"ID-4",  bio:"",  image:null, role:null },
+    "ID-6":  { id:"ID-6",  hId:"#H1",   name:"Haidar Khan",              urdu:"حیدر خان",         parent:"ID-5",  bio:"",  image:null, role:null },
+    "ID-7":  { id:"ID-7",  hId:"#A1",   name:"Adam Khan",                urdu:"آدم خان",          parent:"ID-6",  bio:"",  image:null, role:null },
+    "ID-8":  { id:"ID-8",  hId:"#J2",   name:"Jalat",                    urdu:"جلوت",             parent:"ID-7",  bio:"Village namesake and founder of the Tughal Khel settlement.",  image:null, role:"founder" },
+    "ID-9":  { id:"ID-9",  hId:"#SB1",  name:"Shah Baram",               urdu:"شاہ برم",          parent:"ID-8",  bio:"Branch of Mother Khuzana.",  image:null, role:null },
+    "ID-10": { id:"ID-10", hId:"#NK1",  name:"Noorbaz Khan",             urdu:"نورباز خان",       parent:"ID-8",  bio:"Branch of Mother Khuzana.",  image:null, role:null },
+    "ID-11": { id:"ID-11", hId:"#MK1",  name:"Muhammad Khan",            urdu:"محمد خان",         parent:"ID-10", bio:"Son from Wife Sardora.",  image:null, role:null },
+    "ID-12": { id:"ID-12", hId:"#FK1",  name:"Fateh Khan",               urdu:"فتح خان",          parent:"ID-10", bio:"Son from Wife Hafiza.",  image:null, role:null },
+    "ID-13": { id:"ID-13", hId:"#AK1",  name:"Ayaz Khan",                urdu:"ایاز خان",         parent:"ID-12", bio:"",  image:null, role:null },
+    "ID-14": { id:"ID-14", hId:"#MN1",  name:"Muhammad Nawaz Khan",      urdu:"محمد نواز خان",    parent:"ID-13", bio:"",  image:null, role:null },
+    "ID-15": { id:"ID-15", hId:"#GM1",  name:"Gul Muhammad Khan",        urdu:"گل محمد خان",      parent:"ID-13", bio:"",  image:null, role:null },
+    "ID-16": { id:"ID-16", hId:"#AT1",  name:"Ast Khan",                 urdu:"است خان",          parent:"ID-10", bio:"Son from Wife Hafiza.",  image:null, role:null },
+    "ID-17": { id:"ID-17", hId:"#GM2",  name:"Gul Muhammad Khan",        urdu:"گل محمد خان",      parent:"ID-16", bio:"Ast Branch",  image:null, role:null },
+    "ID-18": { id:"ID-18", hId:"#SK1",  name:"Sahib Khan",               urdu:"صاحب خان",         parent:"ID-17", bio:"",  image:null, role:null },
+    "ID-19": { id:"ID-19", hId:"#AM1",  name:"Amjad Khan",               urdu:"امجد خان",         parent:"ID-18", bio:"",  image:null, role:null },
+    "ID-20": { id:"ID-20", hId:"#DA1",  name:"Dar Ali Khan",             urdu:"در علی خان",       parent:"ID-17", bio:"",  image:null, role:null },
+    "ID-21": { id:"ID-21", hId:"#MAF1", name:"Muhammad Afzal Khan",      urdu:"محمد افضل خان",    parent:"ID-16", bio:"",  image:null, role:null },
+    "ID-22": { id:"ID-22", hId:"#ZK1",  name:"Zaman Khan",               urdu:"زمان خان",         parent:"ID-21", bio:"",  image:null, role:null },
+    "ID-23": { id:"ID-23", hId:"#IR1",  name:"Irfanullah",               urdu:"عرفان اللہ",       parent:"ID-22", bio:"",  image:null, role:null },
+    "ID-24": { id:"ID-24", hId:"#IJ1",  name:"Ijaz Khan",                urdu:"اعجاز خان",        parent:"ID-22", bio:"",  image:null, role:null },
+    "ID-25": { id:"ID-25", hId:"#MM1",  name:"Muhammad Mir",             urdu:"محمد میر",         parent:"ID-16", bio:"",  image:null, role:null },
+    "ID-26": { id:"ID-26", hId:"#AR1",  name:"Amir Rehman",              urdu:"امیر رحمان",       parent:"ID-25", bio:"",  image:null, role:null },
+    "ID-27": { id:"ID-27", hId:"#MK2",  name:"Mushtaq Khan",             urdu:"مشتاق خان",        parent:"ID-26", bio:"",  image:null, role:null },
+    "ID-28": { id:"ID-28", hId:"#MA1",  name:"Muhtiyar Ahmed",           urdu:"مختیار احمد",      parent:"ID-26", bio:"",  image:null, role:null },
+    "ID-29": { id:"ID-29", hId:"#IS1",  name:"Israr",                    urdu:"اسرار",            parent:"ID-28", bio:"",  image:null, role:null },
+    "ID-30": { id:"ID-30", hId:"#IF1",  name:"Iftikhar",                 urdu:"افتخار",           parent:"ID-28", bio:"",  image:null, role:null },
+    "ID-31": { id:"ID-31", hId:"#NI1",  name:"Nisar",                    urdu:"نثار",             parent:"ID-28", bio:"",  image:null, role:null },
+    "ID-32": { id:"ID-32", hId:"#IQ1",  name:"Iqtidar",                  urdu:"اقتدار",           parent:"ID-28", bio:"",  image:null, role:null },
+    "ID-33": { id:"ID-33", hId:"#WA1",  name:"Waqar",                    urdu:"وقار",             parent:"ID-28", bio:"",  image:null, role:null },
+    "ID-34": { id:"ID-34", hId:"#MAB1", name:"Muhammad Abbas",           urdu:"محمد عباس",        parent:"ID-26", bio:"",  image:null, role:null },
+    "ID-35": { id:"ID-35", hId:"#MS1",  name:"Mashkoor",                 urdu:"مشکور",            parent:"ID-34", bio:"",  image:null, role:null },
+    "ID-36": { id:"ID-36", hId:"#ISH1", name:"Ishaq",                    urdu:"اسحاق",            parent:"ID-34", bio:"",  image:null, role:null },
+    "ID-37": { id:"ID-37", hId:"#ISF1", name:"Ishfaq",                   urdu:"اشفاق",            parent:"ID-34", bio:"",  image:null, role:null },
+    "ID-38": { id:"ID-38", hId:"#AL1",  name:"Altaf Khan",               urdu:"الطاف خان",        parent:"ID-34", bio:"",  image:null, role:null },
+    "ID-39": { id:"ID-39", hId:"#GAK1", name:"Gul Abbas Khan",           urdu:"گل عباس خان",      parent:"ID-25", bio:"",  image:null, role:null },
+    "ID-40": { id:"ID-40", hId:"#ZDK1", name:"Zar Dad Khan",             urdu:"زر داد خان",       parent:"ID-25", bio:"",  image:null, role:null },
+    "ID-41": { id:"ID-41", hId:"#SA1",  name:"Shaf Ali",                 urdu:"شاف علی",          parent:"ID-40", bio:"",  image:null, role:null },
+    "ID-42": { id:"ID-42", hId:"#FAI1", name:"Faizan",                   urdu:"فیضان",            parent:"ID-41", bio:"",  image:null, role:null },
+    "ID-43": { id:"ID-43", hId:"#UA1",  name:"Umar Ayaz",                urdu:"عمر ایاز",         parent:"ID-40", bio:"",  image:null, role:null },
+    "ID-44": { id:"ID-44", hId:"#EH1",  name:"Ehtisham",                 urdu:"احتشام",           parent:"ID-43", bio:"",  image:null, role:null },
+    "ID-45": { id:"ID-45", hId:"#MUN1", name:"Munawar Khan",             urdu:"منور خان",         parent:"ID-40", bio:"",  image:null, role:null },
+    "ID-46": { id:"ID-46", hId:"#MUT1", name:"Muti-ullah",               urdu:"مطیع اللہ",        parent:"ID-45", bio:"",  image:null, role:null },
+    "ID-47": { id:"ID-47", hId:"#RAF1", name:"Rafi-ullah",               urdu:"رفیع اللہ",        parent:"ID-45", bio:"",  image:null, role:null },
+    "ID-48": { id:"ID-48", hId:"#RAZ1", name:"Raziq",                    urdu:"رازق",             parent:"ID-45", bio:"",  image:null, role:null },
+    "ID-49": { id:"ID-49", hId:"#MN2",  name:"Manak",                    urdu:"مانک",             parent:"ID-8",  bio:"Branch of Mother Zaiba.",  image:null, role:null },
+    "ID-50": { id:"ID-50", hId:"#ML1",  name:"Malet",                    urdu:"مليت",             parent:"ID-49", bio:"",  image:null, role:null },
+    "ID-51": { id:"ID-51", hId:"#MSK1", name:"Mir Sahib Khan",           urdu:"میر صاحب خان",     parent:"ID-50", bio:"",  image:null, role:null },
+    "ID-52": { id:"ID-52", hId:"#ARE1", name:"Abdur Rehman",             urdu:"عبدالرحمان",       parent:"ID-51", bio:"",  image:null, role:null },
+    "ID-53": { id:"ID-53", hId:"#SAF1", name:"Safid Khan",               urdu:"سفید خان",         parent:"ID-52", bio:"Children: Qasim and 1 Unknown.",  image:null, role:null },
+    "ID-54": { id:"ID-54", hId:"#SAJ1", name:"Sajid Khan",               urdu:"ساجد خان",         parent:"ID-52", bio:"",  image:null, role:null },
+    "ID-55": { id:"ID-55", hId:"#WAJ1", name:"Wajid Khan",               urdu:"واجد خان",         parent:"ID-52", bio:"",  image:null, role:null },
+    "ID-56": { id:"ID-56", hId:"#WAS1", name:"Wasid Khan",               urdu:"واسد خان",         parent:"ID-52", bio:"",  image:null, role:null },
+    "ID-57": { id:"ID-57", hId:"#HAS1", name:"Hasib Khan",               urdu:"حسیب خان",         parent:"ID-52", bio:"",  image:null, role:null },
+    "ID-58": { id:"ID-58", hId:"#KHY1", name:"Khayam",                   urdu:"خیام",             parent:"ID-52", bio:"",  image:null, role:null },
+    "ID-59": { id:"ID-59", hId:"#SKH1", name:"Sarfaraz Khan",            urdu:"سرفراز خان",       parent:"ID-49", bio:"Historical Sarparast of Tughal Khel.",  image:null, role:"historical" },
+    "ID-60": { id:"ID-60", hId:"#SNW1", name:"Sher Nawaz Khan",          urdu:"شیر نواز خان",     parent:"ID-59", bio:"Historical Sarparast of Tughal Khel.",  image:null, role:"historical" },
+    "ID-61": { id:"ID-61", hId:"#RNW1", name:"Rabnawaz Khan",            urdu:"ربنواز خان",       parent:"ID-60", bio:"",  image:null, role:null },
+    "ID-62": { id:"ID-62", hId:"#AAK1", name:"Akhlaq Ali Khan",          urdu:"اخلاق علی خان",    parent:"ID-61", bio:"Current Sarparast (Village Leader) of Tughal Khel.",  image:null, role:"current" },
+    "ID-63": { id:"ID-63", hId:"#WAS2", name:"Waseem",                   urdu:"وسیم",             parent:"ID-62", bio:"",  image:null, role:null },
+    "ID-64": { id:"ID-64", hId:"#FAH1", name:"Faheem",                   urdu:"فہیم",             parent:"ID-62", bio:"",  image:null, role:null },
+    "ID-65": { id:"ID-65", hId:"#NOM1", name:"Noman",                    urdu:"نعمان",            parent:"ID-62", bio:"",  image:null, role:null },
+    "ID-66": { id:"ID-66", hId:"#SAK1", name:"Shaukat Ali Khan",         urdu:"شوکت علی خان",     parent:"ID-61", bio:"",  image:null, role:null },
+    "ID-67": { id:"ID-67", hId:"#AAH1", name:"Abdul Ahad",               urdu:"عبدالاحاد",        parent:"ID-66", bio:"",  image:null, role:null },
+    "ID-68": { id:"ID-68", hId:"#ANA1", name:"Anas",                     urdu:"انس",              parent:"ID-66", bio:"",  image:null, role:null },
+    "ID-69": { id:"ID-69", hId:"#HAS2", name:"Hasnain",                  urdu:"حسنین",            parent:"ID-66", bio:"",  image:null, role:null },
+    "ID-70": { id:"ID-70", hId:"#BQK1", name:"Balqiaz Khan",             urdu:"بلقیاز خان",       parent:"ID-59", bio:"Historical Sarparast of Tughal Khel.",  image:null, role:"historical" },
+    "ID-71": { id:"ID-71", hId:"#MASH1",name:"Muhammad Ashraf",          urdu:"محمد اشرف",        parent:"ID-70", bio:"",  image:null, role:null },
+    "ID-72": { id:"ID-72", hId:"#ZOH1", name:"Zohaib Khan",              urdu:"زہیب خان",         parent:"ID-71", bio:"",  image:null, role:null },
+    "ID-73": { id:"ID-73", hId:"#ZOR1", name:"Zorain",                   urdu:"زورین",            parent:"ID-72", bio:"",  image:null, role:null },
+    "ID-74": { id:"ID-74", hId:"#SAQ1", name:"Saqib Khan",               urdu:"ثاقب خان",         parent:"ID-71", bio:"",  image:null, role:null },
+    "ID-75": { id:"ID-75", hId:"#MUH1", name:"Muhammad",                 urdu:"محمد",             parent:"ID-71", bio:"",  image:null, role:null },
+    "ID-76": { id:"ID-76", hId:"#ASG1", name:"Asghar Khan",              urdu:"اصغر خان",         parent:"ID-70", bio:"",  image:null, role:null },
+    "ID-77": { id:"ID-77", hId:"#AFQ1", name:"Afaq Khan",                urdu:"آفاق خان",         parent:"ID-76", bio:"",  image:null, role:null },
+    "ID-78": { id:"ID-78", hId:"#FAH2", name:"Fahad Khan",               urdu:"فہد خان",          parent:"ID-76", bio:"",  image:null, role:null },
+    "ID-79": { id:"ID-79", hId:"#AWA1", name:"Awais Khan",               urdu:"اویس خان",         parent:"ID-76", bio:"",  image:null, role:null },
+    "ID-80": { id:"ID-80", hId:"#JAN1", name:"Janbaz Khan",              urdu:"جانباز خان",       parent:"ID-70", bio:"",  image:null, role:null },
+    "ID-81": { id:"ID-81", hId:"#SAY1", name:"Sultan Ayaz",              urdu:"سلطان ایاز",       parent:"ID-70", bio:"",  image:null, role:null },
+    "ID-82": { id:"ID-82", hId:"#DAN1", name:"Danyal Khan",              urdu:"دانیال خان",       parent:"ID-81", bio:"",  image:null, role:null },
+    "ID-83": { id:"ID-83", hId:"#ZOH2", name:"Zohan Khan",               urdu:"زوہان خان",        parent:"ID-81", bio:"",  image:null, role:null },
+    "ID-84": { id:"ID-84", hId:"#DOM1", name:"Dost Muhammad",            urdu:"دوست محمد",        parent:"ID-70", bio:"",  image:null, role:null },
+    "ID-85": { id:"ID-85", hId:"#ABU1", name:"Abu Huraira",              urdu:"ابو ہریرہ",        parent:"ID-84", bio:"",  image:null, role:null },
+    "ID-86": { id:"ID-86", hId:"#MJ1",  name:"Muhammad Jan",             urdu:"محمد جان",         parent:"ID-49", bio:"Details Pending.",  image:null, role:null },
+    "ID-87": { id:"ID-87", hId:"#SQ1",  name:"Shah Qulzam",              urdu:"شاہ قلزم",         parent:"ID-8",  bio:"",  image:null, role:null },
+    "ID-88": { id:"ID-88", hId:"#BK1",  name:"Badshah Khan",             urdu:"بادشاہ خان",       parent:"ID-87", bio:"",  image:null, role:null },
+    "ID-89": { id:"ID-89", hId:"#DK1",  name:"Dilawar Khan",             urdu:"دلاور خان",        parent:"ID-88", bio:"",  image:null, role:null },
+    "ID-90": { id:"ID-90", hId:"#AMK1", name:"Amin Khan",                urdu:"امین خان",         parent:"ID-89", bio:"",  image:null, role:null },
+    "ID-91": { id:"ID-91", hId:"#AHM1", name:"Ahmed",                    urdu:"احمد",             parent:"ID-90", bio:"",  image:null, role:null },
+    "ID-92": { id:"ID-92", hId:"#BAI2", name:"Baitullah",                urdu:"بیت اللہ",         parent:"ID-90", bio:"",  image:null, role:null },
+    "ID-93": { id:"ID-93", hId:"#UAK1", name:"Umar Ali Khan",            urdu:"عمر علی خان",      parent:"ID-89", bio:"",  image:null, role:null },
+    "ID-94": { id:"ID-94", hId:"#ASM1", name:"Asal Marjan",              urdu:"اصل مرجان",        parent:"ID-89", bio:"",  image:null, role:null },
+    "ID-95": { id:"ID-95", hId:"#ZK2",  name:"Zahid Khan",               urdu:"زاہد خان",         parent:"ID-94", bio:"",  image:null, role:null },
+    "ID-96": { id:"ID-96", hId:"#FAR1", name:"Farhadullah",              urdu:"فرہاد اللہ",       parent:"ID-94", bio:"",  image:null, role:null },
+    "ID-97": { id:"ID-97", hId:"#WAR1", name:"Waridullah",               urdu:"وارث اللہ",        parent:"ID-94", bio:"",  image:null, role:null },
+    "ID-98": { id:"ID-98", hId:"#REH1", name:"Rehmanullah",              urdu:"رحمان اللہ",       parent:"ID-94", bio:"",  image:null, role:null },
+    "ID-99": { id:"ID-99", hId:"#RAH1", name:"Rahid Khan",               urdu:"راہد خان",         parent:"ID-94", bio:"",  image:null, role:null },
+    "ID-100":{ id:"ID-100",hId:"#GHJ1", name:"Ghajan",                   urdu:"غجان",             parent:"ID-8",  bio:"",  image:null, role:null },
+    "ID-101":{ id:"ID-101",hId:"#AZM1", name:"Azamrai",                  urdu:"آزمرائی",          parent:"ID-100",bio:"",  image:null, role:null },
+    "ID-102":{ id:"ID-102",hId:"#GK1",  name:"Gul Khoban",               urdu:"گل خوبان",         parent:"ID-101",bio:"",  image:null, role:null },
+    "ID-103":{ id:"ID-103",hId:"#KN1",  name:"Kamran Nawaz",             urdu:"کامران نواز",      parent:"ID-102",bio:"",  image:null, role:null },
+    "ID-104":{ id:"ID-104",hId:"#MAM1", name:"Ma'moon",                  urdu:"مامون",            parent:"ID-103",bio:"",  image:null, role:null },
+    "ID-105":{ id:"ID-105",hId:"#AN1",  name:"Ahmed Nawaz",              urdu:"احمد نواز",        parent:"ID-103",bio:"",  image:null, role:null },
+    "ID-106":{ id:"ID-106",hId:"#MUN2", name:"Muhammad Nawaz",           urdu:"محمد نواز",        parent:"ID-103",bio:"",  image:null, role:null },
+    "ID-107":{ id:"ID-107",hId:"#GHA1", name:"Ghaffar",                  urdu:"غفار",             parent:"ID-101",bio:"",  image:null, role:null },
+    "ID-108":{ id:"ID-108",hId:"#SN1",  name:"Sabir Nawaz",              urdu:"صابر نواز",        parent:"ID-107",bio:"",  image:null, role:null },
+    "ID-109":{ id:"ID-109",hId:"#SYN1", name:"Syed Nawaz",               urdu:"سید نواز",         parent:"ID-107",bio:"",  image:null, role:null },
+    "ID-110":{ id:"ID-110",hId:"#UN1",  name:"Umar Nawaz",               urdu:"عمر نواز",         parent:"ID-107",bio:"",  image:null, role:null },
+    "ID-111":{ id:"ID-111",hId:"#YN1",  name:"Yasir Nawaz",              urdu:"یاسر نواز",        parent:"ID-110",bio:"",  image:null, role:null },
+    "ID-112":{ id:"ID-112",hId:"#ZG1",  name:"Zar Gul",                  urdu:"زر گل",            parent:"ID-101",bio:"",  image:null, role:null },
+    "ID-113":{ id:"ID-113",hId:"#AA1",  name:"After Ali",                urdu:"افٹر علی",         parent:"ID-112",bio:"",  image:null, role:null },
+    "ID-114":{ id:"ID-114",hId:"#ZEW1", name:"Zewaran",                  urdu:"زیورن",            parent:"ID-113",bio:"",  image:null, role:null },
+    "ID-115":{ id:"ID-115",hId:"#UAL1", name:"Umar Ali",                 urdu:"عمر علی",          parent:"ID-112",bio:"",  image:null, role:null },
+    "ID-116":{ id:"ID-116",hId:"#FAI2", name:"Faizan",                   urdu:"فیضان",            parent:"ID-115",bio:"",  image:null, role:null },
+    "ID-117":{ id:"ID-117",hId:"#IMR1", name:"Imran",                    urdu:"عمران",            parent:"ID-115",bio:"",  image:null, role:null },
+    "ID-118":{ id:"ID-118",hId:"#SUL1", name:"Suleman",                  urdu:"سلیمان",           parent:"ID-115",bio:"",  image:null, role:null },
+    "ID-119":{ id:"ID-119",hId:"#GQZ1", name:"Gul Qamar Zaman",         urdu:"گل قمر زمان",      parent:"ID-100",bio:"",  image:null, role:null },
+    "ID-120":{ id:"ID-120",hId:"#AMA2", name:"Amanullah",                urdu:"امان اللہ",        parent:"ID-119",bio:"",  image:null, role:null },
+    "ID-121":{ id:"ID-121",hId:"#NAJ1", name:"Najeebullah",              urdu:"نجیب اللہ",        parent:"ID-120",bio:"",  image:null, role:null },
+    "ID-122":{ id:"ID-122",hId:"#ZAI1", name:"Zaidullah",                urdu:"زید اللہ",         parent:"ID-121",bio:"",  image:null, role:null },
+    "ID-123":{ id:"ID-123",hId:"#ATI1", name:"Atif",                     urdu:"عاطف",             parent:"ID-121",bio:"",  image:null, role:null },
+    "ID-124":{ id:"ID-124",hId:"#AQI1", name:"Aqif",                     urdu:"عاقف",             parent:"ID-121",bio:"",  image:null, role:null },
+    "ID-125":{ id:"ID-125",hId:"#MUS1", name:"Musaib",                   urdu:"مصیب",             parent:"ID-121",bio:"",  image:null, role:null },
+    "ID-126":{ id:"ID-126",hId:"#ABU2", name:"Abu Bakar",                urdu:"ابو بکر",          parent:"ID-121",bio:"",  image:null, role:null },
+    "ID-127":{ id:"ID-127",hId:"#ATA1", name:"Ataullah",                 urdu:"عطاء اللہ",        parent:"ID-119",bio:"",  image:null, role:null },
+    "ID-128":{ id:"ID-128",hId:"#ZIK1", name:"Zikran Khan",              urdu:"ذکران خان",        parent:"ID-127",bio:"",  image:null, role:null },
+    "ID-129":{ id:"ID-129",hId:"#MLK1", name:"Mir Liaqat Ali Khan",      urdu:"میر لیاقت علی خان",parent:"ID-119",bio:"",  image:null, role:null },
+    "ID-130":{ id:"ID-130",hId:"#SAM1", name:"Samiullah",                urdu:"سمیع اللہ",        parent:"ID-129",bio:"",  image:null, role:null },
+    "ID-131":{ id:"ID-131",hId:"#TAY1", name:"Tayyab",                   urdu:"طیب",              parent:"ID-129",bio:"",  image:null, role:null },
+    "ID-132":{ id:"ID-132",hId:"#TAH1", name:"Tahir",                    urdu:"طاہر",             parent:"ID-129",bio:"",  image:null, role:null },
+    "ID-133":{ id:"ID-133",hId:"#SHO1", name:"Shoaib",                   urdu:"شعیب",             parent:"ID-129",bio:"",  image:null, role:null },
+    "ID-134":{ id:"ID-134",hId:"#BAK1", name:"Bakht Ali Khan",           urdu:"بخت علی خان",      parent:"ID-119",bio:"",  image:null, role:null },
+    "ID-135":{ id:"ID-135",hId:"#QUK1", name:"Qayyumullah Khan",         urdu:"قیوم اللہ خان",    parent:"ID-119",bio:"",  image:null, role:null },
+    "ID-136":{ id:"ID-136",hId:"#KAL1", name:"Kaleemullah",              urdu:"کلیم اللہ",        parent:"ID-135",bio:"",  image:null, role:null },
+    "ID-137":{ id:"ID-137",hId:"#HIK1", name:"Hikmatullah",              urdu:"حکمت اللہ",        parent:"ID-135",bio:"",  image:null, role:null },
+    "ID-138":{ id:"ID-138",hId:"#HID1", name:"Hidayatullah",             urdu:"ہدایت اللہ",       parent:"ID-135",bio:"",  image:null, role:null },
+    "ID-139":{ id:"ID-139",hId:"#SHZ1", name:"Shahzad",                  urdu:"شہزاد",            parent:"ID-100",bio:"",  image:null, role:null },
+    "ID-140":{ id:"ID-140",hId:"#NNK1", name:"Noor Nawaz Khan",          urdu:"نور نواز خان",     parent:"ID-139",bio:"",  image:null, role:null },
+    "ID-141":{ id:"ID-141",hId:"#ASI1", name:"Asim",                     urdu:"عاصم",             parent:"ID-140",bio:"",  image:null, role:null },
+    "ID-142":{ id:"ID-142",hId:"#FAR2", name:"Farhad",                   urdu:"فرہاد",            parent:"ID-140",bio:"",  image:null, role:null },
+    "ID-143":{ id:"ID-143",hId:"#QAS1", name:"Qasim",                    urdu:"قاسم",             parent:"ID-140",bio:"",  image:null, role:null },
+    "ID-144":{ id:"ID-144",hId:"#FAW1", name:"Fawad",                    urdu:"فواد",             parent:"ID-140",bio:"",  image:null, role:null },
+    "ID-145":{ id:"ID-145",hId:"#HUK1", name:"Hamidullah Khan",          urdu:"حمید اللہ خان",    parent:"ID-139",bio:"",  image:null, role:null },
+    "ID-146":{ id:"ID-146",hId:"#ARS1", name:"Arsalan",                  urdu:"ارسلان",           parent:"ID-145",bio:"",  image:null, role:null },
+    "ID-147":{ id:"ID-147",hId:"#SK2",  name:"Sadiq Khan",               urdu:"صادق خان",         parent:"ID-145",bio:"",  image:null, role:null },
+    "ID-148":{ id:"ID-148",hId:"#UKH1", name:"Umar Khattab",             urdu:"عمر خطاب",         parent:"ID-145",bio:"",  image:null, role:null },
+    "ID-149":{ id:"ID-149",hId:"#FAR3", name:"Farooq",                   urdu:"فاروق",            parent:"ID-148",bio:"",  image:null, role:null },
+    "ID-150":{ id:"ID-150",hId:"#FUR1", name:"Furqan",                   urdu:"فرقان",            parent:"ID-148",bio:"",  image:null, role:null },
+    "ID-151":{ id:"ID-151",hId:"#PYK1", name:"Pyao Khan",                urdu:"پیاو خان",         parent:"ID-139",bio:"",  image:null, role:null },
+    "ID-152":{ id:"ID-152",hId:"#MRE1", name:"Muhammad Reza",            urdu:"محمد رضا",         parent:"ID-151",bio:"",  image:null, role:null },
+    "ID-153":{ id:"ID-153",hId:"#BRE1", name:"Bakht Reza",               urdu:"بخت رضا",          parent:"ID-151",bio:"",  image:null, role:null },
+    "ID-154":{ id:"ID-154",hId:"#QRE1", name:"Qismat Reza",              urdu:"قسمت رضا",         parent:"ID-151",bio:"",  image:null, role:null },
+    "ID-155":{ id:"ID-155",hId:"#MUR1", name:"Murtaza",                  urdu:"مرتضیٰ",           parent:"ID-151",bio:"",  image:null, role:null },
+    "ID-156":{ id:"ID-156",hId:"#RSK1", name:"Rasool Khan",              urdu:"رسول خان",         parent:"ID-100",bio:"",  image:null, role:null },
+    "ID-157":{ id:"ID-157",hId:"#STK1", name:"Star Khan",                urdu:"اسٹار خان",        parent:"ID-156",bio:"",  image:null, role:null },
+    "ID-158":{ id:"ID-158",hId:"#SHH1", name:"Shaheedullah",             urdu:"شہید اللہ",        parent:"ID-157",bio:"",  image:null, role:null },
+    "ID-159":{ id:"ID-159",hId:"#ASI2", name:"Asim",                     urdu:"عاصم",             parent:"ID-157",bio:"",  image:null, role:null },
+    "ID-160":{ id:"ID-160",hId:"#MGL1", name:"Muhammad Gul",             urdu:"محمد گل",          parent:"ID-156",bio:"",  image:null, role:null },
+    "ID-161":{ id:"ID-161",hId:"#FAZ1", name:"Fazeel",                   urdu:"فضیل",             parent:"ID-160",bio:"",  image:null, role:null },
+    "ID-162":{ id:"ID-162",hId:"#JAM1", name:"Jameel",                   urdu:"جمیل",             parent:"ID-160",bio:"",  image:null, role:null },
+    "ID-163":{ id:"ID-163",hId:"#HAS3", name:"Hassan",                   urdu:"حسن",              parent:"ID-162",bio:"",  image:null, role:null }
+};
+
+// Returns display name: Sarparasts get "Malik" prefix
+function displayName(m) {
+    if (!m) return '';
+    if (m.role && m.role !== null) return 'Malik ' + m.name;
+    return m.name;
+}
+
+// ===== NAVIGATION STACK =====
+let navStack = ['dashboard'];
+let activeProfileId = null;
+
+function navigateTo(sectionId) {
+    const current = navStack[navStack.length - 1];
+    if (current !== sectionId) navStack.push(sectionId);
+    _showSection(sectionId);
+    // Update nav active state
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + sectionId);
+    if (navEl) navEl.classList.add('active');
+}
+
+function navigateBack() {
+    if (navStack.length > 1) navStack.pop();
+    const prev = navStack[navStack.length - 1];
+    _showSection(prev);
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + prev);
+    if (navEl) navEl.classList.add('active');
+}
+
+function _showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ===== SIDEBAR =====
+function renderSidebar(filter = '') {
+    const list = document.getElementById('sidebarList');
+    list.innerHTML = '';
+    const query = filter.toLowerCase();
+    const items = Object.values(familyData).filter(m =>
+        !query || m.name.toLowerCase().includes(query) || m.hId.toLowerCase().includes(query)
+    );
+
+    items.forEach(m => {
+        const dName = displayName(m);
+        const isSarparast = m.role && m.role !== null;
+        const div = document.createElement('div');
+        div.className = 'sidebar-item' + (m.id === activeProfileId ? ' active' : '');
+        div.onclick = () => showProfile(m.id);
+        div.innerHTML = `
+            <div class="sidebar-avatar ${isSarparast ? 'sarparast' : ''}">${m.name.charAt(0)}</div>
+            <div class="sidebar-item-info">
+                <p>${dName}</p>
+                <p>${m.hId}</p>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+
+    // Stats
+    const count = Object.keys(familyData).length;
+    document.getElementById('statCount').textContent = count;
+
+    // Generation depth
+    const maxDepth = Math.max(...Object.values(familyData).map(m => getDepth(m.id)));
+    document.getElementById('statGen').textContent = maxDepth;
+
+    // Lineage branches (children of ID-8 Jalat)
+    const branches = Object.values(familyData).filter(m => m.parent === 'ID-8').length;
+    document.getElementById('statLineages').textContent = branches;
+
+    populateParentSelect();
+}
+
+function filterSidebar(val) { renderSidebar(val); }
+
+function getDepth(id, memo = {}) {
+    if (memo[id] !== undefined) return memo[id];
+    const m = familyData[id];
+    if (!m || !m.parent) { memo[id] = 1; return 1; }
+    memo[id] = 1 + getDepth(m.parent, memo);
+    return memo[id];
+}
+
+function populateParentSelect() {
+    const sel = document.getElementById('parentSelect');
+    const val = sel.value;
+    sel.innerHTML = '<option value="">-- No Parent (Root) --</option>';
+    Object.values(familyData).forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.id;
+        opt.textContent = `${displayName(m)} (${m.hId})`;
+        sel.appendChild(opt);
+    });
+    if (val) sel.value = val;
+}
+
+// ===== SARPARAST DASHBOARD =====
+function renderSarparast() {
+    // Mandatory lineage bar
+    const lineageIds = ['ID-1','ID-8','ID-59','ID-60','ID-70','ID-62'];
+    const lineageEl = document.getElementById('mandatoryLineage');
+    lineageEl.innerHTML = '';
+    lineageIds.forEach((id, i) => {
+        const m = familyData[id];
+        if (!m) return;
+        const node = document.createElement('div');
+        node.className = 'lineage-node';
+        node.onclick = () => showProfile(id);
+        node.innerHTML = `<span class="node-id">${m.hId}</span><span class="node-name">${displayName(m)}</span>`;
+        lineageEl.appendChild(node);
+        if (i < lineageIds.length - 1) {
+            const arr = document.createElement('span');
+            arr.className = 'lineage-arrow';
+            arr.innerHTML = '→';
+            lineageEl.appendChild(arr);
+        }
+    });
+
+    // Sarparast cards
+    const grid = document.getElementById('sarparastGrid');
+    grid.innerHTML = '';
+    const roleMeta = {
+        ancestor:   { label: 'Founding Ancestor', order: 0 },
+        founder:    { label: 'Village Founder',    order: 1 },
+        historical: { label: 'Historical Sarparast', order: 2 },
+        current:    { label: 'Current Sarparast',  order: 3 },
+    };
+
+    const sarparasts = Object.values(familyData)
+        .filter(m => m.role)
+        .sort((a, b) => (roleMeta[a.role]?.order || 0) - (roleMeta[b.role]?.order || 0));
+
+    sarparasts.forEach(m => {
+        const meta = roleMeta[m.role] || { label: m.role };
+        const card = document.createElement('div');
+        card.className = 'sarparast-card' + (m.role === 'current' ? ' current' : '');
+        card.onclick = () => showProfile(m.id);
+        card.innerHTML = `
+            <div class="s-role">${meta.label}</div>
+            <div class="s-name">${displayName(m)}</div>
+            <div class="s-id">${m.hId}</div>
+            ${m.role === 'current' ? '<div class="current-badge"><i class="fas fa-circle"></i> Active</div>' : ''}
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// ===== PROFILE =====
+function showProfile(id) {
+    activeProfileId = id;
+    navigateTo('profileView');
+
+    const m = familyData[id];
+    const dName = displayName(m);
+
+    document.getElementById('engName').textContent = dName;
+    document.getElementById('urduName').textContent = m.urdu;
+    document.getElementById('bIdTag').textContent = m.hId;
+    document.getElementById('bio').textContent = m.bio || 'No biography has been provided for this member.';
+
+    const badge = document.getElementById('sarparastBadge');
+    if (m.role) badge.classList.remove('hidden');
+    else badge.classList.add('hidden');
+
+    // Avatar
+    const initial = document.getElementById('profInitial');
+    const imgEl = document.getElementById('profileImgDisplay');
+    if (m.image) {
+        imgEl.src = m.image;
+        imgEl.style.display = 'block';
+        initial.textContent = '';
+    } else {
+        imgEl.style.display = 'none';
+        initial.textContent = m.name.charAt(0);
+    }
+
+    // Ancestor chain
+    const chain = document.getElementById('ancestorsChain');
+    chain.innerHTML = '';
+    const ancestors = getAncestors(id);
+    ancestors.forEach((aid, i) => {
+        const am = familyData[aid];
+        if (!am) return;
+        const chip = document.createElement('span');
+        chip.className = 'ancestor-chip' + (aid === id ? ' current' : '');
+        chip.textContent = displayName(am);
+        if (aid !== id) chip.onclick = () => showProfile(aid);
+        chain.appendChild(chip);
+        if (i < ancestors.length - 1) {
+            const sep = document.createElement('span');
+            sep.className = 'ancestor-sep';
+            sep.textContent = ' › ';
+            chain.appendChild(sep);
+        }
+    });
+
+    // Parent panel
+    const parentInfo = document.getElementById('parentInfo');
+    if (m.parent && familyData[m.parent]) {
+        const pm = familyData[m.parent];
+        parentInfo.innerHTML = `
+            <div class="child-item" onclick="showProfile('${pm.id}')">
+                <div class="child-avatar">${pm.name.charAt(0)}</div>
                 <div>
-                    <h2 class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Main Archive</h2>
-                    <p class="text-2xl lg:text-3xl font-black text-slate-800 tracking-tight">Heritage Dashboard</p>
+                    <p>${displayName(pm)}</p>
+                    <p>${pm.hId}</p>
                 </div>
-                <button onclick="toggleTreeView()" class="w-full lg:w-auto bg-slate-900 text-white px-6 py-3 rounded-xl lg:rounded-2xl font-bold text-xs hover:shadow-xl transition-all">
-                    <i class="fas fa-sitemap mr-2"></i> VISUAL TREE
-                </button>
-            </header>
+            </div>`;
+    } else {
+        parentInfo.innerHTML = `<p style="font-size:10px;color:var(--text3);font-style:italic">Root ancestor — no parent.</p>`;
+    }
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
-                <div class="bg-white p-6 lg:p-8 rounded-3xl lg:rounded-[2.5rem] shadow-sm border border-slate-200">
-                    <p class="text-slate-400 text-[9px] lg:text-[10px] font-black uppercase mb-2">Verified Records</p>
-                    <h3 id="statCount" class="text-4xl lg:text-5xl font-black text-slate-800">0</h3>
-                </div>
-                <div class="md:col-span-2 bg-slate-900 rounded-3xl lg:rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden group min-h-[150px]">
-                    <div class="absolute inset-0 opacity-40 bg-cover bg-center transition-all group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80');"></div>
-                    <div class="relative z-10 flex justify-between items-end h-full">
-                        <div>
-                            <h4 class="text-xl lg:text-2xl font-black">Tughal Khel Village</h4>
-                            <p class="text-slate-300 text-[10px]">Official Territory Overview</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    // Children
+    const childList = document.getElementById('childList');
+    childList.innerHTML = '';
+    const children = Object.values(familyData).filter(c => c.parent === id);
+    if (children.length === 0) {
+        childList.innerHTML = `<p style="font-size:10px;color:var(--text3);font-style:italic">No descendants registered.</p>`;
+    } else {
+        children.forEach(c => {
+            const item = document.createElement('div');
+            item.className = 'child-item';
+            item.onclick = () => showProfile(c.id);
+            item.innerHTML = `
+                <div class="child-avatar">${c.name.charAt(0)}</div>
+                <div>
+                    <p>${displayName(c)}</p>
+                    <p>${c.hId}</p>
+                </div>`;
+            childList.appendChild(item);
+        });
+    }
 
-        <section id="addRecord" class="hidden animate-in slide-in-from-right duration-500">
-            <div class="max-w-3xl mx-auto bg-white rounded-3xl lg:rounded-[3rem] p-6 lg:p-12 shadow-2xl border border-slate-100">
-                <h2 id="formHeader" class="text-2xl lg:text-3xl font-black text-slate-800 mb-8 tracking-tighter">Register New Member</h2>
-                <form id="recordForm" class="grid grid-cols-2 gap-4 lg:gap-6">
-                    <input type="hidden" id="editId">
-                    <div class="col-span-2 md:col-span-1">
-                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">English Name</label>
-                        <input type="text" id="newName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none">
-                    </div>
-                    <div class="col-span-2 md:col-span-1">
-                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block text-right">اردو نام</label>
-                        <input type="text" id="newUrdu" dir="rtl" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-serif text-right outline-none">
-                    </div>
-                    <div class="col-span-2">
-                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">Father / Ancestor</label>
-                        <select id="parentSelect" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none"></select>
-                    </div>
-                    <div class="col-span-2">
-                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">Personal Bio</label>
-                        <textarea id="newBio" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm h-24 outline-none"></textarea>
-                    </div>
-                    <button type="button" onclick="saveMember()" class="col-span-2 bg-blue-600 text-white font-black py-4 rounded-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 uppercase text-[10px] tracking-widest">Verify & Save</button>
-                </form>
-            </div>
-        </section>
+    // Buttons
+    document.getElementById('editBtn').onclick = () => editMember(id);
+    document.getElementById('deleteBtn').onclick = () => deleteMember(id);
 
-        <div id="profileView" class="hidden">
-            <div class="profile-banner">
-                <button onclick="showSection('dashboard')" class="absolute top-4 left-4 lg:top-6 lg:left-8 bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-white text-[10px] font-bold transition-all backdrop-blur-md">
-                    <i class="fas fa-arrow-left mr-2"></i> BACK
-                </button>
-                <div class="absolute top-4 right-4 lg:top-6 lg:right-8 flex space-x-2">
-                    <button id="editBtn" class="bg-white/20 p-2.5 rounded-lg text-white backdrop-blur-md"><i class="fas fa-edit text-xs"></i></button>
-                    <button id="deleteBtn" class="bg-red-500/30 p-2.5 rounded-lg text-red-200 backdrop-blur-md"><i class="fas fa-trash text-xs"></i></button>
-                </div>
-            </div>
-            
-            <div class="profile-card-container">
-                <div class="profile-main-card">
-                    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
-                        <div class="lg:w-2/3">
-                            <div class="relative w-24 h-24 lg:w-32 lg:h-32 mb-6 group shrink-0">
-                                <div class="w-full h-full bg-blue-600 rounded-2xl lg:rounded-[2rem] border-4 border-white shadow-xl flex items-center justify-center text-4xl lg:text-5xl font-black text-white overflow-hidden" id="profInitial"></div>
-                                <img id="profileImgDisplay" class="absolute inset-0 hidden">
-                                <label class="absolute bottom-0 right-0 bg-slate-900 text-white p-2 rounded-lg cursor-pointer hover:bg-blue-600 transition-all shadow-lg">
-                                    <i class="fas fa-camera text-[10px]"></i>
-                                    <input type="file" id="profileImgInput" class="hidden" onchange="uploadProfileImage(this)">
-                                </label>
-                            </div>
-                            
-                            <div class="flex items-center space-x-3 mb-2">
-                                <span id="bIdTag" class="text-blue-600 text-[10px] font-black uppercase tracking-widest">#ID</span>
-                                <span class="text-green-500 text-[8px] font-black uppercase flex items-center"><i class="fas fa-check-circle mr-1"></i> Verified</span>
-                            </div>
+    // Update sidebar selection
+    renderSidebar(document.getElementById('searchInput').value);
+}
 
-                            <h2 id="engName" class="text-3xl lg:text-5xl font-black text-slate-800 tracking-tighter mb-1">Name</h2>
-                            <h3 id="urduName" class="text-2xl lg:text-3xl font-serif text-slate-300 mb-6" dir="rtl">نام</h3>
+function getAncestors(id) {
+    const chain = [];
+    let cur = id;
+    let safety = 0;
+    while (cur && safety++ < 50) {
+        chain.unshift(cur);
+        cur = familyData[cur]?.parent;
+    }
+    return chain;
+}
 
-                            <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center">
-                                <i class="fas fa-book-open mr-2"></i> Biography
-                            </h4>
-                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 italic text-slate-600 text-sm leading-relaxed" id="bio"></div>
-                        </div>
-
-                        <div class="lg:w-1/3">
-                            <div class="bg-slate-50/50 p-6 lg:p-8 rounded-3xl border border-slate-100">
-                                <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center">
-                                    <i class="fas fa-users mr-2"></i> Descendants
-                                </h4>
-                                <div id="childList" class="space-y-2"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="treeView" class="hidden bg-white p-4 lg:p-12 rounded-3xl lg:rounded-[3rem] shadow-inner border border-slate-200 min-h-[500px]">
-            <div class="tree" id="treeContainer"></div>
-        </div>
-    </main>
-
-    <script>
-        // --- DATA SECTION: EXACTLY AS PROVIDED ---
-        let familyData = {
-            "ID-1": { id: "ID-1", name: "Tughal Khan", urdu: "تغل خان", parent: null, bId: "#TK-1", bio: "The Supreme Ancestor of the Tughal Khan lineage.", image: null },
-            "ID-2": { id: "ID-2", name: "Bajal", urdu: "باجل", parent: "ID-1", bId: "#B-1", bio: "", image: null },
-            "ID-3": { id: "ID-3", name: "Malik", urdu: "ملک", parent: "ID-2", bId: "#M-1", bio: "", image: null },
-            "ID-4": { id: "ID-4", name: "Sadr", urdu: "صدر", parent: "ID-3", bId: "#S-1", bio: "", image: null },
-            "ID-5": { id: "ID-5", name: "Polak", urdu: "پولک", parent: "ID-4", bId: "#P-1", bio: "", image: null },
-            "ID-6": { id: "ID-6", name: "Haidar Khan", urdu: "حیدر خان", parent: "ID-5", bId: "#H-1", bio: "", image: null },
-            "ID-7": { id: "ID-7", name: "Adam Khan", urdu: "آدم خان", parent: "ID-6", bId: "#A-1", bio: "", image: null },
-            "ID-8": { id: "ID-8", name: "Jalat", urdu: "جلوت", parent: "ID-7", bId: "#J-1", bio: "Namesake for the village/branch.", image: null },
-            "ID-9": { id: "ID-9", name: "Shah Baram", urdu: "شاہ برم", parent: "ID-8", bId: "#SB-1", bio: "Branch of Mother Khuzana.", image: null },
-            "ID-10": { id: "ID-10", name: "Noorbaz Khan", urdu: "نورباز خان", parent: "ID-8", bId: "#NK-1", bio: "Branch of Mother Khuzana.", image: null },
-            "ID-11": { id: "ID-11", name: "Muhammad Khan", urdu: "محمد خان", parent: "ID-10", bId: "#MK-1", bio: "Son from Wife Sardora.", image: null },
-            "ID-12": { id: "ID-12", name: "Fateh Khan", urdu: "فتح خان", parent: "ID-10", bId: "#FK-1", bio: "Son from Wife Hafiza.", image: null },
-            "ID-13": { id: "ID-13", name: "Ayaz Khan", urdu: "ایاز خان", parent: "ID-12", bId: "#AK-1", bio: "", image: null },
-            "ID-14": { id: "ID-14", name: "Muhammad Nawaz Khan", urdu: "محمد نواز خان", parent: "ID-13", bId: "#MN-1", bio: "", image: null },
-            "ID-15": { id: "ID-15", name: "Gul Muhammad Khan", urdu: "گل محمد خان", parent: "ID-13", bId: "#GM-1", bio: "", image: null },
-            "ID-16": { id: "ID-16", name: "Ast Khan", urdu: "است خان", parent: "ID-10", bId: "#AST-1", bio: "Son from Wife Hafiza.", image: null },
-            "ID-17": { id: "ID-17", name: "Gul Muhammad Khan (Ast Branch)", urdu: "گل محمد خان", parent: "ID-16", bId: "#GM-2", bio: "", image: null },
-            "ID-18": { id: "ID-18", name: "Sahib Khan", urdu: "صاحب خان", parent: "ID-17", bId: "#SK-1", bio: "", image: null },
-            "ID-19": { id: "ID-19", name: "Amjad Khan", urdu: "امجد خان", parent: "ID-18", bId: "#AM-1", bio: "", image: null },
-            "ID-20": { id: "ID-20", name: "Dar Ali Khan", urdu: "در علی خان", parent: "ID-17", bId: "#DA-1", bio: "", image: null },
-            "ID-21": { id: "ID-21", name: "Muhammad Afzal Khan", urdu: "محمد افضل خان", parent: "ID-16", bId: "#MAF-1", bio: "", image: null },
-            "ID-22": { id: "ID-22", name: "Zaman Khan", urdu: "زمان خان", parent: "ID-21", bId: "#ZK-1", bio: "", image: null },
-            "ID-23": { id: "ID-23", name: "Irfanullah", urdu: "عرفان اللہ", parent: "ID-22", bId: "#IR-1", bio: "", image: null },
-            "ID-24": { id: "ID-24", name: "Ijaz Khan", urdu: "اعجاز خان", parent: "ID-22", bId: "#IJ-1", bio: "", image: null },
-            "ID-25": { id: "ID-25", name: "Muhammad Mir", urdu: "محمد میر", parent: "ID-16", bId: "#MM-1", bio: "", image: null },
-            "ID-26": { id: "ID-26", name: "Amir Rehman", urdu: "امیر رحمان", parent: "ID-25", bId: "#AR-1", bio: "", image: null },
-            "ID-27": { id: "ID-27", name: "Mushtaq Khan", urdu: "مشتاق خان", parent: "ID-26", bId: "#MK-2", bio: "", image: null },
-            "ID-28": { id: "ID-28", name: "Muhtiyar Ahmed", urdu: "مختیار احمد", parent: "ID-26", bId: "#MA-1", bio: "", image: null },
-            "ID-29": { id: "ID-29", name: "Israr", urdu: "اسرار", parent: "ID-28", bId: "#IS-1", bio: "", image: null },
-            "ID-30": { id: "ID-30", name: "Iftikhar", urdu: "افتخار", parent: "ID-28", bId: "#IF-1", bio: "", image: null },
-            "ID-31": { id: "ID-31", name: "Nisar", urdu: "نثار", parent: "ID-28", bId: "#NI-1", bio: "", image: null },
-            "ID-32": { id: "ID-32", name: "Iqtidar", urdu: "اقتدار", parent: "ID-28", bId: "#IQ-1", bio: "", image: null },
-            "ID-33": { id: "ID-33", name: "Waqar", urdu: "وقار", parent: "ID-28", bId: "#WA-1", bio: "", image: null },
-            "ID-34": { id: "ID-34", name: "Muhammad Abbas", urdu: "محمد عباس", parent: "ID-26", bId: "#MAB-1", bio: "", image: null },
-            "ID-35": { id: "ID-35", name: "Mashkoor", urdu: "مشکور", parent: "ID-34", bId: "#MS-1", bio: "", image: null },
-            "ID-36": { id: "ID-36", name: "Ishaq", urdu: "اسحاق", parent: "ID-34", bId: "#ISH-1", bio: "", image: null },
-            "ID-37": { id: "ID-37", name: "Ishfaq", urdu: "اشفاق", parent: "ID-34", bId: "#ISF-1", bio: "", image: null },
-            "ID-38": { id: "ID-38", name: "Altaf Khan", urdu: "الطاف خان", parent: "ID-34", bId: "#AL-1", bio: "", image: null },
-            "ID-39": { id: "ID-39", name: "Gul Abbas Khan", urdu: "گل عباس خان", parent: "ID-25", bId: "#GAK-1", bio: "", image: null },
-            "ID-40": { id: "ID-40", name: "Zar Dad Khan", urdu: "زر داد خان", parent: "ID-25", bId: "#ZDK-1", bio: "", image: null },
-            "ID-41": { id: "ID-41", name: "Shaf Ali", urdu: "شاف علی", parent: "ID-40", bId: "#SA-1", bio: "", image: null },
-            "ID-42": { id: "ID-42", name: "Faizan", urdu: "فیضان", parent: "ID-41", bId: "#FAI-1", bio: "", image: null },
-            "ID-43": { id: "ID-43", name: "Umar Ayaz", urdu: "عمر ایاز", parent: "ID-40", bId: "#UA-1", bio: "", image: null },
-            "ID-44": { id: "ID-44", name: "Ehtisham", urdu: "احتشام", parent: "ID-43", bId: "#EH-1", bio: "", image: null },
-            "ID-45": { id: "ID-45", name: "Munawar Khan", urdu: "منور خان", parent: "ID-40", bId: "#MUN-1", bio: "", image: null },
-            "ID-46": { id: "ID-46", name: "Muti-ullah", urdu: "مطیع اللہ", parent: "ID-45", bId: "#MUT-1", bio: "", image: null },
-            "ID-47": { id: "ID-47", name: "Rafi-ullah", urdu: "رفیع اللہ", parent: "ID-45", bId: "#RAF-1", bio: "", image: null },
-            "ID-48": { id: "ID-48", name: "Raziq", urdu: "رازق", parent: "ID-45", bId: "#RAZ-1", bio: "", image: null },
-            "ID-49": { id: "ID-49", name: "Manak", urdu: "مانک", parent: "ID-8", bId: "#MN-1", bio: "Branch of Mother Zaiba.", image: null },
-            "ID-50": { id: "ID-50", name: "Malet", urdu: "مليت", parent: "ID-49", bId: "#ML-1", bio: "", image: null },
-            "ID-51": { id: "ID-51", name: "Mir Sahib Khan", urdu: "میر صاحب خان", parent: "ID-50", bId: "#MSK-1", bio: "", image: null },
-            "ID-52": { id: "ID-52", name: "Abdur Rehman", urdu: "عبدالرحمان", parent: "ID-51", bId: "#ARE-1", bio: "", image: null },
-            "ID-53": { id: "ID-53", name: "Safid Khan", urdu: "سفید خان", parent: "ID-52", bId: "#SAF-1", bio: "Children: Qasim and 1 Unknown.", image: null },
-            "ID-54": { id: "ID-54", name: "Sajid Khan", urdu: "ساجد خان", parent: "ID-52", bId: "#SAJ-1", bio: "", image: null },
-            "ID-55": { id: "ID-55", name: "Wajid Khan", urdu: "واجد خان", parent: "ID-52", bId: "#WAJ-1", bio: "", image: null },
-            "ID-56": { id: "ID-56", name: "Wasid Khan", urdu: "واسد خان", parent: "ID-52", bId: "#WAS-1", bio: "", image: null },
-            "ID-57": { id: "ID-57", name: "Hasib Khan", urdu: "حسیب خان", parent: "ID-52", bId: "#HAS-1", bio: "", image: null },
-            "ID-58": { id: "ID-58", name: "Khayam", urdu: "خیام", parent: "ID-52", bId: "#KHY-1", bio: "", image: null },
-            "ID-59": { id: "ID-59", name: "Sarfaraz Khan", urdu: "سرفراز خان", parent: "ID-49", bId: "#SKH-1", bio: "", image: null },
-            "ID-60": { id: "ID-60", name: "Sher Nawaz", urdu: "شیر نواز", parent: "ID-59", bId: "#SNW-1", bio: "", image: null },
-            "ID-61": { id: "ID-61", name: "Rabnawaz Khan", urdu: "ربنواز خان", parent: "ID-60", bId: "#RNW-1", bio: "", image: null },
-            "ID-62": { id: "ID-62", name: "Akhlaq Ali Khan", urdu: "اخلاق علی خان", parent: "ID-61", bId: "#AAK-1", bio: "", image: null },
-            "ID-63": { id: "ID-63", name: "Waseem", urdu: "وسیم", parent: "ID-62", bId: "#WAS-2", bio: "", image: null },
-            "ID-64": { id: "ID-64", name: "Faheem", urdu: "فہیم", parent: "ID-62", bId: "#FAH-1", bio: "", image: null },
-            "ID-65": { id: "ID-65", name: "Noman", urdu: "نعمان", parent: "ID-62", bId: "#NOM-1", bio: "", image: null },
-            "ID-66": { id: "ID-66", name: "Shaukat Ali Khan", urdu: "شوکت علی خان", parent: "ID-61", bId: "#SAK-1", bio: "", image: null },
-            "ID-67": { id: "ID-67", name: "Abdul Ahad", urdu: "عبدالاحاد", parent: "ID-66", bId: "#AAH-1", bio: "", image: null },
-            "ID-68": { id: "ID-68", name: "Anas", urdu: "انس", parent: "ID-66", bId: "#ANA-1", bio: "", image: null },
-            "ID-69": { id: "ID-69", name: "Hasnain", urdu: "حسنین", parent: "ID-66", bId: "#HAS-2", bio: "", image: null },
-            "ID-70": { id: "ID-70", name: "Balqiaz Khan", urdu: "بلقیاز خان", parent: "ID-59", bId: "#BQK-1", bio: "", image: null },
-            "ID-71": { id: "ID-71", name: "Muhammad Ashraf", urdu: "محمد اشرف", parent: "ID-70", bId: "#MASH-1", bio: "", image: null },
-            "ID-72": { id: "ID-72", name: "Zohaib Khan", urdu: "زہیب خان", parent: "ID-71", bId: "#ZOH-1", bio: "", image: null },
-            "ID-73": { id: "ID-73", name: "Zorain", urdu: "زورین", parent: "ID-72", bId: "#ZOR-1", bio: "", image: null },
-            "ID-74": { id: "ID-74", name: "Saqib Khan", urdu: "ثاقب خان", parent: "ID-71", bId: "#SAQ-1", bio: "", image: null },
-            "ID-75": { id: "ID-75", name: "Muhammad", urdu: "محمد", parent: "ID-71", bId: "#MUH-1", bio: "", image: null },
-            "ID-76": { id: "ID-76", name: "Asghar Khan", urdu: "اصغر خان", parent: "ID-70", bId: "#ASG-1", bio: "", image: null },
-            "ID-77": { id: "ID-77", name: "Afaq Khan", urdu: "آفاق خان", parent: "ID-76", bId: "#AFQ-1", bio: "", image: null },
-            "ID-78": { id: "ID-78", name: "Fahad Khan", urdu: "فہد خان", parent: "ID-76", bId: "#FAH-2", bio: "", image: null },
-            "ID-79": { id: "ID-79", name: "Awais Khan", urdu: "اویس خان", parent: "ID-76", bId: "#AWA-1", bio: "", image: null },
-            "ID-80": { id: "ID-80", name: "Janbaz Khan", urdu: "جانباز خان", parent: "ID-70", bId: "#JAN-1", bio: "", image: null },
-            "ID-81": { id: "ID-81", name: "Sultan Ayaz", urdu: "سلطان ایاز", parent: "ID-70", bId: "#SAY-1", bio: "", image: null },
-            "ID-82": { id: "ID-82", name: "Danyal Khan", urdu: "دانیال خان", parent: "ID-81", bId: "#DAN-1", bio: "", image: null },
-            "ID-83": { id: "ID-83", name: "Zohan Khan", urdu: "زوہان خان", parent: "ID-81", bId: "#ZOH-2", bio: "", image: null },
-            "ID-84": { id: "ID-84", name: "Dost Muhammad", urdu: "دوست محمد", parent: "ID-70", bId: "#DOM-1", bio: "", image: null },
-            "ID-85": { id: "ID-85", name: "Abu Huraira", urdu: "ابو ہریرہ", parent: "ID-84", bId: "#ABU-1", bio: "", image: null },
-            "ID-86": { id: "ID-86", name: "Muhammad Jan", urdu: "محمد جان", parent: "ID-49", bId: "#MJ-1", bio: "Details Pending", image: null },
-            "ID-87": { id: "ID-87", name: "Shah Qulzam", urdu: "شاہ قلزم", parent: "ID-8", bId: "#SQ-1", bio: "", image: null },
-            "ID-88": { id: "ID-88", name: "Badshah Khan", urdu: "بادشاہ خان", parent: "ID-87", bId: "#BK-1", bio: "", image: null },
-            "ID-89": { id: "ID-89", name: "Dilawar Khan", urdu: "دلاور خان", parent: "ID-88", bId: "#DK-1", bio: "", image: null },
-            "ID-90": { id: "ID-90", name: "Amin Khan", urdu: "امین خان", parent: "ID-89", bId: "#AMK-1", bio: "", image: null },
-            "ID-91": { id: "ID-91", name: "Ahmed", urdu: "احمد", parent: "ID-90", bId: "#AHM-1", bio: "", image: null },
-            "ID-92": { id: "ID-92", name: "Baitullah", urdu: "بیت اللہ", parent: "ID-90", bId: "#BAI-2", bio: "", image: null },
-            "ID-93": { id: "ID-93", name: "Umar Ali Khan", urdu: "عمر علی خان", parent: "ID-89", bId: "#UAK-1", bio: "", image: null },
-            "ID-94": { id: "ID-94", name: "Asal Marjan", urdu: "اصل مرجان", parent: "ID-89", bId: "#ASM-1", bio: "", image: null },
-            "ID-95": { id: "ID-95", name: "Zahid Khan", urdu: "زاہد خان", parent: "ID-94", bId: "#ZK-2", bio: "", image: null },
-            "ID-96": { id: "ID-96", name: "Farhadullah", urdu: "فرہاد اللہ", parent: "ID-94", bId: "#FAR-1", bio: "", image: null },
-            "ID-97": { id: "ID-97", name: "Waridullah", urdu: "وارث اللہ", parent: "ID-94", bId: "#WAR-1", bio: "", image: null },
-            "ID-98": { id: "ID-98", name: "Rehmanullah", urdu: "رحمان اللہ", parent: "ID-94", bId: "#REH-1", bio: "", image: null },
-            "ID-99": { id: "ID-99", name: "Rahid Khan", urdu: "راہد خان", parent: "ID-94", bId: "#RAH-1", bio: "", image: null },
-            "ID-100": { id: "ID-100", name: "Ghajan", urdu: "غجان", parent: "ID-8", bId: "#GHJ-1", bio: "", image: null },
-            "ID-101": { id: "ID-101", name: "Azamrai", urdu: "آزمرائی", parent: "ID-100", bId: "#AZM-1", bio: "", image: null },
-            "ID-102": { id: "ID-102", name: "Gul Khoban", urdu: "گل خوبان", parent: "ID-101", bId: "#GK-1", bio: "", image: null },
-            "ID-103": { id: "ID-103", name: "Kamran Nawaz", urdu: "کامران نواز", parent: "ID-102", bId: "#KN-1", bio: "", image: null },
-            "ID-104": { id: "ID-104", name: "Ma'moon", urdu: "مامون", parent: "ID-103", bId: "#MAM-1", bio: "", image: null },
-            "ID-105": { id: "ID-105", name: "Ahmed Nawaz", urdu: "احمد نواز", parent: "ID-103", bId: "#AN-1", bio: "", image: null },
-            "ID-106": { id: "ID-106", name: "Muhammad Nawaz", urdu: "محمد نواز", parent: "ID-103", bId: "#MUN-2", bio: "", image: null },
-            "ID-107": { id: "ID-107", name: "Ghaffar", urdu: "غفار", parent: "ID-101", bId: "#GHA-1", bio: "", image: null },
-            "ID-108": { id: "ID-108", name: "Sabir Nawaz", urdu: "صابر نواز", parent: "ID-107", bId: "#SN-1", bio: "", image: null },
-            "ID-109": { id: "ID-109", name: "Syed Nawaz", urdu: "سید نواز", parent: "ID-107", bId: "#SYN-1", bio: "", image: null },
-            "ID-110": { id: "ID-110", name: "Umar Nawaz", urdu: "عمر نواز", parent: "ID-107", bId: "#UN-1", bio: "", image: null },
-            "ID-111": { id: "ID-111", name: "Yasir Nawaz", urdu: "یاسر نواز", parent: "ID-110", bId: "#YN-1", bio: "", image: null },
-            "ID-112": { id: "ID-112", name: "Zar Gul", urdu: "زر گل", parent: "ID-101", bId: "#ZG-1", bio: "", image: null },
-            "ID-113": { id: "ID-113", name: "After Ali", urdu: "افٹر علی", parent: "ID-112", bId: "#AA-1", bio: "", image: null },
-            "ID-114": { id: "ID-114", name: "Zewaran", urdu: "زیورن", parent: "ID-113", bId: "#ZEW-1", bio: "", image: null },
-            "ID-115": { id: "ID-115", name: "Umar Ali", urdu: "عمر علی", parent: "ID-112", bId: "#UAL-1", bio: "", image: null },
-            "ID-116": { id: "ID-116", name: "Faizan (Umar Ali Branch)", urdu: "فیضان", parent: "ID-115", bId: "#FAI-2", bio: "", image: null },
-            "ID-117": { id: "ID-117", name: "Imran", urdu: "عمران", parent: "ID-115", bId: "#IMR-1", bio: "", image: null },
-            "ID-118": { id: "ID-118", name: "Suleman", urdu: "سلیمان", parent: "ID-115", bId: "#SUL-1", bio: "", image: null },
-            "ID-119": { id: "ID-119", name: "Gul Qamar Zaman", urdu: "گل قمر زمان", parent: "ID-100", bId: "#GQZ-1", bio: "", image: null },
-            "ID-120": { id: "ID-120", name: "Amanullah", urdu: "امان اللہ", parent: "ID-119", bId: "#AMA-2", bio: "", image: null },
-            "ID-121": { id: "ID-121", name: "Najeebullah", urdu: "نجیب اللہ", parent: "ID-120", bId: "#NAJ-1", bio: "", image: null },
-            "ID-122": { id: "ID-122", name: "Zaidullah", urdu: "زید اللہ", parent: "ID-121", bId: "#ZAI-1", bio: "", image: null },
-            "ID-123": { id: "ID-123", name: "Atif", urdu: "عاطف", parent: "ID-121", bId: "#ATI-1", bio: "", image: null },
-            "ID-124": { id: "ID-124", name: "Aqif", urdu: "عاقف", parent: "ID-121", bId: "#AQI-1", bio: "", image: null },
-            "ID-125": { id: "ID-125", name: "Musaib", urdu: "مصیب", parent: "ID-121", bId: "#MUS-1", bio: "", image: null },
-            "ID-126": { id: "ID-126", name: "Abu Bakar", urdu: "ابو بکر", parent: "ID-121", bId: "#ABU-2", bio: "", image: null },
-            "ID-127": { id: "ID-127", name: "Ataullah", urdu: "عطاء اللہ", parent: "ID-119", bId: "#ATA-1", bio: "", image: null },
-            "ID-128": { id: "ID-128", name: "Zikran Khan", urdu: "ذکران خان", parent: "ID-127", bId: "#ZIK-1", bio: "", image: null },
-            "ID-129": { id: "ID-129", name: "Mir Liaqat Ali Khan", urdu: "میر لیاقت علی خان", parent: "ID-119", bId: "#MLK-1", bio: "", image: null },
-            "ID-130": { id: "ID-130", name: "Samiullah", urdu: "سمیع اللہ", parent: "ID-129", bId: "#SAM-1", bio: "", image: null },
-            "ID-131": { id: "ID-131", name: "Tayyab", urdu: "طیب", parent: "ID-129", bId: "#TAY-1", bio: "", image: null },
-            "ID-132": { id: "ID-132", name: "Tahir", urdu: "طاہر", parent: "ID-129", bId: "#TAH-1", bio: "", image: null },
-            "ID-133": { id: "ID-133", name: "Shoaib", urdu: "شعیب", parent: "ID-129", bId: "#SHO-1", bio: "", image: null },
-            "ID-134": { id: "ID-134", name: "Bakht Ali Khan", urdu: "بخت علی خان", parent: "ID-119", bId: "#BAK-1", bio: "", image: null },
-            "ID-135": { id: "ID-135", name: "Qayyumullah Khan", urdu: "قیوم اللہ خان", parent: "ID-119", bId: "#QUK-1", bio: "", image: null },
-            "ID-136": { id: "ID-136", name: "Kaleemullah", urdu: "کلیم اللہ", parent: "ID-135", bId: "#KAL-1", bio: "", image: null },
-            "ID-137": { id: "ID-137", name: "Hikmatullah", urdu: "حکمت اللہ", parent: "ID-135", bId: "#HIK-1", bio: "", image: null },
-            "ID-138": { id: "ID-138", name: "Hidayatullah", urdu: "ہدایت اللہ", parent: "ID-135", bId: "#HID-1", bio: "", image: null },
-            "ID-139": { id: "ID-139", name: "Shahzad", urdu: "شہزاد", parent: "ID-100", bId: "#SHZ-1", bio: "", image: null },
-            "ID-140": { id: "ID-140", name: "Noor Nawaz Khan", urdu: "نور نواز خان", parent: "ID-139", bId: "#NNK-1", bio: "", image: null },
-            "ID-141": { id: "ID-141", name: "Asim", urdu: "عاصم", parent: "ID-140", bId: "#ASI-1", bio: "", image: null },
-            "ID-142": { id: "ID-142", name: "Farhad", urdu: "فرہاد", parent: "ID-140", bId: "#FAR-2", bio: "", image: null },
-            "ID-143": { id: "ID-143", name: "Qasim", urdu: "قاسم", parent: "ID-140", bId: "#QAS-1", bio: "", image: null },
-            "ID-144": { id: "ID-144", name: "Fawad", urdu: "فواد", parent: "ID-140", bId: "#FAW-1", bio: "", image: null },
-            "ID-145": { id: "ID-145", name: "Hamidullah Khan", urdu: "حمید اللہ خان", parent: "ID-139", bId: "#HUK-1", bio: "", image: null },
-            "ID-146": { id: "ID-146", name: "Arsalan", urdu: "ارسلان", parent: "ID-145", bId: "#ARS-1", bio: "", image: null },
-            "ID-147": { id: "ID-147", name: "Sadiq Khan", urdu: "صادق خان", parent: "ID-145", bId: "#SK-2", bio: "", image: null },
-            "ID-148": { id: "ID-148", name: "Umar Khattab", urdu: "عمر خطاب", parent: "ID-145", bId: "#UKH-1", bio: "", image: null },
-            "ID-149": { id: "ID-149", name: "Farooq", urdu: "فاروق", parent: "ID-148", bId: "#FAR-3", bio: "", image: null },
-            "ID-150": { id: "ID-150", name: "Furqan", urdu: "فرقان", parent: "ID-148", bId: "#FUR-1", bio: "", image: null },
-            "ID-151": { id: "ID-151", name: "Pyao Khan", urdu: "پیاو خان", parent: "ID-139", bId: "#PYK-1", bio: "", image: null },
-            "ID-152": { id: "ID-152", name: "Muhammad Reza", urdu: "محمد رضا", parent: "ID-151", bId: "#MRE-1", bio: "", image: null },
-            "ID-153": { id: "ID-153", name: "Bakht Reza", urdu: "بخت رضا", parent: "ID-151", bId: "#BRE-1", bio: "", image: null },
-            "ID-154": { id: "ID-154", name: "Qismat Reza", urdu: "قسمت رضا", parent: "ID-151", bId: "#QRE-1", bio: "", image: null },
-            "ID-155": { id: "ID-155", name: "Murtaza", urdu: "مرتضیٰ", parent: "ID-151", bId: "#MUR-1", bio: "", image: null },
-            "ID-156": { id: "ID-156", name: "Rasool Khan", urdu: "رسول خان", parent: "ID-100", bId: "#RSK-1", bio: "", image: null },
-            "ID-157": { id: "ID-157", name: "Star Khan", urdu: "اسٹار خان", parent: "ID-156", bId: "#STK-1", bio: "", image: null },
-            "ID-158": { id: "ID-158", name: "Shaheedullah", urdu: "شہید اللہ", parent: "ID-157", bId: "#SHH-1", bio: "", image: null },
-            "ID-159": { id: "ID-159", name: "Asim (Star Branch)", urdu: "عاصم", parent: "ID-157", bId: "#ASI-2", bio: "", image: null },
-            "ID-160": { id: "ID-160", name: "Muhammad Gul", urdu: "محمد گل", parent: "ID-156", bId: "#MGL-1", bio: "", image: null },
-            "ID-161": { id: "ID-161", name: "Fazeel", urdu: "فضیل", parent: "ID-160", bId: "#FAZ-1", bio: "", image: null },
-            "ID-162": { id: "ID-162", name: "Jameel", urdu: "جمیل", parent: "ID-160", bId: "#JAM-1", bio: "", image: null },
-            "ID-163": { id: "ID-163", name: "Hassan", urdu: "حسن", parent: "ID-162", bId: "#HAS-3", bio: "", image: null }
+function uploadProfileImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            familyData[activeProfileId].image = e.target.result;
+            showProfile(activeProfileId);
         };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
-        let activeProfileId = null;
+// ===== ADD / EDIT =====
+function resetForm() {
+    document.getElementById('editId').value = '';
+    document.getElementById('newName').value = '';
+    document.getElementById('newUrdu').value = '';
+    document.getElementById('parentSelect').value = '';
+    document.getElementById('sarparastRole').value = '';
+    document.getElementById('newBio').value = '';
+    document.getElementById('formTitle').textContent = 'Register New Member';
+}
 
-        function showSection(sectionId) {
-            ['dashboard', 'addRecord', 'profileView', 'treeView'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
-            window.scrollTo(0,0);
-        }
+function editMember(id) {
+    const m = familyData[id];
+    document.getElementById('editId').value = m.id;
+    document.getElementById('newName').value = m.name;
+    document.getElementById('newUrdu').value = m.urdu;
+    document.getElementById('parentSelect').value = m.parent || '';
+    document.getElementById('sarparastRole').value = m.role || '';
+    document.getElementById('newBio').value = m.bio || '';
+    document.getElementById('formTitle').textContent = 'Edit Member Record';
+    navigateTo('addRecord');
+}
 
-        function showProfile(id) {
-            activeProfileId = id;
-            showSection('profileView');
-            const m = familyData[id];
-            document.getElementById('engName').innerText = m.name;
-            document.getElementById('urduName').innerText = m.urdu;
-            document.getElementById('bIdTag').innerText = m.bId;
-            document.getElementById('bio').innerText = m.bio || "No biography provided.";
-            
-            const initialBox = document.getElementById('profInitial');
-            const imgBox = document.getElementById('profileImgDisplay');
-            
-            if(m.image) {
-                imgBox.src = m.image;
-                imgBox.classList.remove('hidden');
-                initialBox.innerText = "";
-            } else {
-                imgBox.classList.add('hidden');
-                initialBox.innerText = m.name.charAt(0);
-            }
-
-            document.getElementById('editBtn').onclick = () => editMember(id);
-            document.getElementById('deleteBtn').onclick = () => deleteMember(id);
-            
-            const cList = document.getElementById('childList');
-            cList.innerHTML = "";
-            const children = Object.values(familyData).filter(c => c.parent === id);
-            
-            if(children.length === 0) {
-                cList.innerHTML = "<p class='text-[10px] text-slate-400 italic'>No descendants registered.</p>";
-            } else {
-                children.forEach(c => {
-                    const d = document.createElement('div');
-                    d.className = "p-4 bg-white rounded-xl border border-slate-100 flex justify-between items-center group cursor-pointer hover:shadow-md transition-all";
-                    d.onclick = () => showProfile(c.id);
-                    d.innerHTML = `
-                        <div>
-                            <p class="text-xs font-black text-slate-800">${c.name}</p>
-                            <p class="text-[8px] text-blue-500 font-bold uppercase">View Profile</p>
-                        </div>
-                        <i class="fas fa-chevron-right text-slate-300 group-hover:text-blue-500 transition-colors"></i>
-                    `;
-                    cList.appendChild(d);
-                });
-            }
-        }
-
-        function uploadProfileImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    familyData[activeProfileId].image = e.target.result;
-                    showProfile(activeProfileId);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function saveMember() {
-            const id = document.getElementById('editId').value || `ID-${Date.now()}`;
-            const existingImage = familyData[id] ? familyData[id].image : null;
-            
-            familyData[id] = {
-                id: id,
-                name: document.getElementById('newName').value,
-                urdu: document.getElementById('newUrdu').value,
-                parent: document.getElementById('parentSelect').value || null,
-                bio: document.getElementById('newBio').value,
-                bId: `#${id.split('-')[1] || id}`,
-                image: existingImage
-            };
-            
-            renderSidebar();
-            showProfile(id);
-        }
-
-        function editMember(id) {
-            const m = familyData[id];
-            document.getElementById('editId').value = m.id;
-            document.getElementById('newName').value = m.name;
-            document.getElementById('newUrdu').value = m.urdu;
-            document.getElementById('parentSelect').value = m.parent;
-            document.getElementById('newBio').value = m.bio;
-            document.getElementById('formHeader').innerText = "Edit Member Record";
-            showSection('addRecord');
-        }
-
-        function deleteMember(id) {
-            if(confirm("Are you sure you want to delete this record?")) {
-                delete familyData[id];
-                renderSidebar();
-                showSection('dashboard');
-            }
-        }
-
-        function resetForm() {
-            document.getElementById('recordForm').reset();
-            document.getElementById('editId').value = "";
-            document.getElementById('formHeader').innerText = "Register New Member";
-        }
-
-        function renderSidebar() {
-            const list = document.getElementById('sidebarList');
-            list.innerHTML = "";
-            Object.values(familyData).forEach(m => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left p-3 lg:p-4 rounded-xl hover:bg-slate-800 transition-all group flex items-center space-x-4 mb-1 text-slate-400 shrink-0 lg:shrink";
-                btn.onclick = () => showProfile(m.id);
-                btn.innerHTML = `
-                    <div class="w-8 h-8 lg:w-10 lg:h-10 bg-slate-800 rounded-lg lg:rounded-xl flex items-center justify-center text-[10px] lg:text-xs font-black group-hover:bg-blue-600 group-hover:text-white transition-all shrink-0">${m.name.charAt(0)}</div>
-                    <div>
-                        <p class="text-[10px] lg:text-[11px] font-bold group-hover:text-white">${m.name}</p>
-                        <p class="text-[7px] lg:text-[8px] uppercase font-black opacity-40 tracking-tighter">${m.bId}</p>
-                    </div>
-                `;
-                list.appendChild(btn);
-            });
-            document.getElementById('statCount').innerText = Object.keys(familyData).length;
-            populateParentSelect();
-        }
-
-        function populateParentSelect() {
-            const select = document.getElementById('parentSelect');
-            select.innerHTML = '<option value="">-- Choose Father --</option>';
-            Object.values(familyData).forEach(m => {
-                select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
-            });
-        }
-
-        function toggleTreeView() {
-            showSection('treeView');
-            document.getElementById('treeContainer').innerHTML = `<ul>${buildTree("ID-1")}</ul>`;
-        }
-
-        function buildTree(id) {
-            const m = familyData[id];
-            if(!m) return "";
-            const kids = Object.values(familyData).filter(c => c.parent === id);
-            let html = `<li><a href="javascript:void(0)" onclick="showProfile('${m.id}')">${m.name}</a>`;
-            if(kids.length > 0) {
-                html += "<ul>" + kids.map(k => buildTree(k.id)).join('') + "</ul>";
-            }
-            return html + "</li>";
-        }
-
+function deleteMember(id) {
+    if (confirm(`Delete record for ${displayName(familyData[id])}?`)) {
+        delete familyData[id];
         renderSidebar();
-    </script>
+        renderSarparast();
+        navigateBack();
+    }
+}
+
+function saveMember() {
+    const editId = document.getElementById('editId').value;
+    const newId = editId || `ID-${Date.now()}`;
+    const existingImage = familyData[newId]?.image || null;
+    const name = document.getElementById('newName').value.trim();
+    if (!name) { alert('Name is required.'); return; }
+
+    // Generate hierarchical ID for new member
+    let hId = familyData[newId]?.hId;
+    if (!hId) {
+        const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 3);
+        const count = Object.values(familyData).filter(m => m.hId.startsWith('#' + initials)).length + 1;
+        hId = `#${initials}${count}`;
+    }
+
+    familyData[newId] = {
+        id:     newId,
+        hId:    hId,
+        name:   name,
+        urdu:   document.getElementById('newUrdu').value,
+        parent: document.getElementById('parentSelect').value || null,
+        role:   document.getElementById('sarparastRole').value || null,
+        bio:    document.getElementById('newBio').value,
+        image:  existingImage
+    };
+
+    renderSidebar();
+    renderSarparast();
+    showProfile(newId);
+}
+
+// ===== TREE VIEW =====
+let treeScale = 1;
+let treePanX = 40, treePanY = 40;
+let isDragging = false, dragStartX, dragStartY, panStartX, panStartY;
+
+function renderTree() {
+    const canvas = document.getElementById('treeCanvas');
+    canvas.innerHTML = buildTreeHTML('ID-1');
+    canvas.style.transform = `translate(${treePanX}px, ${treePanY}px) scale(${treeScale})`;
+    setupTreeDrag();
+}
+
+function buildTreeHTML(id) {
+    const m = familyData[id];
+    if (!m) return '';
+    const children = Object.values(familyData).filter(c => c.parent === id);
+    const isSarparast = m.role && m.role !== null;
+
+    let childrenHTML = '';
+    if (children.length > 0) {
+        childrenHTML = `<div class="tree-children" style="display:flex;gap:20px;padding-top:32px;position:relative;justify-content:center;">
+            ${children.map(c => `<div class="tree-li" style="display:flex;flex-direction:column;align-items:center;position:relative;padding-top:16px;">
+                <div style="position:absolute;top:0;left:50%;width:1px;height:16px;background:rgba(255,255,255,0.1)"></div>
+                ${buildTreeHTML(c.id)}
+            </div>`).join('')}
+        </div>`;
+
+        // Add horizontal connector if multiple children
+        if (children.length > 1) {
+            childrenHTML = `<div style="position:relative">${childrenHTML}</div>`;
+        }
+    }
+
+    return `
+        <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="tree-node ${isSarparast ? 'sarparast-node' : ''}"
+                 data-id="${id}"
+                 onclick="showProfile('${id}')"
+                 onmouseenter="highlightLineage('${id}')"
+                 onmouseleave="clearHighlight()">
+                <span class="n-id">${m.hId}</span>
+                <span class="n-name">${displayName(m)}</span>
+                <span class="n-urdu">${m.urdu}</span>
+            </div>
+            ${childrenHTML}
+        </div>`;
+}
+
+function highlightLineage(id) {
+    const ancestors = new Set(getAncestors(id));
+    const descendants = new Set(getAllDescendants(id));
+    const relevant = new Set([...ancestors, ...descendants]);
+
+    document.querySelectorAll('.tree-node').forEach(node => {
+        const nid = node.dataset.id;
+        if (relevant.has(nid)) {
+            node.classList.add('highlight');
+            node.classList.remove('dim');
+        } else {
+            node.classList.remove('highlight');
+            node.classList.add('dim');
+        }
+    });
+}
+
+function clearHighlight() {
+    document.querySelectorAll('.tree-node').forEach(n => {
+        n.classList.remove('highlight', 'dim');
+    });
+}
+
+function getAllDescendants(id) {
+    const result = new Set([id]);
+    const children = Object.values(familyData).filter(m => m.parent === id);
+    children.forEach(c => {
+        getAllDescendants(c.id).forEach(d => result.add(d));
+    });
+    return result;
+}
+
+function zoomTree(factor) {
+    treeScale = Math.min(2, Math.max(0.2, treeScale * factor));
+    document.getElementById('treeCanvas').style.transform =
+        `translate(${treePanX}px, ${treePanY}px) scale(${treeScale})`;
+}
+
+function resetTreeView() {
+    treeScale = 0.5;
+    treePanX = 40; treePanY = 40;
+    document.getElementById('treeCanvas').style.transform =
+        `translate(${treePanX}px, ${treePanY}px) scale(${treeScale})`;
+}
+
+function setupTreeDrag() {
+    const wrapper = document.getElementById('treeWrapper');
+
+    wrapper.onmousedown = e => {
+        isDragging = true;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        panStartX = treePanX;
+        panStartY = treePanY;
+        e.preventDefault();
+    };
+
+    wrapper.onmousemove = e => {
+        if (!isDragging) return;
+        treePanX = panStartX + (e.clientX - dragStartX);
+        treePanY = panStartY + (e.clientY - dragStartY);
+        document.getElementById('treeCanvas').style.transform =
+            `translate(${treePanX}px, ${treePanY}px) scale(${treeScale})`;
+    };
+
+    wrapper.onmouseup = wrapper.onmouseleave = () => { isDragging = false; };
+
+    // Touch
+    wrapper.ontouchstart = e => {
+        isDragging = true;
+        dragStartX = e.touches[0].clientX;
+        dragStartY = e.touches[0].clientY;
+        panStartX = treePanX; panStartY = treePanY;
+    };
+    wrapper.ontouchmove = e => {
+        if (!isDragging) return;
+        treePanX = panStartX + (e.touches[0].clientX - dragStartX);
+        treePanY = panStartY + (e.touches[0].clientY - dragStartY);
+        document.getElementById('treeCanvas').style.transform =
+            `translate(${treePanX}px, ${treePanY}px) scale(${treeScale})`;
+        e.preventDefault();
+    };
+    wrapper.ontouchend = () => { isDragging = false; };
+
+    // Scroll wheel zoom
+    wrapper.onwheel = e => {
+        e.preventDefault();
+        zoomTree(e.deltaY < 0 ? 1.1 : 0.9);
+    };
+}
+
+// ===== INIT =====
+renderSidebar();
+renderSarparast();
+
+// Set initial tree scale for large dataset
+treeScale = 0.3;
+</script>
 </body>
 </html>
