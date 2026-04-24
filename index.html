@@ -3,209 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tughal Khel Heritage Vault</title>
+    <title>Tughal Khel Heritage Vault - Official v2.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; margin: 0; }
-        .sidebar { background-color: #1a202c; height: 100vh; position: fixed; width: 300px; overflow-y: auto; color: white; z-index: 50; }
-        .main-content { margin-left: 300px; padding: 2rem; min-height: 100vh; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; overflow-x: hidden; }
+        
+        /* Dynamic Sidebar for Desktop & Mobile */
+        .sidebar { 
+            background-color: #1e293b; 
+            color: white; 
+            z-index: 50; 
+            overflow-y: auto; 
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar { height: 100vh; position: fixed; width: 320px; }
+            .main-content { margin-left: 320px; padding: 2rem; }
+        }
+
+        @media (max-width: 1023px) {
+            .sidebar { position: relative; width: 100%; height: auto; border-bottom: 1px solid #334155; }
+            .main-content { margin-left: 0; padding: 1rem; }
+            #sidebarList { display: flex; overflow-x: auto; padding: 1rem; white-space: nowrap; gap: 10px; }
+            #sidebarList > button { width: auto; min-width: 160px; margin-bottom: 0; }
+        }
+
         .hidden { display: none !important; }
-        /* Tree Layout */
+        
+        .profile-banner { background-color: #1a1f2c; height: 180px; position: relative; border-radius: 1.5rem 1.5rem 0 0; }
+        @media (min-width: 768px) { .profile-banner { height: 240px; border-radius: 2rem 2rem 0 0; } }
+
+        .profile-card-container { margin-top: -60px; position: relative; z-index: 10; padding: 0 1rem; }
+        @media (min-width: 768px) { .profile-card-container { margin-top: -80px; padding: 0 3rem; } }
+
+        .profile-main-card { background: white; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05); }
+        @media (min-width: 768px) { .profile-main-card { border-radius: 2.5rem; padding: 3rem; } }
+
+        /* Tree View Responsive Scroll */
+        #treeView { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         .tree ul { padding-top: 20px; display: flex; justify-content: center; }
-        .tree li { text-align: center; list-style-type: none; position: relative; padding: 20px 5px; }
-        .tree li a { border: 1px solid #ccc; padding: 8px 12px; border-radius: 5px; background: white; color: black; display: inline-block; font-size: 12px; font-weight: bold; }
+        .tree li { text-align: center; list-style-type: none; position: relative; padding: 20px 5px 0 5px; transition: all 0.3s; }
+        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #cbd5e1; width: 50%; height: 20px; }
+        .tree li::after { right: auto; left: 50%; border-left: 2px solid #cbd5e1; }
+        .tree li:only-child::after, .tree li:only-child::before { display: none; }
+        .tree li a { border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 10px; background: white; color: #1e293b; display: inline-block; font-size: 10px; font-weight: 800; white-space: nowrap; }
+        
+        #profileImgDisplay { object-fit: cover; border-radius: 1.5rem; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar flex flex-col">
-        <div class="p-6 border-b border-gray-700">
-            <h1 class="text-xl font-bold tracking-tight">TUGHAL <span class="text-blue-400">KHEL</span></h1>
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Digital Heritage Archive</p>
+    <aside class="sidebar flex flex-col shadow-2xl border-r border-slate-800">
+        <div class="p-6 lg:p-8 border-b border-slate-800">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shrink-0">
+                    <i class="fas fa-shield-halved text-white"></i>
+                </div>
+                <h1 class="text-lg lg:text-xl font-black tracking-tighter text-white">TUGHAL KHEL</h1>
+            </div>
+            <p class="text-[8px] lg:text-[9px] text-slate-500 uppercase tracking-widest font-bold">Verified Heritage Archive</p>
         </div>
+
+        <nav class="p-2 lg:p-4 flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-2 overflow-x-auto lg:overflow-x-visible">
+            <button onclick="showSection('dashboard')" class="shrink-0 lg:w-full flex items-center space-x-3 p-3 lg:p-4 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition-all">
+                <i class="fas fa-chart-line text-sm"></i>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Dashboard</span>
+            </button>
+            <button onclick="resetForm(); showSection('addRecord')" class="shrink-0 lg:w-full flex items-center space-x-3 p-3 lg:p-4 rounded-xl bg-blue-600/10 text-blue-400 hover:bg-blue-600 hover:text-white transition-all">
+                <i class="fas fa-plus-circle text-sm"></i>
+                <span class="text-[10px] font-bold uppercase tracking-wider">Add New</span>
+            </button>
+        </nav>
         
-        <div class="p-4">
-            <input type="text" id="searchInput" placeholder="Search lineage..." class="w-full bg-gray-800 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+        <div class="hidden lg:block p-5 border-t border-slate-800 mt-4">
+            <label class="text-[9px] font-black text-slate-500 uppercase mb-3 block">Quick Filter</label>
+            <select id="villageFilter" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-xs text-white outline-none">
+                <option value="all">All Villages</option>
+            </select>
         </div>
-
-        <div id="sidebarList" class="flex-1 px-2 space-y-1 overflow-y-auto">
-            </div>
-
-        <div class="p-4 border-t border-gray-700">
-            <div id="adminPanel">
-                <button onclick="showLoginModal()" id="loginStateBtn" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg text-xs font-bold transition">
-                    <i class="fas fa-user-shield mr-2"></i> ADMIN LOGIN
-                </button>
-            </div>
-        </div>
+        <div id="sidebarList" class="flex-1 px-4 pb-6 lg:pb-10 space-y-1 lg:space-y-2 overflow-y-auto"></div>
     </aside>
 
     <main class="main-content">
-        <header class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm mb-6 border border-gray-100">
-            <div class="flex items-center space-x-3">
-                <button onclick="goBack()" class="text-gray-400 hover:text-blue-600 transition"><i class="fas fa-arrow-left text-xl"></i></button>
-                <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">Archive / <span id="bc-name" class="text-blue-600">Home</span></div>
-            </div>
-            <div class="flex space-x-2">
-                <button onclick="toggleTreeView()" class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-100 transition">
+        
+        <section id="dashboard" class="animate-in fade-in duration-500">
+            <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 lg:mb-8 gap-4">
+                <div>
+                    <h2 class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Main Archive</h2>
+                    <p class="text-2xl lg:text-3xl font-black text-slate-800 tracking-tight">Heritage Dashboard</p>
+                </div>
+                <button onclick="toggleTreeView()" class="w-full lg:w-auto bg-slate-900 text-white px-6 py-3 rounded-xl lg:rounded-2xl font-bold text-xs hover:shadow-xl transition-all">
                     <i class="fas fa-sitemap mr-2"></i> VISUAL TREE
                 </button>
-            </div>
-        </header>
+            </header>
 
-        <div id="welcomeView" class="bg-white rounded-3xl shadow-sm border border-gray-100 p-12 text-center">
-            <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-500 text-3xl">
-                <i class="fas fa-vihara"></i>
-            </div>
-            <h2 class="text-3xl font-extrabold text-gray-800 mb-4">Tughal Khel Digital Shajrah</h2>
-            <p class="text-gray-500 max-w-md mx-auto leading-relaxed">Select a family member from the sidebar to view their full biography, direct descendants, and historical background.</p>
-        </div>
-
-        <div id="profileView" class="hidden animate-in fade-in duration-500">
-            <div class="bg-white rounded-3xl shadow-md overflow-hidden border border-gray-100">
-                <div class="h-32 bg-gradient-to-r from-slate-800 to-slate-900"></div>
-                <div class="px-8 pb-8">
-                    <div class="relative -mt-12 mb-6 flex justify-between items-end">
-                        <div class="p-1 bg-white rounded-2xl shadow-lg">
-                            <div id="profInitial" class="w-24 h-24 bg-blue-600 rounded-xl flex items-center justify-center text-3xl font-bold text-white uppercase"></div>
-                        </div>
-                        <div id="urduNameDisplay" class="text-4xl font-serif text-gray-300">نام</div>
-                    </div>
-                    
-                    <h2 id="engNameDisplay" class="text-4xl font-black text-gray-800 tracking-tight">Name</h2>
-                    <p id="relDisplay" class="text-blue-600 font-bold text-xs uppercase tracking-widest mt-1 mb-6">Relation</p>
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2">
-                            <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-3"><i class="fas fa-book-open mr-2"></i> Biography</h3>
-                            <div id="bioDisplay" class="text-gray-600 leading-relaxed text-lg bg-gray-50 p-6 rounded-2xl italic"></div>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
+                <div class="bg-white p-6 lg:p-8 rounded-3xl lg:rounded-[2.5rem] shadow-sm border border-slate-200">
+                    <p class="text-slate-400 text-[9px] lg:text-[10px] font-black uppercase mb-2">Verified Records</p>
+                    <h3 id="statCount" class="text-4xl lg:text-5xl font-black text-slate-800">0</h3>
+                </div>
+                <div class="md:col-span-2 bg-slate-900 rounded-3xl lg:rounded-[2.5rem] p-6 lg:p-8 text-white relative overflow-hidden group min-h-[150px]">
+                    <div class="absolute inset-0 opacity-40 bg-cover bg-center transition-all group-hover:scale-105" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80');"></div>
+                    <div class="relative z-10 flex justify-between items-end h-full">
                         <div>
-                            <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-3"><i class="fas fa-users mr-2"></i> Descendants</h3>
-                            <div id="childList" class="space-y-2"></div>
+                            <h4 class="text-xl lg:text-2xl font-black">Tughal Khel Village</h4>
+                            <p class="text-slate-300 text-[10px]">Official Territory Overview</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="addRecord" class="hidden animate-in slide-in-from-right duration-500">
+            <div class="max-w-3xl mx-auto bg-white rounded-3xl lg:rounded-[3rem] p-6 lg:p-12 shadow-2xl border border-slate-100">
+                <h2 id="formHeader" class="text-2xl lg:text-3xl font-black text-slate-800 mb-8 tracking-tighter">Register New Member</h2>
+                <form id="recordForm" class="grid grid-cols-2 gap-4 lg:gap-6">
+                    <input type="hidden" id="editId">
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">English Name</label>
+                        <input type="text" id="newName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 transition-all outline-none">
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block text-right">اردو نام</label>
+                        <input type="text" id="newUrdu" dir="rtl" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-lg font-serif text-right outline-none">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">Father / Ancestor</label>
+                        <select id="parentSelect" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none"></select>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">Personal Bio</label>
+                        <textarea id="newBio" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm h-24 outline-none"></textarea>
+                    </div>
+                    <button type="button" onclick="saveMember()" class="col-span-2 bg-blue-600 text-white font-black py-4 rounded-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 uppercase text-[10px] tracking-widest">Verify & Save</button>
+                </form>
+            </div>
+        </section>
+
+        <div id="profileView" class="hidden">
+            <div class="profile-banner">
+                <button onclick="showSection('dashboard')" class="absolute top-4 left-4 lg:top-6 lg:left-8 bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg text-white text-[10px] font-bold transition-all backdrop-blur-md">
+                    <i class="fas fa-arrow-left mr-2"></i> BACK
+                </button>
+                <div class="absolute top-4 right-4 lg:top-6 lg:right-8 flex space-x-2">
+                    <button id="editBtn" class="bg-white/20 p-2.5 rounded-lg text-white backdrop-blur-md"><i class="fas fa-edit text-xs"></i></button>
+                    <button id="deleteBtn" class="bg-red-500/30 p-2.5 rounded-lg text-red-200 backdrop-blur-md"><i class="fas fa-trash text-xs"></i></button>
+                </div>
+            </div>
+            
+            <div class="profile-card-container">
+                <div class="profile-main-card">
+                    <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                        <div class="lg:w-2/3">
+                            <div class="relative w-24 h-24 lg:w-32 lg:h-32 mb-6 group shrink-0">
+                                <div class="w-full h-full bg-blue-600 rounded-2xl lg:rounded-[2rem] border-4 border-white shadow-xl flex items-center justify-center text-4xl lg:text-5xl font-black text-white overflow-hidden" id="profInitial"></div>
+                                <img id="profileImgDisplay" class="absolute inset-0 hidden">
+                                <label class="absolute bottom-0 right-0 bg-slate-900 text-white p-2 rounded-lg cursor-pointer hover:bg-blue-600 transition-all shadow-lg">
+                                    <i class="fas fa-camera text-[10px]"></i>
+                                    <input type="file" id="profileImgInput" class="hidden" onchange="uploadProfileImage(this)">
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 mb-2">
+                                <span id="bIdTag" class="text-blue-600 text-[10px] font-black uppercase tracking-widest">#ID</span>
+                                <span class="text-green-500 text-[8px] font-black uppercase flex items-center"><i class="fas fa-check-circle mr-1"></i> Verified</span>
+                            </div>
+
+                            <h2 id="engName" class="text-3xl lg:text-5xl font-black text-slate-800 tracking-tighter mb-1">Name</h2>
+                            <h3 id="urduName" class="text-2xl lg:text-3xl font-serif text-slate-300 mb-6" dir="rtl">نام</h3>
+
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                                <i class="fas fa-book-open mr-2"></i> Biography
+                            </h4>
+                            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 italic text-slate-600 text-sm leading-relaxed" id="bio"></div>
+                        </div>
+
+                        <div class="lg:w-1/3">
+                            <div class="bg-slate-50/50 p-6 lg:p-8 rounded-3xl border border-slate-100">
+                                <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                                    <i class="fas fa-users mr-2"></i> Descendants
+                                </h4>
+                                <div id="childList" class="space-y-2"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="treeView" class="hidden bg-white p-10 rounded-3xl shadow-md overflow-x-auto min-h-[500px]">
-            <h3 class="text-center font-black text-gray-800 mb-10 uppercase tracking-widest">Family Lineage Map</h3>
+        <div id="treeView" class="hidden bg-white p-4 lg:p-12 rounded-3xl lg:rounded-[3rem] shadow-inner border border-slate-200 min-h-[500px]">
             <div class="tree" id="treeContainer"></div>
         </div>
     </main>
 
     <script>
-        // --- 1. DATA ---
-        const familyData = {
-            "tk1": { id: "tk1", name: "Tughal Khan", urdu: "طغل خان", rel: "ANCESTOR", bio: "The foundation of the Tughal Khel lineage.", parent: null },
-            "shaukat": { id: "shaukat", name: "Shaukat Ali Khan", urdu: "شوکت علی خان", rel: "SON OF TK", bio: "A respected figure in the family history.", parent: "tk1" },
-            "abdul": { id: "abdul", name: "Abdul Ahad", urdu: "عبدالواحد", rel: "SON OF SHAUKAT", bio: "Developer of this digital vault.", parent: "shaukat" },
-            "anas": { id: "anas", name: "Anas Khan", urdu: "انس خان", rel: "SON OF SHAUKAT", bio: "Member of the Shaukat Ali branch.", parent: "shaukat" },
-            "hasnain": { id: "hasnain", name: "Hasnain Khan", urdu: "حنین خان", rel: "SON OF SHAUKAT", bio: "Member of the Shaukat Ali branch.", parent: "shaukat" }
+        // --- DATA SECTION: EXACTLY AS PROVIDED ---
+        let familyData = {
+            "ID-1": { id: "ID-1", name: "Tughal Khan", urdu: "تغل خان", parent: null, bId: "#TK-1", bio: "The Supreme Ancestor of the Tughal Khan lineage.", image: null },
+            "ID-2": { id: "ID-2", name: "Bajal", urdu: "باجل", parent: "ID-1", bId: "#B-1", bio: "", image: null },
+            "ID-3": { id: "ID-3", name: "Malik", urdu: "ملک", parent: "ID-2", bId: "#M-1", bio: "", image: null },
+            "ID-4": { id: "ID-4", name: "Sadr", urdu: "صدر", parent: "ID-3", bId: "#S-1", bio: "", image: null },
+            "ID-5": { id: "ID-5", name: "Polak", urdu: "پولک", parent: "ID-4", bId: "#P-1", bio: "", image: null },
+            "ID-6": { id: "ID-6", name: "Haidar Khan", urdu: "حیدر خان", parent: "ID-5", bId: "#H-1", bio: "", image: null },
+            "ID-7": { id: "ID-7", name: "Adam Khan", urdu: "آدم خان", parent: "ID-6", bId: "#A-1", bio: "", image: null },
+            "ID-8": { id: "ID-8", name: "Jalat", urdu: "جلوت", parent: "ID-7", bId: "#J-1", bio: "Namesake for the village/branch.", image: null },
+            "ID-9": { id: "ID-9", name: "Shah Baram", urdu: "شاہ برم", parent: "ID-8", bId: "#SB-1", bio: "Branch of Mother Khuzana.", image: null },
+            "ID-10": { id: "ID-10", name: "Noorbaz Khan", urdu: "نورباز خان", parent: "ID-8", bId: "#NK-1", bio: "Branch of Mother Khuzana.", image: null },
+            "ID-11": { id: "ID-11", name: "Muhammad Khan", urdu: "محمد خان", parent: "ID-10", bId: "#MK-1", bio: "Son from Wife Sardora.", image: null },
+            "ID-12": { id: "ID-12", name: "Fateh Khan", urdu: "فتح خان", parent: "ID-10", bId: "#FK-1", bio: "Son from Wife Hafiza.", image: null },
+            "ID-13": { id: "ID-13", name: "Ayaz Khan", urdu: "ایاز خان", parent: "ID-12", bId: "#AK-1", bio: "", image: null },
+            "ID-14": { id: "ID-14", name: "Muhammad Nawaz Khan", urdu: "محمد نواز خان", parent: "ID-13", bId: "#MN-1", bio: "", image: null },
+            "ID-15": { id: "ID-15", name: "Gul Muhammad Khan", urdu: "گل محمد خان", parent: "ID-13", bId: "#GM-1", bio: "", image: null },
+            "ID-16": { id: "ID-16", name: "Ast Khan", urdu: "است خان", parent: "ID-10", bId: "#AST-1", bio: "Son from Wife Hafiza.", image: null },
+            "ID-17": { id: "ID-17", name: "Gul Muhammad Khan (Ast Branch)", urdu: "گل محمد خان", parent: "ID-16", bId: "#GM-2", bio: "", image: null },
+            "ID-18": { id: "ID-18", name: "Sahib Khan", urdu: "صاحب خان", parent: "ID-17", bId: "#SK-1", bio: "", image: null },
+            "ID-19": { id: "ID-19", name: "Amjad Khan", urdu: "امجد خان", parent: "ID-18", bId: "#AM-1", bio: "", image: null },
+            "ID-20": { id: "ID-20", name: "Dar Ali Khan", urdu: "در علی خان", parent: "ID-17", bId: "#DA-1", bio: "", image: null },
+            "ID-21": { id: "ID-21", name: "Muhammad Afzal Khan", urdu: "محمد افضل خان", parent: "ID-16", bId: "#MAF-1", bio: "", image: null },
+            "ID-22": { id: "ID-22", name: "Zaman Khan", urdu: "زمان خان", parent: "ID-21", bId: "#ZK-1", bio: "", image: null },
+            "ID-23": { id: "ID-23", name: "Irfanullah", urdu: "عرفان اللہ", parent: "ID-22", bId: "#IR-1", bio: "", image: null },
+            "ID-24": { id: "ID-24", name: "Ijaz Khan", urdu: "اعجاز خان", parent: "ID-22", bId: "#IJ-1", bio: "", image: null },
+            "ID-25": { id: "ID-25", name: "Muhammad Mir", urdu: "محمد میر", parent: "ID-16", bId: "#MM-1", bio: "", image: null },
+            "ID-26": { id: "ID-26", name: "Amir Rehman", urdu: "امیر رحمان", parent: "ID-25", bId: "#AR-1", bio: "", image: null },
+            "ID-27": { id: "ID-27", name: "Mushtaq Khan", urdu: "مشتاق خان", parent: "ID-26", bId: "#MK-2", bio: "", image: null },
+            "ID-28": { id: "ID-28", name: "Muhtiyar Ahmed", urdu: "مختیار احمد", parent: "ID-26", bId: "#MA-1", bio: "", image: null },
+            "ID-29": { id: "ID-29", name: "Israr", urdu: "اسرار", parent: "ID-28", bId: "#IS-1", bio: "", image: null },
+            "ID-30": { id: "ID-30", name: "Iftikhar", urdu: "افتخار", parent: "ID-28", bId: "#IF-1", bio: "", image: null },
+            "ID-31": { id: "ID-31", name: "Nisar", urdu: "نثار", parent: "ID-28", bId: "#NI-1", bio: "", image: null },
+            "ID-32": { id: "ID-32", name: "Iqtidar", urdu: "اقتدار", parent: "ID-28", bId: "#IQ-1", bio: "", image: null },
+            "ID-33": { id: "ID-33", name: "Waqar", urdu: "وقار", parent: "ID-28", bId: "#WA-1", bio: "", image: null },
+            "ID-34": { id: "ID-34", name: "Muhammad Abbas", urdu: "محمد عباس", parent: "ID-26", bId: "#MAB-1", bio: "", image: null },
+            "ID-35": { id: "ID-35", name: "Mashkoor", urdu: "مشکور", parent: "ID-34", bId: "#MS-1", bio: "", image: null },
+            "ID-36": { id: "ID-36", name: "Ishaq", urdu: "اسحاق", parent: "ID-34", bId: "#ISH-1", bio: "", image: null },
+            "ID-37": { id: "ID-37", name: "Ishfaq", urdu: "اشفاق", parent: "ID-34", bId: "#ISF-1", bio: "", image: null },
+            "ID-38": { id: "ID-38", name: "Altaf Khan", urdu: "الطاف خان", parent: "ID-34", bId: "#AL-1", bio: "", image: null },
+            "ID-39": { id: "ID-39", name: "Gul Abbas Khan", urdu: "گل عباس خان", parent: "ID-25", bId: "#GAK-1", bio: "", image: null },
+            "ID-40": { id: "ID-40", name: "Zar Dad Khan", urdu: "زر داد خان", parent: "ID-25", bId: "#ZDK-1", bio: "", image: null },
+            "ID-41": { id: "ID-41", name: "Shaf Ali", urdu: "شاف علی", parent: "ID-40", bId: "#SA-1", bio: "", image: null },
+            "ID-42": { id: "ID-42", name: "Faizan", urdu: "فیضان", parent: "ID-41", bId: "#FAI-1", bio: "", image: null },
+            "ID-43": { id: "ID-43", name: "Umar Ayaz", urdu: "عمر ایاز", parent: "ID-40", bId: "#UA-1", bio: "", image: null },
+            "ID-44": { id: "ID-44", name: "Ehtisham", urdu: "احتشام", parent: "ID-43", bId: "#EH-1", bio: "", image: null },
+            "ID-45": { id: "ID-45", name: "Munawar Khan", urdu: "منور خان", parent: "ID-40", bId: "#MUN-1", bio: "", image: null },
+            "ID-46": { id: "ID-46", name: "Muti-ullah", urdu: "مطیع اللہ", parent: "ID-45", bId: "#MUT-1", bio: "", image: null },
+            "ID-47": { id: "ID-47", name: "Rafi-ullah", urdu: "رفیع اللہ", parent: "ID-45", bId: "#RAF-1", bio: "", image: null },
+            "ID-48": { id: "ID-48", name: "Raziq", urdu: "رازق", parent: "ID-45", bId: "#RAZ-1", bio: "", image: null },
+            "ID-49": { id: "ID-49", name: "Manak", urdu: "مانک", parent: "ID-8", bId: "#MN-1", bio: "Branch of Mother Zaiba.", image: null },
+            "ID-50": { id: "ID-50", name: "Malet", urdu: "مليت", parent: "ID-49", bId: "#ML-1", bio: "", image: null },
+            "ID-51": { id: "ID-51", name: "Mir Sahib Khan", urdu: "میر صاحب خان", parent: "ID-50", bId: "#MSK-1", bio: "", image: null },
+            "ID-52": { id: "ID-52", name: "Abdur Rehman", urdu: "عبدالرحمان", parent: "ID-51", bId: "#ARE-1", bio: "", image: null },
+            "ID-53": { id: "ID-53", name: "Safid Khan", urdu: "سفید خان", parent: "ID-52", bId: "#SAF-1", bio: "Children: Qasim and 1 Unknown.", image: null },
+            "ID-54": { id: "ID-54", name: "Sajid Khan", urdu: "ساجد خان", parent: "ID-52", bId: "#SAJ-1", bio: "", image: null },
+            "ID-55": { id: "ID-55", name: "Wajid Khan", urdu: "واجد خان", parent: "ID-52", bId: "#WAJ-1", bio: "", image: null },
+            "ID-56": { id: "ID-56", name: "Wasid Khan", urdu: "واسد خان", parent: "ID-52", bId: "#WAS-1", bio: "", image: null },
+            "ID-57": { id: "ID-57", name: "Hasib Khan", urdu: "حسیب خان", parent: "ID-52", bId: "#HAS-1", bio: "", image: null },
+            "ID-58": { id: "ID-58", name: "Khayam", urdu: "خیام", parent: "ID-52", bId: "#KHY-1", bio: "", image: null },
+            "ID-59": { id: "ID-59", name: "Sarfaraz Khan", urdu: "سرفراز خان", parent: "ID-49", bId: "#SKH-1", bio: "", image: null },
+            "ID-60": { id: "ID-60", name: "Sher Nawaz", urdu: "شیر نواز", parent: "ID-59", bId: "#SNW-1", bio: "", image: null },
+            "ID-61": { id: "ID-61", name: "Rabnawaz Khan", urdu: "ربنواز خان", parent: "ID-60", bId: "#RNW-1", bio: "", image: null },
+            "ID-62": { id: "ID-62", name: "Akhlaq Ali Khan", urdu: "اخلاق علی خان", parent: "ID-61", bId: "#AAK-1", bio: "", image: null },
+            "ID-63": { id: "ID-63", name: "Waseem", urdu: "وسیم", parent: "ID-62", bId: "#WAS-2", bio: "", image: null },
+            "ID-64": { id: "ID-64", name: "Faheem", urdu: "فہیم", parent: "ID-62", bId: "#FAH-1", bio: "", image: null },
+            "ID-65": { id: "ID-65", name: "Noman", urdu: "نعمان", parent: "ID-62", bId: "#NOM-1", bio: "", image: null },
+            "ID-66": { id: "ID-66", name: "Shaukat Ali Khan", urdu: "شوکت علی خان", parent: "ID-61", bId: "#SAK-1", bio: "", image: null },
+            "ID-67": { id: "ID-67", name: "Abdul Ahad", urdu: "عبدالاحاد", parent: "ID-66", bId: "#AAH-1", bio: "", image: null },
+            "ID-68": { id: "ID-68", name: "Anas", urdu: "انس", parent: "ID-66", bId: "#ANA-1", bio: "", image: null },
+            "ID-69": { id: "ID-69", name: "Hasnain", urdu: "حسنین", parent: "ID-66", bId: "#HAS-2", bio: "", image: null },
+            "ID-70": { id: "ID-70", name: "Balqiaz Khan", urdu: "بلقیاز خان", parent: "ID-59", bId: "#BQK-1", bio: "", image: null },
+            "ID-71": { id: "ID-71", name: "Muhammad Ashraf", urdu: "محمد اشرف", parent: "ID-70", bId: "#MASH-1", bio: "", image: null },
+            "ID-72": { id: "ID-72", name: "Zohaib Khan", urdu: "زہیب خان", parent: "ID-71", bId: "#ZOH-1", bio: "", image: null },
+            "ID-73": { id: "ID-73", name: "Zorain", urdu: "زورین", parent: "ID-72", bId: "#ZOR-1", bio: "", image: null },
+            "ID-74": { id: "ID-74", name: "Saqib Khan", urdu: "ثاقب خان", parent: "ID-71", bId: "#SAQ-1", bio: "", image: null },
+            "ID-75": { id: "ID-75", name: "Muhammad", urdu: "محمد", parent: "ID-71", bId: "#MUH-1", bio: "", image: null },
+            "ID-76": { id: "ID-76", name: "Asghar Khan", urdu: "اصغر خان", parent: "ID-70", bId: "#ASG-1", bio: "", image: null },
+            "ID-77": { id: "ID-77", name: "Afaq Khan", urdu: "آفاق خان", parent: "ID-76", bId: "#AFQ-1", bio: "", image: null },
+            "ID-78": { id: "ID-78", name: "Fahad Khan", urdu: "فہد خان", parent: "ID-76", bId: "#FAH-2", bio: "", image: null },
+            "ID-79": { id: "ID-79", name: "Awais Khan", urdu: "اویس خان", parent: "ID-76", bId: "#AWA-1", bio: "", image: null },
+            "ID-80": { id: "ID-80", name: "Janbaz Khan", urdu: "جانباز خان", parent: "ID-70", bId: "#JAN-1", bio: "", image: null },
+            "ID-81": { id: "ID-81", name: "Sultan Ayaz", urdu: "سلطان ایاز", parent: "ID-70", bId: "#SAY-1", bio: "", image: null },
+            "ID-82": { id: "ID-82", name: "Danyal Khan", urdu: "دانیال خان", parent: "ID-81", bId: "#DAN-1", bio: "", image: null },
+            "ID-83": { id: "ID-83", name: "Zohan Khan", urdu: "زوہان خان", parent: "ID-81", bId: "#ZOH-2", bio: "", image: null },
+            "ID-84": { id: "ID-84", name: "Dost Muhammad", urdu: "دوست محمد", parent: "ID-70", bId: "#DOM-1", bio: "", image: null },
+            "ID-85": { id: "ID-85", name: "Abu Huraira", urdu: "ابو ہریرہ", parent: "ID-84", bId: "#ABU-1", bio: "", image: null },
+            "ID-86": { id: "ID-86", name: "Muhammad Jan", urdu: "محمد جان", parent: "ID-49", bId: "#MJ-1", bio: "Details Pending", image: null },
+            "ID-87": { id: "ID-87", name: "Shah Qulzam", urdu: "شاہ قلزم", parent: "ID-8", bId: "#SQ-1", bio: "", image: null },
+            "ID-88": { id: "ID-88", name: "Badshah Khan", urdu: "بادشاہ خان", parent: "ID-87", bId: "#BK-1", bio: "", image: null },
+            "ID-89": { id: "ID-89", name: "Dilawar Khan", urdu: "دلاور خان", parent: "ID-88", bId: "#DK-1", bio: "", image: null },
+            "ID-90": { id: "ID-90", name: "Amin Khan", urdu: "امین خان", parent: "ID-89", bId: "#AMK-1", bio: "", image: null },
+            "ID-91": { id: "ID-91", name: "Ahmed", urdu: "احمد", parent: "ID-90", bId: "#AHM-1", bio: "", image: null },
+            "ID-92": { id: "ID-92", name: "Baitullah", urdu: "بیت اللہ", parent: "ID-90", bId: "#BAI-2", bio: "", image: null },
+            "ID-93": { id: "ID-93", name: "Umar Ali Khan", urdu: "عمر علی خان", parent: "ID-89", bId: "#UAK-1", bio: "", image: null },
+            "ID-94": { id: "ID-94", name: "Asal Marjan", urdu: "اصل مرجان", parent: "ID-89", bId: "#ASM-1", bio: "", image: null },
+            "ID-95": { id: "ID-95", name: "Zahid Khan", urdu: "زاہد خان", parent: "ID-94", bId: "#ZK-2", bio: "", image: null },
+            "ID-96": { id: "ID-96", name: "Farhadullah", urdu: "فرہاد اللہ", parent: "ID-94", bId: "#FAR-1", bio: "", image: null },
+            "ID-97": { id: "ID-97", name: "Waridullah", urdu: "وارث اللہ", parent: "ID-94", bId: "#WAR-1", bio: "", image: null },
+            "ID-98": { id: "ID-98", name: "Rehmanullah", urdu: "رحمان اللہ", parent: "ID-94", bId: "#REH-1", bio: "", image: null },
+            "ID-99": { id: "ID-99", name: "Rahid Khan", urdu: "راہد خان", parent: "ID-94", bId: "#RAH-1", bio: "", image: null },
+            "ID-100": { id: "ID-100", name: "Ghajan", urdu: "غجان", parent: "ID-8", bId: "#GHJ-1", bio: "", image: null },
+            "ID-101": { id: "ID-101", name: "Azamrai", urdu: "آزمرائی", parent: "ID-100", bId: "#AZM-1", bio: "", image: null },
+            "ID-102": { id: "ID-102", name: "Gul Khoban", urdu: "گل خوبان", parent: "ID-101", bId: "#GK-1", bio: "", image: null },
+            "ID-103": { id: "ID-103", name: "Kamran Nawaz", urdu: "کامران نواز", parent: "ID-102", bId: "#KN-1", bio: "", image: null },
+            "ID-104": { id: "ID-104", name: "Ma'moon", urdu: "مامون", parent: "ID-103", bId: "#MAM-1", bio: "", image: null },
+            "ID-105": { id: "ID-105", name: "Ahmed Nawaz", urdu: "احمد نواز", parent: "ID-103", bId: "#AN-1", bio: "", image: null },
+            "ID-106": { id: "ID-106", name: "Muhammad Nawaz", urdu: "محمد نواز", parent: "ID-103", bId: "#MUN-2", bio: "", image: null },
+            "ID-107": { id: "ID-107", name: "Ghaffar", urdu: "غفار", parent: "ID-101", bId: "#GHA-1", bio: "", image: null },
+            "ID-108": { id: "ID-108", name: "Sabir Nawaz", urdu: "صابر نواز", parent: "ID-107", bId: "#SN-1", bio: "", image: null },
+            "ID-109": { id: "ID-109", name: "Syed Nawaz", urdu: "سید نواز", parent: "ID-107", bId: "#SYN-1", bio: "", image: null },
+            "ID-110": { id: "ID-110", name: "Umar Nawaz", urdu: "عمر نواز", parent: "ID-107", bId: "#UN-1", bio: "", image: null },
+            "ID-111": { id: "ID-111", name: "Yasir Nawaz", urdu: "یاسر نواز", parent: "ID-110", bId: "#YN-1", bio: "", image: null },
+            "ID-112": { id: "ID-112", name: "Zar Gul", urdu: "زر گل", parent: "ID-101", bId: "#ZG-1", bio: "", image: null },
+            "ID-113": { id: "ID-113", name: "After Ali", urdu: "افٹر علی", parent: "ID-112", bId: "#AA-1", bio: "", image: null },
+            "ID-114": { id: "ID-114", name: "Zewaran", urdu: "زیورن", parent: "ID-113", bId: "#ZEW-1", bio: "", image: null },
+            "ID-115": { id: "ID-115", name: "Umar Ali", urdu: "عمر علی", parent: "ID-112", bId: "#UAL-1", bio: "", image: null },
+            "ID-116": { id: "ID-116", name: "Faizan (Umar Ali Branch)", urdu: "فیضان", parent: "ID-115", bId: "#FAI-2", bio: "", image: null },
+            "ID-117": { id: "ID-117", name: "Imran", urdu: "عمران", parent: "ID-115", bId: "#IMR-1", bio: "", image: null },
+            "ID-118": { id: "ID-118", name: "Suleman", urdu: "سلیمان", parent: "ID-115", bId: "#SUL-1", bio: "", image: null },
+            "ID-119": { id: "ID-119", name: "Gul Qamar Zaman", urdu: "گل قمر زمان", parent: "ID-100", bId: "#GQZ-1", bio: "", image: null },
+            "ID-120": { id: "ID-120", name: "Amanullah", urdu: "امان اللہ", parent: "ID-119", bId: "#AMA-2", bio: "", image: null },
+            "ID-121": { id: "ID-121", name: "Najeebullah", urdu: "نجیب اللہ", parent: "ID-120", bId: "#NAJ-1", bio: "", image: null },
+            "ID-122": { id: "ID-122", name: "Zaidullah", urdu: "زید اللہ", parent: "ID-121", bId: "#ZAI-1", bio: "", image: null },
+            "ID-123": { id: "ID-123", name: "Atif", urdu: "عاطف", parent: "ID-121", bId: "#ATI-1", bio: "", image: null },
+            "ID-124": { id: "ID-124", name: "Aqif", urdu: "عاقف", parent: "ID-121", bId: "#AQI-1", bio: "", image: null },
+            "ID-125": { id: "ID-125", name: "Musaib", urdu: "مصیب", parent: "ID-121", bId: "#MUS-1", bio: "", image: null },
+            "ID-126": { id: "ID-126", name: "Abu Bakar", urdu: "ابو بکر", parent: "ID-121", bId: "#ABU-2", bio: "", image: null },
+            "ID-127": { id: "ID-127", name: "Ataullah", urdu: "عطاء اللہ", parent: "ID-119", bId: "#ATA-1", bio: "", image: null },
+            "ID-128": { id: "ID-128", name: "Zikran Khan", urdu: "ذکران خان", parent: "ID-127", bId: "#ZIK-1", bio: "", image: null },
+            "ID-129": { id: "ID-129", name: "Mir Liaqat Ali Khan", urdu: "میر لیاقت علی خان", parent: "ID-119", bId: "#MLK-1", bio: "", image: null },
+            "ID-130": { id: "ID-130", name: "Samiullah", urdu: "سمیع اللہ", parent: "ID-129", bId: "#SAM-1", bio: "", image: null },
+            "ID-131": { id: "ID-131", name: "Tayyab", urdu: "طیب", parent: "ID-129", bId: "#TAY-1", bio: "", image: null },
+            "ID-132": { id: "ID-132", name: "Tahir", urdu: "طاہر", parent: "ID-129", bId: "#TAH-1", bio: "", image: null },
+            "ID-133": { id: "ID-133", name: "Shoaib", urdu: "شعیب", parent: "ID-129", bId: "#SHO-1", bio: "", image: null },
+            "ID-134": { id: "ID-134", name: "Bakht Ali Khan", urdu: "بخت علی خان", parent: "ID-119", bId: "#BAK-1", bio: "", image: null },
+            "ID-135": { id: "ID-135", name: "Qayyumullah Khan", urdu: "قیوم اللہ خان", parent: "ID-119", bId: "#QUK-1", bio: "", image: null },
+            "ID-136": { id: "ID-136", name: "Kaleemullah", urdu: "کلیم اللہ", parent: "ID-135", bId: "#KAL-1", bio: "", image: null },
+            "ID-137": { id: "ID-137", name: "Hikmatullah", urdu: "حکمت اللہ", parent: "ID-135", bId: "#HIK-1", bio: "", image: null },
+            "ID-138": { id: "ID-138", name: "Hidayatullah", urdu: "ہدایت اللہ", parent: "ID-135", bId: "#HID-1", bio: "", image: null },
+            "ID-139": { id: "ID-139", name: "Shahzad", urdu: "شہزاد", parent: "ID-100", bId: "#SHZ-1", bio: "", image: null },
+            "ID-140": { id: "ID-140", name: "Noor Nawaz Khan", urdu: "نور نواز خان", parent: "ID-139", bId: "#NNK-1", bio: "", image: null },
+            "ID-141": { id: "ID-141", name: "Asim", urdu: "عاصم", parent: "ID-140", bId: "#ASI-1", bio: "", image: null },
+            "ID-142": { id: "ID-142", name: "Farhad", urdu: "فرہاد", parent: "ID-140", bId: "#FAR-2", bio: "", image: null },
+            "ID-143": { id: "ID-143", name: "Qasim", urdu: "قاسم", parent: "ID-140", bId: "#QAS-1", bio: "", image: null },
+            "ID-144": { id: "ID-144", name: "Fawad", urdu: "فواد", parent: "ID-140", bId: "#FAW-1", bio: "", image: null },
+            "ID-145": { id: "ID-145", name: "Hamidullah Khan", urdu: "حمید اللہ خان", parent: "ID-139", bId: "#HUK-1", bio: "", image: null },
+            "ID-146": { id: "ID-146", name: "Arsalan", urdu: "ارسلان", parent: "ID-145", bId: "#ARS-1", bio: "", image: null },
+            "ID-147": { id: "ID-147", name: "Sadiq Khan", urdu: "صادق خان", parent: "ID-145", bId: "#SK-2", bio: "", image: null },
+            "ID-148": { id: "ID-148", name: "Umar Khattab", urdu: "عمر خطاب", parent: "ID-145", bId: "#UKH-1", bio: "", image: null },
+            "ID-149": { id: "ID-149", name: "Farooq", urdu: "فاروق", parent: "ID-148", bId: "#FAR-3", bio: "", image: null },
+            "ID-150": { id: "ID-150", name: "Furqan", urdu: "فرقان", parent: "ID-148", bId: "#FUR-1", bio: "", image: null },
+            "ID-151": { id: "ID-151", name: "Pyao Khan", urdu: "پیاو خان", parent: "ID-139", bId: "#PYK-1", bio: "", image: null },
+            "ID-152": { id: "ID-152", name: "Muhammad Reza", urdu: "محمد رضا", parent: "ID-151", bId: "#MRE-1", bio: "", image: null },
+            "ID-153": { id: "ID-153", name: "Bakht Reza", urdu: "بخت رضا", parent: "ID-151", bId: "#BRE-1", bio: "", image: null },
+            "ID-154": { id: "ID-154", name: "Qismat Reza", urdu: "قسمت رضا", parent: "ID-151", bId: "#QRE-1", bio: "", image: null },
+            "ID-155": { id: "ID-155", name: "Murtaza", urdu: "مرتضیٰ", parent: "ID-151", bId: "#MUR-1", bio: "", image: null },
+            "ID-156": { id: "ID-156", name: "Rasool Khan", urdu: "رسول خان", parent: "ID-100", bId: "#RSK-1", bio: "", image: null },
+            "ID-157": { id: "ID-157", name: "Star Khan", urdu: "اسٹار خان", parent: "ID-156", bId: "#STK-1", bio: "", image: null },
+            "ID-158": { id: "ID-158", name: "Shaheedullah", urdu: "شہید اللہ", parent: "ID-157", bId: "#SHH-1", bio: "", image: null },
+            "ID-159": { id: "ID-159", name: "Asim (Star Branch)", urdu: "عاصم", parent: "ID-157", bId: "#ASI-2", bio: "", image: null },
+            "ID-160": { id: "ID-160", name: "Muhammad Gul", urdu: "محمد گل", parent: "ID-156", bId: "#MGL-1", bio: "", image: null },
+            "ID-161": { id: "ID-161", name: "Fazeel", urdu: "فضیل", parent: "ID-160", bId: "#FAZ-1", bio: "", image: null },
+            "ID-162": { id: "ID-162", name: "Jameel", urdu: "جمیل", parent: "ID-160", bId: "#JAM-1", bio: "", image: null },
+            "ID-163": { id: "ID-163", name: "Hassan", urdu: "حسن", parent: "ID-162", bId: "#HAS-3", bio: "", image: null }
         };
 
-        // --- 2. NAVIGATION & BACK BUTTON ---
-        function goBack() {
-            document.getElementById('profileView').classList.add('hidden');
-            document.getElementById('treeView').classList.add('hidden');
-            document.getElementById('welcomeView').classList.remove('hidden');
-            document.getElementById('bc-name').innerText = "Home";
+        let activeProfileId = null;
+
+        function showSection(sectionId) {
+            ['dashboard', 'addRecord', 'profileView', 'treeView'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
-        // --- 3. SHOW PROFILE ---
         function showProfile(id) {
+            activeProfileId = id;
+            showSection('profileView');
             const m = familyData[id];
-            if(!m) return;
+            document.getElementById('engName').innerText = m.name;
+            document.getElementById('urduName').innerText = m.urdu;
+            document.getElementById('bIdTag').innerText = m.bId;
+            document.getElementById('bio').innerText = m.bio || "No biography provided.";
+            
+            const initialBox = document.getElementById('profInitial');
+            const imgBox = document.getElementById('profileImgDisplay');
+            
+            if(m.image) {
+                imgBox.src = m.image;
+                imgBox.classList.remove('hidden');
+                initialBox.innerText = "";
+            } else {
+                imgBox.classList.add('hidden');
+                initialBox.innerText = m.name.charAt(0);
+            }
 
-            document.getElementById('welcomeView').classList.add('hidden');
-            document.getElementById('treeView').classList.add('hidden');
-            document.getElementById('profileView').classList.remove('hidden');
-
-            document.getElementById('bc-name').innerText = m.name;
-            document.getElementById('engNameDisplay').innerText = m.name;
-            document.getElementById('urduNameDisplay').innerText = m.urdu;
-            document.getElementById('relDisplay').innerText = m.rel;
-            document.getElementById('bioDisplay').innerText = m.bio;
-            document.getElementById('profInitial').innerText = m.name.charAt(0);
-
-            // Children Logic
+            document.getElementById('editBtn').onclick = () => editMember(id);
+            document.getElementById('deleteBtn').onclick = () => deleteMember(id);
+            
             const cList = document.getElementById('childList');
             cList.innerHTML = "";
             const children = Object.values(familyData).filter(c => c.parent === id);
             
             if(children.length === 0) {
-                cList.innerHTML = "<p class='text-gray-400 text-xs italic'>No records found.</p>";
+                cList.innerHTML = "<p class='text-[10px] text-slate-400 italic'>No descendants registered.</p>";
             } else {
-                children.forEach(child => {
+                children.forEach(c => {
                     const d = document.createElement('div');
-                    d.className = "p-3 bg-gray-50 border border-gray-100 rounded-xl cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition";
-                    d.onclick = () => showProfile(child.id);
-                    d.innerHTML = `<p class='font-bold text-gray-800 text-sm'>${child.name}</p><p class='text-[10px] text-blue-500'>VIEW PROFILE</p>`;
+                    d.className = "p-4 bg-white rounded-xl border border-slate-100 flex justify-between items-center group cursor-pointer hover:shadow-md transition-all";
+                    d.onclick = () => showProfile(c.id);
+                    d.innerHTML = `
+                        <div>
+                            <p class="text-xs font-black text-slate-800">${c.name}</p>
+                            <p class="text-[8px] text-blue-500 font-bold uppercase">View Profile</p>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-300 group-hover:text-blue-500 transition-colors"></i>
+                    `;
                     cList.appendChild(d);
                 });
             }
         }
 
-        // --- 4. ADMIN LOGIN SYSTEM ---
-        function showLoginModal() {
-            const email = prompt("Enter Admin Email (Optional):");
-            const pin = prompt("Enter Secret Pin (Default: 7860):");
-            
-            if(pin === "7860") {
-                alert("Login Successful! Account created for: " + (email || "Admin"));
-                document.getElementById('loginStateBtn').innerHTML = `<i class="fas fa-check-circle mr-2"></i> LOGGED IN`;
-                document.getElementById('loginStateBtn').className = "w-full bg-green-600 py-2 rounded-lg text-xs font-bold";
-            } else {
-                alert("Wrong Pin!");
+        function uploadProfileImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    familyData[activeProfileId].image = e.target.result;
+                    showProfile(activeProfileId);
+                }
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // --- 5. RENDER SIDEBAR ---
-        function renderSidebar(search = "") {
+        function saveMember() {
+            const id = document.getElementById('editId').value || `ID-${Date.now()}`;
+            const existingImage = familyData[id] ? familyData[id].image : null;
+            
+            familyData[id] = {
+                id: id,
+                name: document.getElementById('newName').value,
+                urdu: document.getElementById('newUrdu').value,
+                parent: document.getElementById('parentSelect').value || null,
+                bio: document.getElementById('newBio').value,
+                bId: `#${id.split('-')[1] || id}`,
+                image: existingImage
+            };
+            
+            renderSidebar();
+            showProfile(id);
+        }
+
+        function editMember(id) {
+            const m = familyData[id];
+            document.getElementById('editId').value = m.id;
+            document.getElementById('newName').value = m.name;
+            document.getElementById('newUrdu').value = m.urdu;
+            document.getElementById('parentSelect').value = m.parent;
+            document.getElementById('newBio').value = m.bio;
+            document.getElementById('formHeader').innerText = "Edit Member Record";
+            showSection('addRecord');
+        }
+
+        function deleteMember(id) {
+            if(confirm("Are you sure you want to delete this record?")) {
+                delete familyData[id];
+                renderSidebar();
+                showSection('dashboard');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('recordForm').reset();
+            document.getElementById('editId').value = "";
+            document.getElementById('formHeader').innerText = "Register New Member";
+        }
+
+        function renderSidebar() {
             const list = document.getElementById('sidebarList');
             list.innerHTML = "";
             Object.values(familyData).forEach(m => {
-                if(m.name.toLowerCase().includes(search.toLowerCase())) {
-                    const btn = document.createElement('button');
-                    btn.className = "w-full text-left p-3 rounded-xl hover:bg-gray-800 transition group flex items-center space-x-3";
-                    btn.onclick = () => showProfile(m.id);
-                    btn.innerHTML = `
-                        <div class="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center text-xs font-bold group-hover:bg-blue-600">${m.name.charAt(0)}</div>
-                        <div>
-                            <p class="text-xs font-bold">${m.name}</p>
-                            <p class="text-[9px] text-gray-500 uppercase">${m.rel}</p>
-                        </div>
-                    `;
-                    list.appendChild(btn);
-                }
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 lg:p-4 rounded-xl hover:bg-slate-800 transition-all group flex items-center space-x-4 mb-1 text-slate-400 shrink-0 lg:shrink";
+                btn.onclick = () => showProfile(m.id);
+                btn.innerHTML = `
+                    <div class="w-8 h-8 lg:w-10 lg:h-10 bg-slate-800 rounded-lg lg:rounded-xl flex items-center justify-center text-[10px] lg:text-xs font-black group-hover:bg-blue-600 group-hover:text-white transition-all shrink-0">${m.name.charAt(0)}</div>
+                    <div>
+                        <p class="text-[10px] lg:text-[11px] font-bold group-hover:text-white">${m.name}</p>
+                        <p class="text-[7px] lg:text-[8px] uppercase font-black opacity-40 tracking-tighter">${m.bId}</p>
+                    </div>
+                `;
+                list.appendChild(btn);
+            });
+            document.getElementById('statCount').innerText = Object.keys(familyData).length;
+            populateParentSelect();
+        }
+
+        function populateParentSelect() {
+            const select = document.getElementById('parentSelect');
+            select.innerHTML = '<option value="">-- Choose Father --</option>';
+            Object.values(familyData).forEach(m => {
+                select.innerHTML += `<option value="${m.id}">${m.name}</option>`;
             });
         }
 
-        // --- 6. TREE LOGIC ---
         function toggleTreeView() {
-            document.getElementById('profileView').classList.add('hidden');
-            document.getElementById('welcomeView').classList.add('hidden');
-            document.getElementById('treeView').classList.remove('hidden');
-            const founder = Object.values(familyData).find(f => f.parent === null);
-            document.getElementById('treeContainer').innerHTML = `<ul>${buildTree(founder.id)}</ul>`;
+            showSection('treeView');
+            document.getElementById('treeContainer').innerHTML = `<ul>${buildTree("ID-1")}</ul>`;
         }
 
         function buildTree(id) {
             const m = familyData[id];
+            if(!m) return "";
             const kids = Object.values(familyData).filter(c => c.parent === id);
-            let h = `<li><a href="#" onclick="showProfile('${m.id}')">${m.name}</a>`;
+            let html = `<li><a href="javascript:void(0)" onclick="showProfile('${m.id}')">${m.name}</a>`;
             if(kids.length > 0) {
-                h += "<ul>";
-                kids.forEach(k => h += buildTree(k.id));
-                h += "</ul>";
+                html += "<ul>" + kids.map(k => buildTree(k.id)).join('') + "</ul>";
             }
-            return h + "</li>";
+            return html + "</li>";
         }
 
-        // Init
-        document.getElementById('searchInput').oninput = (e) => renderSidebar(e.target.value);
         renderSidebar();
     </script>
 </body>
