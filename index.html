@@ -9,25 +9,23 @@
     <style>
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #f8f9fa; /* Off-White background */
+            background-color: #f8f9fa; 
             overflow-x: hidden; 
             margin: 0; 
-            color: #455a64; /* Slate Grey for secondary text */
+            color: #455a64; 
         }
         
-        /* THEME COLORS */
         .bg-midnight { background-color: #1a237e; }
         .text-midnight { color: #1a237e; }
         .border-midnight { border-color: #1a237e; }
         .bg-slate-grey { background-color: #455a64; }
         .text-slate-grey { color: #455a64; }
 
-        /* EXECUTIVE STYLING */
         .executive-card {
             background: white;
-            border-radius: 12px; /* 12px rounded corners */
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); /* Subtle soft shadow */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .executive-card:hover {
@@ -54,7 +52,6 @@
 
         .hidden { display: none !important; }
         
-        /* Tree View - Pan & Zoom */
         #treeView { position: relative; width: 100%; height: 70vh; overflow: hidden; background: white; border-radius: 12px; border: 1px solid #e0e0e0; touch-action: none; cursor: grab; box-shadow: inset 0 0 20px rgba(0,0,0,0.02);}
         #treeView:active { cursor: grabbing; }
         #treeContainer { position: absolute; transform-origin: 0 0; display: inline-block; padding: 50px; transition: transform 0.1s ease-out; }
@@ -70,11 +67,9 @@
         .tree-node.dim { opacity: 0.25; filter: grayscale(100%); }
         .tree-node.highlight { border-color: #1a237e; background-color: #e8eaf6; box-shadow: 0 0 15px rgba(26, 35, 126, 0.3); transform: scale(1.1); z-index: 10; position: relative;}
 
-        /* Gallery */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
         .gallery-img { width: 100%; height: 100px; object-fit: cover; border-radius: 12px; border: 2px solid #e0e0e0; }
         
-        /* Scrollbar styling for sidebar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
@@ -90,8 +85,8 @@
                     <i class="fas fa-shield-halved text-midnight text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-black tracking-tight text-white">طغل خیل</h1>
-                    <h2 class="text-xs font-bold text-indigo-200 uppercase tracking-widest">Tughal Khel</h2>
+                    <h1 class="text-xl font-black tracking-tight text-white">جلات طغل خیل</h1>
+                    <h2 class="text-xs font-bold text-indigo-400 uppercase tracking-widest"> Jalat Tughal Khel</h2>
                 </div>
             </div>
             <p class="text-[10px] text-indigo-300 font-medium uppercase tracking-widest flex items-center mt-3">
@@ -121,37 +116,79 @@
         </button>
 
         <section id="dashboard" class="animate-in fade-in duration-500 max-w-6xl mx-auto">
-            <header class="mb-8">
-                <h2 class="text-[10px] font-black text-indigo-600 uppercase tracking-widest">Main Archive</h2>
-                <p class="text-3xl font-black text-slate-900 tracking-tight">Heritage Overview</p>
+            
+            <header class="relative bg-midnight text-white p-10 mb-10 overflow-hidden rounded-[30px] shadow-2xl border-2 border-indigo-500/30">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500 opacity-10 rounded-full -mr-24 -mt-24 animate-pulse"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="text-center md:text-left">
+                        <span class="bg-indigo-600/40 text-indigo-100 text-[10px] px-3 py-1 rounded-full uppercase tracking-[0.3em] font-black mb-5 inline-block border border-white/10 backdrop-blur-md">
+                            Official Heritage Vault
+                        </span>
+                        
+                        <div class="flex flex-col md:flex-row items-baseline gap-4">
+                            <h1 class="text-4xl md:text-5xl font-black tracking-[0.1em] uppercase text-white">
+                                Jalat <span class="text-indigo-400">Tughal Khel</span>
+                            </h1>
+                            <span class="text-2xl md:text-3xl font-serif text-indigo-200/90 filter drop-shadow-sm" dir="rtl" style="font-family: 'Noto Nastaliq Urdu', serif;">
+                                جلات طغل خیل
+                            </span>
+                        </div>
+                        
+                        <p class="text-indigo-300 text-xs md:text-sm font-medium tracking-[0.4em] uppercase mt-2 opacity-80">
+                            Ancestral Records & Lineage Archive
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col items-center md:items-end space-y-4 mt-6 md:mt-0 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-10">
+                        <div class="flex items-center space-x-2 text-indigo-300 group">
+                            <i class="fas fa-map-marker-alt text-xs group-hover:animate-bounce"></i>
+                            <span class="text-[11px] font-black uppercase tracking-widest">Bannu, Khyber Pakhtunkhwa</span>
+                        </div>
+                        
+                        <div class="px-4 py-2 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm flex items-center gap-3">
+                            <div class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-[8px] text-indigo-200 uppercase font-black leading-none mb-1">Status</p>
+                                <p class="text-[10px] font-black text-emerald-400 uppercase tracking-tighter leading-none">Live Records Active</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div onclick="document.getElementById('sidebarList').scrollIntoView({behavior: 'smooth'})" class="executive-card p-6 cursor-pointer">
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div onclick="document.getElementById('sidebarList').scrollIntoView({behavior: 'smooth'})" 
+                     class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
                     <div class="flex justify-between items-center mb-4">
-                        <p class="text-slate-grey text-[10px] font-black uppercase">Verified Records</p>
-                        <i class="fas fa-users text-indigo-100 text-2xl"></i>
+                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Verified Records</p>
+                        <i class="fas fa-users text-indigo-500 text-2xl opacity-80"></i>
                     </div>
-                    <h3 id="statCount" class="text-4xl font-black text-midnight">0</h3>
+                    <h3 id="statCount" class="text-4xl font-black text-midnight">164</h3>
                     <p class="text-xs text-slate-400 mt-2 font-medium">Click to view registry</p>
                 </div>
                 
-                <div onclick="navTo('treeSection')" class="executive-card p-6 cursor-pointer bg-midnight text-white border-none">
+                <div onclick="navTo('treeSection')" 
+                     class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
                     <div class="flex justify-between items-center mb-4">
-                        <p class="text-indigo-200 text-[10px] font-black uppercase">Lineage Mapping</p>
-                        <i class="fas fa-project-diagram text-indigo-400 text-2xl"></i>
+                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Lineage Mapping</p>
+                        <i class="fas fa-project-diagram text-indigo-500 text-2xl opacity-80"></i>
                     </div>
-                    <h3 class="text-3xl font-black">Visual Tree</h3>
-                    <p class="text-xs text-indigo-100 mt-2 font-medium">Explore interactive map</p>
+                    <h3 class="text-3xl font-black text-midnight">Visual Tree</h3>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Explore interactive map</p>
                 </div>
 
-                <div onclick="navTo('treeSection')" class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500">
+                <div onclick="navTo('treeSection')" 
+                     class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
                     <div class="flex justify-between items-center mb-4">
-                        <p class="text-slate-grey text-[10px] font-black uppercase">Lineage Depth</p>
-                        <i class="fas fa-layer-group text-indigo-100 text-2xl"></i>
+                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Lineage Depth</p>
+                        <i class="fas fa-layer-group text-indigo-500 text-2xl opacity-80"></i>
                     </div>
-                    <h3 id="statGenerations" class="text-4xl font-black text-midnight">0</h3>
-                    <p class="text-xs text-slate-400 mt-2 font-medium">Active Generations</p>
+                    <h3 id="statGenerations" class="text-4xl font-black text-midnight">14</h3>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Total Generations</p>
                 </div>
             </div>
 
@@ -173,8 +210,7 @@
 
             <div class="mb-10">
                 <h3 class="text-sm font-black text-slate-900 border-b border-gray-200 pb-2 inline-block mb-6 uppercase tracking-widest text-midnight">Historic Leaders</h3>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="leadersGrid">
-                    </div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="leadersGrid"></div>
             </div>
 
             <div class="executive-card p-6 mb-10">
@@ -240,11 +276,10 @@
     </main>
 
     <script>
-        // --- CORE DATA (Malik Titles & طغل correction applied) ---
         let familyData = {
             "ID-1": { id: "ID-1", name: "Malik Tughal Khan", urdu: "طغل خان", parent: null, bId: "#TK-1", bio: "The Supreme Ancestor.", isLeader: true },
             "ID-2": { id: "ID-2", name: "Bajal", urdu: "باجل", parent: "ID-1", bId: "#B-1", bio: "" },
-            "ID-3": { id: "ID-3", name: "Malik", urdu: "ملک", parent: "ID-2", bId: "#M-1", bio: "" },
+            "ID-3": { id: "ID-3", name: "Malak", urdu: "ملک", parent: "ID-2", bId: "#M-1", bio: "" },
             "ID-4": { id: "ID-4", name: "Sadr", urdu: "صدر", parent: "ID-3", bId: "#S-1", bio: "" },
             "ID-5": { id: "ID-5", name: "Polak", urdu: "پولک", parent: "ID-4", bId: "#P-1", bio: "" },
             "ID-6": { id: "ID-6", name: "Haidar Khan", urdu: "حیدر خان", parent: "ID-5", bId: "#H-1", bio: "" },
@@ -276,22 +311,22 @@
             "ID-32": { id: "ID-32", name: "Iqtidar", urdu: "اقتدار", parent: "ID-28", bId: "#IQ-1", bio: "" },
             "ID-33": { id: "ID-33", name: "Waqar", urdu: "وقار", parent: "ID-28", bId: "#WA-1", bio: "" },
             "ID-34": { id: "ID-34", name: "Muhammad Abbas", urdu: "محمد عباس", parent: "ID-26", bId: "#MAB-1", bio: "" },
-            "ID-35": { id: "ID-35", name: "Mashkoor", urdu: "مشکور", parent: "ID-34", bId: "#MS-1", bio: "" },
-            "ID-36": { id: "ID-36", name: "Ishaq", urdu: "اسحاق", parent: "ID-34", bId: "#ISH-1", bio: "" },
-            "ID-37": { id: "ID-37", name: "Ishfaq", urdu: "اشفاق", parent: "ID-34", bId: "#ISF-1", bio: "" },
+            "ID-35": { id: "ID-35", name: "Mishkat Khan", urdu: "مشکات خان", parent: "ID-34", bId: "#MS-1", bio: "" },
+            "ID-36": { id: "ID-36", name: "Ishaq Khan", urdu: "اسحاق خان", parent: "ID-34", bId: "#ISH-1", bio: "" },
+            "ID-37": { id: "ID-37", name: "Ishfaq Khan", urdu: "اشفاق خان", parent: "ID-34", bId: "#ISF-1", bio: "" },
             "ID-38": { id: "ID-38", name: "Altaf Khan", urdu: "الطاف خان", parent: "ID-34", bId: "#AL-1", bio: "" },
             "ID-39": { id: "ID-39", name: "Gul Abbas Khan", urdu: "گل عباس خان", parent: "ID-25", bId: "#GAK-1", bio: "" },
             "ID-40": { id: "ID-40", name: "Zar Dad Khan", urdu: "زر داد خان", parent: "ID-25", bId: "#ZDK-1", bio: "" },
             "ID-41": { id: "ID-41", name: "Shaf Ali", urdu: "شاف علی", parent: "ID-40", bId: "#SA-1", bio: "" },
             "ID-42": { id: "ID-42", name: "Faizan", urdu: "فیضان", parent: "ID-41", bId: "#FAI-1", bio: "" },
-            "ID-43": { id: "ID-43", name: "Umar Ayaz", urdu: "عمر ایاز", parent: "ID-40", bId: "#UA-1", bio: "" },
-            "ID-44": { id: "ID-44", name: "Ehtisham", urdu: "احتشام", parent: "ID-43", bId: "#EH-1", bio: "" },
+            "ID-43": { id: "ID-43", name: "Umar Ayaz", urdu: "عمر ایاز", parent: "ID-40", bId: "#UA-1", bio: "No Children" },
+            "ID-44": { id: "ID-44", name: "Ehtisham", urdu: "احتشام", parent: "ID-45", bId: "#EH-1", bio: "" },
             "ID-45": { id: "ID-45", name: "Munawar Khan", urdu: "منور خان", parent: "ID-40", bId: "#MUN-1", bio: "" },
             "ID-46": { id: "ID-46", name: "Muti-ullah", urdu: "مطیع اللہ", parent: "ID-45", bId: "#MUT-1", bio: "" },
             "ID-47": { id: "ID-47", name: "Rafi-ullah", urdu: "رفیع اللہ", parent: "ID-45", bId: "#RAF-1", bio: "" },
             "ID-48": { id: "ID-48", name: "Raziq", urdu: "رازق", parent: "ID-45", bId: "#RAZ-1", bio: "" },
             "ID-49": { id: "ID-49", name: "Manak", urdu: "مانک", parent: "ID-8", bId: "#MN-1", bio: "Branch of Mother Zaiba." },
-            "ID-50": { id: "ID-50", name: "Malet", urdu: "مليت", parent: "ID-49", bId: "#ML-1", bio: "" },
+            "ID-50": { id: "ID-50", name: "Malet", urdu: "ما لٹ", parent: "ID-49", bId: "#ML-1", bio: "" },
             "ID-51": { id: "ID-51", name: "Mir Sahib Khan", urdu: "میر صاحب خان", parent: "ID-50", bId: "#MSK-1", bio: "" },
             "ID-52": { id: "ID-52", name: "Abdur Rehman", urdu: "عبدالرحمان", parent: "ID-51", bId: "#ARE-1", bio: "" },
             "ID-53": { id: "ID-53", name: "Safid Khan", urdu: "سفید خان", parent: "ID-52", bId: "#SAF-1", bio: "" },
@@ -304,13 +339,13 @@
             "ID-60": { id: "ID-60", name: "Malik Sher Nawaz Khan", urdu: "شیر نواز", parent: "ID-59", bId: "#SNW-1", bio: "", isLeader: true },
             "ID-61": { id: "ID-61", name: "Rabnawaz Khan", urdu: "ربنواز خان", parent: "ID-60", bId: "#RNW-1", bio: "" },
             "ID-62": { id: "ID-62", name: "Malik Akhlaq Ali Khan", urdu: "اخلاق علی خان", parent: "ID-61", bId: "#AAK-1", bio: "Current Sarparast / Leader", isLeader: true },
-            "ID-63": { id: "ID-63", name: "Waseem", urdu: "وسیم", parent: "ID-62", bId: "#WAS-2", bio: "" },
-            "ID-64": { id: "ID-64", name: "Faheem", urdu: "فہیم", parent: "ID-62", bId: "#FAH-1", bio: "" },
-            "ID-65": { id: "ID-65", name: "Noman", urdu: "نعمان", parent: "ID-62", bId: "#NOM-1", bio: "" },
+            "ID-63": { id: "ID-63", name: "Waseem Ullah Khan", urdu: "وسیم اللہ خان", parent: "ID-62", bId: "#WAS-2", bio: "" },
+            "ID-64": { id: "ID-64", name: "Faheem Ullah Khan", urdu: "فہیم اللہ خان", parent: "ID-62", bId: "#FAH-1", bio: "" },
+            "ID-65": { id: "ID-65", name: "Noman Khan", urdu: "نعمان خان", parent: "ID-62", bId: "#NOM-1", bio: "" },
             "ID-66": { id: "ID-66", name: "Shaukat Ali Khan", urdu: "شوکت علی خان", parent: "ID-61", bId: "#SAK-1", bio: "" },
-            "ID-67": { id: "ID-67", name: "Abdul Ahad", urdu: "عبدالاحاد", parent: "ID-66", bId: "#AAH-1", bio: "" },
-            "ID-68": { id: "ID-68", name: "Anas", urdu: "انس", parent: "ID-66", bId: "#ANA-1", bio: "" },
-            "ID-69": { id: "ID-69", name: "Hasnain", urdu: "حسنین", parent: "ID-66", bId: "#HAS-2", bio: "" },
+            "ID-67": { id: "ID-67", name: "Abdul Ahad", urdu: "عبدالاحد", parent: "ID-66", bId: "#AAH-1", bio: "" },
+            "ID-68": { id: "ID-68", name: "Anas Khan", urdu: "انس خان", parent: "ID-66", bId: "#ANA-1", bio: "" },
+            "ID-69": { id: "ID-69", name: "Hasnain Khan", urdu: "حسنین خان", parent: "ID-66", bId: "#HAS-2", bio: "" },
             "ID-70": { id: "ID-70", name: "Malik Balqiaz Khan", urdu: "بلقیاز خان", parent: "ID-59", bId: "#BQK-1", bio: "", isLeader: true },
             "ID-71": { id: "ID-71", name: "Muhammad Ashraf", urdu: "محمد اشرف", parent: "ID-70", bId: "#MASH-1", bio: "" },
             "ID-72": { id: "ID-72", name: "Zohaib Khan", urdu: "زہیب خان", parent: "ID-71", bId: "#ZOH-1", bio: "" },
@@ -327,7 +362,7 @@
             "ID-83": { id: "ID-83", name: "Zohan Khan", urdu: "زوہان خان", parent: "ID-81", bId: "#ZOH-2", bio: "" },
             "ID-84": { id: "ID-84", name: "Dost Muhammad", urdu: "دوست محمد", parent: "ID-70", bId: "#DOM-1", bio: "" },
             "ID-85": { id: "ID-85", name: "Abu Huraira", urdu: "ابو ہریرہ", parent: "ID-84", bId: "#ABU-1", bio: "" },
-            "ID-86": { id: "ID-86", name: "Muhammad Jan", urdu: "محمد جان", parent: "ID-49", bId: "#MJ-1", bio: "" },
+            "ID-86": { id: "ID-86", name: "Muhammad Jan", urdu: "محمد جان", parent: "ID-49", bId: "#MJ-1", bio: "Details Pending" },
             "ID-87": { id: "ID-87", name: "Shah Qulzam", urdu: "شاہ قلزم", parent: "ID-8", bId: "#SQ-1", bio: "" },
             "ID-88": { id: "ID-88", name: "Badshah Khan", urdu: "بادشاہ خان", parent: "ID-87", bId: "#BK-1", bio: "" },
             "ID-89": { id: "ID-89", name: "Dilawar Khan", urdu: "دلاور خان", parent: "ID-88", bId: "#DK-1", bio: "" },
@@ -343,8 +378,8 @@
             "ID-99": { id: "ID-99", name: "Rahid Khan", urdu: "راہد خان", parent: "ID-94", bId: "#RAH-1", bio: "" },
             "ID-100": { id: "ID-100", name: "Ghajan", urdu: "غجان", parent: "ID-8", bId: "#GHJ-1", bio: "" },
             "ID-101": { id: "ID-101", name: "Azamrai", urdu: "آزمرائی", parent: "ID-100", bId: "#AZM-1", bio: "" },
-            "ID-102": { id: "ID-102", name: "Gul Khoban", urdu: "گل خوبان", parent: "ID-101", bId: "#GK-1", bio: "" },
-            "ID-103": { id: "ID-103", name: "Kamran Nawaz", urdu: "کامران نواز", parent: "ID-102", bId: "#KN-1", bio: "" },
+            "ID-102": { id: "ID-102", name: "Gul Khoban", urdu: "گل خوبان", parent: "ID-101", bId: "#GK-1", bio: "No Children" },
+            "ID-103": { id: "ID-103", name: "Kamran Nawaz", urdu: "کامران نواز", parent: "ID-107", bId: "#KN-1", bio: "" },
             "ID-104": { id: "ID-104", name: "Ma'moon", urdu: "مامون", parent: "ID-103", bId: "#MAM-1", bio: "" },
             "ID-105": { id: "ID-105", name: "Ahmed Nawaz", urdu: "احمد نواز", parent: "ID-103", bId: "#AN-1", bio: "" },
             "ID-106": { id: "ID-106", name: "Muhammad Nawaz", urdu: "محمد نواز", parent: "ID-103", bId: "#MUN-2", bio: "" },
@@ -354,20 +389,20 @@
             "ID-110": { id: "ID-110", name: "Umar Nawaz", urdu: "عمر نواز", parent: "ID-107", bId: "#UN-1", bio: "" },
             "ID-111": { id: "ID-111", name: "Yasir Nawaz", urdu: "یاسر نواز", parent: "ID-110", bId: "#YN-1", bio: "" },
             "ID-112": { id: "ID-112", name: "Zar Gul", urdu: "زر گل", parent: "ID-101", bId: "#ZG-1", bio: "" },
-            "ID-113": { id: "ID-113", name: "After Ali", urdu: "افٹر علی", parent: "ID-112", bId: "#AA-1", bio: "" },
-            "ID-114": { id: "ID-114", name: "Zewaran", urdu: "زیورن", parent: "ID-113", bId: "#ZEW-1", bio: "" },
+            "ID-113": { id: "ID-113", name: "Afsar Ali", urdu: "افسر علی", parent: "ID-112", bId: "#AA-1", bio: "No Children" },
+            "ID-114": { id: "ID-114", name: "Zewaran", urdu: "زیورن", parent: "ID-115", bId: "#ZEW-1", bio: "" },
             "ID-115": { id: "ID-115", name: "Umar Ali", urdu: "عمر علی", parent: "ID-112", bId: "#UAL-1", bio: "" },
-            "ID-116": { id: "ID-116", name: "Faizan (Umar Branch)", urdu: "فیضان", parent: "ID-115", bId: "#FAI-2", bio: "" },
+            "ID-116": { id: "ID-116", name: "Faizan", urdu: "فیضان", parent: "ID-115", bId: "#FAI-2", bio: "" },
             "ID-117": { id: "ID-117", name: "Imran", urdu: "عمران", parent: "ID-115", bId: "#IMR-1", bio: "" },
             "ID-118": { id: "ID-118", name: "Suleman", urdu: "سلیمان", parent: "ID-115", bId: "#SUL-1", bio: "" },
             "ID-119": { id: "ID-119", name: "Gul Qamar Zaman", urdu: "گل قمر زمان", parent: "ID-100", bId: "#GQZ-1", bio: "" },
             "ID-120": { id: "ID-120", name: "Amanullah", urdu: "امان اللہ", parent: "ID-119", bId: "#AMA-2", bio: "" },
             "ID-121": { id: "ID-121", name: "Najeebullah", urdu: "نجیب اللہ", parent: "ID-120", bId: "#NAJ-1", bio: "" },
-            "ID-122": { id: "ID-122", name: "Zaidullah", urdu: "زید اللہ", parent: "ID-121", bId: "#ZAI-1", bio: "" },
+            "ID-122": { id: "ID-122", name: "Zaibullah", urdu: "زیب اللہ", parent: "ID-121", bId: "#ZAI-1", bio: "" },
             "ID-123": { id: "ID-123", name: "Atif", urdu: "عاطف", parent: "ID-121", bId: "#ATI-1", bio: "" },
             "ID-124": { id: "ID-124", name: "Aqif", urdu: "عاقف", parent: "ID-121", bId: "#AQI-1", bio: "" },
-            "ID-125": { id: "ID-125", name: "Musaib", urdu: "مصیب", parent: "ID-121", bId: "#MUS-1", bio: "" },
-            "ID-126": { id: "ID-126", name: "Abu Bakar", urdu: "ابو بکر", parent: "ID-121", bId: "#ABU-2", bio: "" },
+            "ID-125": { id: "ID-125", name: "Musaib", urdu: "مصیب", parent: "ID-130", bId: "#MUS-1", bio: "" },
+            "ID-126": { id: "ID-126", name: "Abu Bakar", urdu: "ابو بکر", parent: "ID-130", bId: "#ABU-2", bio: "" },
             "ID-127": { id: "ID-127", name: "Ataullah", urdu: "عطاء اللہ", parent: "ID-119", bId: "#ATA-1", bio: "" },
             "ID-128": { id: "ID-128", name: "Zikran Khan", urdu: "ذکران خان", parent: "ID-127", bId: "#ZIK-1", bio: "" },
             "ID-129": { id: "ID-129", name: "Mir Liaqat Ali Khan", urdu: "میر لیاقت علی خان", parent: "ID-119", bId: "#MLK-1", bio: "" },
@@ -398,16 +433,16 @@
             "ID-154": { id: "ID-154", name: "Qismat Reza", urdu: "قسمت رضا", parent: "ID-151", bId: "#QRE-1", bio: "" },
             "ID-155": { id: "ID-155", name: "Murtaza", urdu: "مرتضیٰ", parent: "ID-151", bId: "#MUR-1", bio: "" },
             "ID-156": { id: "ID-156", name: "Rasool Khan", urdu: "رسول خان", parent: "ID-100", bId: "#RSK-1", bio: "" },
-            "ID-157": { id: "ID-157", name: "Star Khan", urdu: "اسٹار خان", parent: "ID-156", bId: "#STK-1", bio: "" },
+            "ID-157": { id: "ID-157", name: "Satar Khan", urdu: "ستار خان", parent: "ID-156", bId: "#STK-1", bio: "" },
             "ID-158": { id: "ID-158", name: "Shaheedullah", urdu: "شہید اللہ", parent: "ID-157", bId: "#SHH-1", bio: "" },
-            "ID-159": { id: "ID-159", name: "Asim (Star)", urdu: "عاصم", parent: "ID-157", bId: "#ASI-2", bio: "" },
-            "ID-160": { id: "ID-160", name: "Muhammad Gul", urdu: "محمد گل", parent: "ID-156", bId: "#MGL-1", bio: "" },
-            "ID-161": { id: "ID-161", name: "Fazeel", urdu: "فضیل", parent: "ID-160", bId: "#FAZ-1", bio: "" },
-            "ID-162": { id: "ID-162", name: "Jameel", urdu: "جمیل", parent: "ID-160", bId: "#JAM-1", bio: "" },
-            "ID-163": { id: "ID-163", name: "Hassan", urdu: "حسن", parent: "ID-162", bId: "#HAS-3", bio: "" }
+            "ID-159": { id: "ID-159", name: "Asim", urdu: "عاصم", parent: "ID-161", bId: "#ASI-2", bio: "" },
+            "ID-160": { id: "ID-160", name: "Muhammad Gul", urdu: "محمد گل", parent: "ID-156", bId: "#MGL-1", bio: "No Children" },
+            "ID-161": { id: "ID-161", name: "Fazeel", urdu: "فضیل", parent: "ID-157", bId: "#FAZ-1", bio: "" },
+            "ID-162": { id: "ID-162", name: "Jameel", urdu: "جمیل", parent: "ID-157", bId: "#JAM-1", bio: "" },
+            "ID-163": { id: "ID-163", name: "Hassan", urdu: "حسن", parent: "ID-162", bId: "#HAS-3", bio: "" },
+            "ID-164": { id: "ID-164", name: "Qasim", urdu: "قاسم", parent: "ID-53", bId: "#QAS-2", bio: "" }
         };
 
-        // --- CALCULATION LOGIC ---
         function calculateGenerations() {
             function getDepth(id, currentGen) {
                 const children = Object.values(familyData).filter(c => c.parent === id);
@@ -418,7 +453,6 @@
             return getDepth("ID-1", 1);
         }
 
-        // --- STATE & NAVIGATION LOGIC ---
         let navStack = [{ section: 'dashboard', params: null }];
 
         function navTo(section, params = null) {
@@ -455,7 +489,6 @@
             window.scrollTo(0,0);
         }
 
-        // --- UI RENDERING ---
         function renderSidebar() {
             const list = document.getElementById('sidebarList');
             list.innerHTML = "";
@@ -491,7 +524,6 @@
         }
 
         function renderLeaders() {
-            // Strict sequence mandated: ID-1, ID-8, ID-59, ID-60, ID-70
             const historicIds = ["ID-1", "ID-8", "ID-59", "ID-60", "ID-70"];
             const grid = document.getElementById('leadersGrid');
             grid.innerHTML = "";
@@ -510,7 +542,6 @@
             });
         }
 
-        // --- PROFILE LOGIC ---
         function displayProfileData(id) {
             const m = familyData[id];
             document.getElementById('engName').innerText = m.name;
@@ -541,7 +572,6 @@
             }
         }
 
-        // --- TREE VIEW LOGIC (Pan & Zoom) ---
         let treeRendered = false;
         function initTree() {
             if(!treeRendered) {
@@ -654,7 +684,6 @@
             document.getElementById('treeContainer').style.transform = `translate(0px, 0px) scale(1)`;
         }
 
-        // --- IMAGE ARCHIVE LOGIC ---
         function addGalleryImage(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -669,7 +698,6 @@
             }
         }
 
-        // INIT
         renderSidebar();
         renderState();
     </script>
