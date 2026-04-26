@@ -276,7 +276,7 @@
     </main>
 
     <script>
-        let familyData = {
+      let familyData = {
             "ID-1": { id: "ID-1", name: "Malik Tughal Khan", urdu: "طغل خان", parent: null, bId: "#TK-1", bio: "The Supreme Ancestor.", isLeader: true },
             "ID-2": { id: "ID-2", name: "Bajal", urdu: "باجل", parent: "ID-1", bId: "#B-1", bio: "" },
             "ID-3": { id: "ID-3", name: "Malak", urdu: "ملک", parent: "ID-2", bId: "#M-1", bio: "" },
@@ -340,6 +340,47 @@
             "ID-61": { id: "ID-61", name: "Rabnawaz Khan", urdu: "ربنواز خان", parent: "ID-60", bId: "#RNW-1", bio: "" },
             "ID-62": { id: "ID-62", name: "Malik Akhlaq Ali Khan", urdu: "اخلاق علی خان", parent: "ID-61", bId: "#AAK-1", bio: "Current Sarparast / Leader", isLeader: true },
             "ID-63": { id: "ID-63", name: "Waseem Ullah Khan", urdu: "وسیم اللہ خان", parent: "ID-62", bId: "#WAS-2", bio: "" },
+            
+            // Sons of Waseem Ullah Khan
+            "ID-S1": { id: "ID-S1", name: "SALAR KHAN", urdu: "سالار خان", parent: "ID-63", bId: "#WK-S1", bio: "" },
+            "ID-S2": { id: "ID-S2", name: "BURAQ KHAN", urdu: "بوراک خان", parent: "ID-63", bId: "#WK-S2", bio: "" },
+            "ID-S3": { id: "ID-S3", name: "BURAIR KHAN", urdu: "بوریر خان", parent: "ID-63", bId: "#WK-S3", bio: "" },
+            "ID-S4": { id: "ID-S4", name: "ZARAK KHAN", urdu: "زرک خان", parent: "ID-63", bId: "#WK-S4", bio: "" },
+            "ID-S5": { id: "ID-S5", name: "HANNAN KHAN", urdu: "حنان خان", parent: "ID-63", bId: "#WK-S5", bio: "" },
+            "ID-S6": { id: "ID-S6", name: "JASER KHAN", urdu: "جثر خان", parent: "ID-63", bId: "#WK-S6", bio: "" },
+            "ID-S7": { id: "ID-S7", name: "JARRAR KHAN", urdu: "جرار خان", parent: "ID-63", bId: "#WK-S7", bio: "" },
+            "ID-S8": { id: "ID-S8", name: "SHER KHAN", urdu: "شیر خان", parent: "ID-63", bId: "#WK-S8", bio: "" },
+            "ID-S9": { id: "ID-S9", name: "SHAHVEER KHAN", urdu: "شاہ ویر خان", parent: "ID-63", bId: "#WK-S9", bio: "" },
+            "ID-S10": { id: "ID-S10", name: "SHAHAN KHAN", urdu: "شاہان خان", parent: "ID-63", bId: "#WK-S10", bio: "" },
+            "ID-S11": { id: "ID-S11", name: "ARISH KHAN", urdu: "آریش خان", parent: "ID-63", bId: "#WK-S11", bio: "" },
+            "ID-S12": { id: "ID-S12", name: "SHAMSHER KHAN", urdu: "شمشیر خان", parent: "ID-63", bId: "#WK-S12", bio: "" },
+            "ID-S13": { id: "ID-S13", name: "HUNAIN KHAN", urdu: "حنین خان", parent: "ID-63", bId: "#WK-S13", bio: "" },
+            "ID-S14": { id: "ID-S14", name: "SHAHROZ KHAN", urdu: "شہروز خان", parent: "ID-63", bId: "#WK-S14", bio: "" },
+            "ID-S15": { id: "ID-S15", name: "SHAHEER KHAN", urdu: "شہیر خان", parent: "ID-63", bId: "#WK-S15", bio: "" },
+            "ID-S16": { id: "ID-S16", name: "MASHAAL KHAN", urdu: "مشال خان", parent: "ID-63", bId: "#WK-S16", bio: "" },
+            "ID-S17": { id: "ID-S17", name: "ALTAMASH KAHN", urdu: "ا لتمش خان", parent: "ID-63", bId: "#WK-S17", bio: "" },
+            "ID-S18": { id: "ID-S18", name: "ZAVIER KHAN", urdu: "زیویر خان", parent: "ID-63", bId: "#WK-S18", bio: "" },
+            "ID-S19": { id: "ID-S19", name: "KHAZEN KHAN", urdu: "خا ز ن خان", parent: "ID-63", bId: "#WK-S19", bio: "" },
+            "ID-S20": { id: "ID-S20", name: "AHSAN KHAN", urdu: "ا حسن خان", parent: "ID-63", bId: "#WK-S20", bio: "" },
+            "ID-S21": { id: "ID-S21", name: "ARHAM KHAN", urdu: "ا ر خم خان", parent: "ID-63", bId: "#WK-S21", bio: "" },
+            "ID-S22": { id: "ID-S22", name: "ZAYAN KHAN", urdu: "زیان خان", parent: "ID-63", bId: "#WK-S22", bio: "" },
+            "ID-S23": { id: "ID-S23", name: "RAFAY KHAN", urdu: "رافع خان", parent: "ID-63", bId: "#WK-S23", bio: "" },
+            "ID-S24": { id: "ID-S24", name: "HAIDER KHAN", urdu: "خیدر خان", parent: "ID-63", bId: "#WK-S24", bio: "" },
+            
+            // Daughters of Waseem Ullah Khan
+            "ID-D1": { id: "ID-D1", name: "ABRISH KHAN", urdu: "آ بر ش خان", parent: "ID-63", bId: "#WK-D1", bio: "" },
+            "ID-D2": { id: "ID-D2", name: "UMM E HANI", urdu: "ا م ہا نی", parent: "ID-63", bId: "#WK-D2", bio: "" },
+            "ID-D3": { id: "ID-D3", name: "RAMEEN KHAN", urdu: "ر ا مین خان", parent: "ID-63", bId: "#WK-D3", bio: "" },
+            "ID-D4": { id: "ID-D4", name: "HAMNA KHAN", urdu: "حمنا خان", parent: "ID-63", bId: "#WK-D4", bio: "" },
+            "ID-D5": { id: "ID-D5", name: "AREEBA KHAN", urdu: "ا یبا خان", parent: "ID-63", bId: "#WK-D5", bio: "" },
+            "ID-D6": { id: "ID-D6", name: "ESHAL KHAN", urdu: "عشال خان", parent: "ID-63", bId: "#WK-D6", bio: "" },
+            "ID-D7": { id: "ID-D7", name: "SHANZA KHAN", urdu: "شانزا خان", parent: "ID-63", bId: "#WK-D7", bio: "" },
+            "ID-D8": { id: "ID-D8", name: "EZRA KHAN", urdu: "عزرا خان", parent: "ID-63", bId: "#WK-D8", bio: "" },
+            "ID-D9": { id: "ID-D9", name: "MUSFIRAH KHAN", urdu: "مصفرہ خان", parent: "ID-63", bId: "#WK-D9", bio: "" },
+            "ID-D10": { id: "ID-D10", name: "MAHROSH KHAN", urdu: "مہروش خان", parent: "ID-63", bId: "#WK-D10", bio: "" },
+            "ID-D11": { id: "ID-D11", name: "AREESHA KHAN", urdu: "آ ر یشہ خان", parent: "ID-63", bId: "#WK-D11", bio: "" },
+            "ID-D12": { id: "ID-D12", name: "IFRA KHAN", urdu: "ا فرہ خان", parent: "ID-63", bId: "#WK-D12", bio: "" },
+
             "ID-64": { id: "ID-64", name: "Faheem Ullah Khan", urdu: "فہیم اللہ خان", parent: "ID-62", bId: "#FAH-1", bio: "" },
             "ID-65": { id: "ID-65", name: "Noman Khan", urdu: "نعمان خان", parent: "ID-62", bId: "#NOM-1", bio: "" },
             "ID-66": { id: "ID-66", name: "Shaukat Ali Khan", urdu: "شوکت علی خان", parent: "ID-61", bId: "#SAK-1", bio: "" },
