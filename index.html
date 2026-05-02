@@ -15,9 +15,9 @@
             color: #455a64; 
         }
         
-        .bg-midnight { background-color: #1a237e; }
-        .text-midnight { color: #1a237e; }
-        .border-midnight { border-color: #1a237e; }
+        .bg-midnight { background-color: #0d1757; }
+        .text-midnight { color: #0d1757; }
+        .border-midnight { border-color: #0d1757; }
         .bg-slate-grey { background-color: #455a64; }
         .text-slate-grey { color: #455a64; }
 
@@ -33,11 +33,21 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
         }
 
-        .sidebar { background-color: #1a237e; color: white; z-index: 50; transition: all 0.3s ease; }
+        /* MOBILE HEADER */
+        #mobileHeader { display: none; position: fixed; top: 0; left: 0; right: 0; height: 54px; background: #0d1757; z-index: 100; align-items: center; justify-content: space-between; padding: 0 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.25); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        @media (max-width: 1023px) { #mobileHeader { display: flex; } body { padding-top: 54px; } }
+
+        /* DESKTOP SIDEBAR REOPEN BUTTON */
+        #sidebarReopenBtn { display: none; position: fixed; top: 14px; left: 14px; z-index: 99; background: #0d1757; border: none; color: white; width: 38px; height: 38px; border-radius: 10px; cursor: pointer; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        /* ACTIVE NAV */
+        .sidebar-btn.active-nav { background-color: #1a237e !important; color: white !important; border-left: 3px solid #7986cb; }
+
+        .sidebar { background-color: #0d1757; color: white; z-index: 50; transition: all 0.3s ease; }
         .sidebar-btn { color: #c5cae9; border-radius: 12px; }
-        .sidebar-btn:hover { background-color: #283593; color: white; }
+        .sidebar-btn:hover { background-color: #1a237e; color: white; }
         .sidebar-item { background-color: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;}
-        .sidebar-item:hover { background-color: #283593; }
+        .sidebar-item:hover { background-color: #1a237e; }
 
         @media (min-width: 1024px) {
             .sidebar { height: 100vh; position: fixed; width: 320px; overflow-y: auto; }
@@ -47,7 +57,7 @@
         }
 
         @media (max-width: 1023px) {
-            .sidebar { width: 100%; height: auto; border-bottom: 4px solid #283593; display: none; flex-direction: column;}
+            .sidebar { width: 100%; height: auto; border-bottom: 4px solid #1a237e; display: none; flex-direction: column;}
             .sidebar.mobile-open { display: flex !important; }
             .main-content { margin-left: 0; padding: 1rem; }
             #sidebarList { max-height: 35vh; overflow-y: auto; padding: 0.5rem; }
@@ -64,11 +74,11 @@
         .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #b0bec5; width: 50%; height: 20px; }
         .tree li::after { right: auto; left: 50%; border-left: 2px solid #b0bec5; }
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
-        .tree li a { border: 2px solid #cfd8dc; padding: 10px 16px; border-radius: 12px; background: white; color: #1a237e; display: inline-block; font-size: 12px; font-weight: 700; white-space: nowrap; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .tree li a:hover { background: #e8eaf6; border-color: #3f51b5; color: #1a237e; transform: scale(1.05); }
+        .tree li a { border: 2px solid #cfd8dc; padding: 10px 16px; border-radius: 12px; background: white; color: #0d1757; display: inline-block; font-size: 12px; font-weight: 700; white-space: nowrap; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tree li a:hover { background: #e8eaf6; border-color: #3f51b5; color: #0d1757; transform: scale(1.05); }
         
         .tree-node.dim { opacity: 0.25; filter: grayscale(100%); }
-        .tree-node.highlight { border-color: #1a237e; background-color: #e8eaf6; box-shadow: 0 0 15px rgba(26, 35, 126, 0.3); transform: scale(1.1); z-index: 10; position: relative;}
+        .tree-node.highlight { border-color: #0d1757; background-color: #e8eaf6; box-shadow: 0 0 15px rgba(26, 35, 126, 0.3); transform: scale(1.1); z-index: 10; position: relative;}
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
         .gallery-img { width: 100%; height: 100px; object-fit: cover; border-radius: 12px; border: 2px solid #e0e0e0; }
@@ -92,8 +102,8 @@
 /* Ancestor Path breadcrumb */
 .ancestor-path { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-bottom: 16px; }
 .ancestor-path .crumb { font-size: 10px; font-weight: 800; color: #94a3b8; cursor: pointer; padding: 3px 8px; border-radius: 8px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
-.ancestor-path .crumb:hover { background: #e8eaf6; color: #1a237e; }
-.ancestor-path .crumb.current { color: #1a237e; background: #e8eaf6; }
+.ancestor-path .crumb:hover { background: #e8eaf6; color: #0d1757; }
+.ancestor-path .crumb.current { color: #0d1757; background: #e8eaf6; }
 .ancestor-path .sep { color: #cbd5e1; font-size: 10px; }
 
 /* Generation badge */
@@ -123,9 +133,14 @@ body.dark-mode .tree li a { background: #1e293b !important; color: #a5b4fc !impo
 /* Stats charts */
 .gen-bar-wrap { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
 .gen-bar { border-radius: 6px 6px 0 0; background: #3f51b5; min-width: 24px; flex: 1; transition: height 0.5s ease; cursor: pointer; position: relative; }
-.gen-bar:hover { background: #1a237e; }
+.gen-bar:hover { background: #0d1757; }
 .gen-bar .bar-label { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 800; color: #94a3b8; white-space: nowrap; }
-.gen-bar .bar-val { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 900; color: #1a237e; white-space: nowrap; }
+.gen-bar .bar-val { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 900; color: #0d1757; white-space: nowrap; }
+
+/* Gen filter buttons */
+.gf-btn { padding:5px 13px; border-radius:20px; border:1.5px solid #e0e0e0; background:white; font-size:11px; font-weight:700; color:#455a64; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.gf-btn:hover { border-color:#0d1757; color:#0d1757; }
+.gf-btn.gf-active { background:#0d1757; color:white; border-color:#0d1757; }
 
 /* Relationship modal */
 #relModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; }
@@ -136,18 +151,42 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
 </head>
 <body>
 
-    <aside id="sidebar" class="sidebar shadow-2xl">
-<div class="flex items-center justify-between p-4 border-b border-white/10">
-    
-    <div class="text-white font-semibold">
-        Menu
+    <!-- MOBILE HEADER - only on mobile -->
+    <div id="mobileHeader">
+        <div class="flex items-center gap-2">
+            <div style="width:30px;height:30px;background:rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-shield-halved" style="color:white;font-size:13px;"></i>
+            </div>
+            <div>
+                <p style="color:white;font-weight:900;font-size:12px;margin:0;">جلات طغل خیل</p>
+                <p style="color:#a5b4fc;font-size:8px;text-transform:uppercase;letter-spacing:0.15em;margin:0;">Heritage Vault</p>
+            </div>
+        </div>
+        <button onclick="toggleSidebar()" style="background:rgba(255,255,255,0.1);border:none;color:white;width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:15px;">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
 
-    <button id="menuToggle" onclick="toggleSidebar()" class="text-white text-xl">
-        <i class="fas fa-bars"></i>
+    <!-- DESKTOP SIDEBAR REOPEN BUTTON -->
+    <button id="sidebarReopenBtn" onclick="toggleSidebar()" title="Open Sidebar">
+        <i class="fas fa-bars" style="font-size:15px;"></i>
     </button>
 
-</div>
+    <aside id="sidebar" class="sidebar shadow-2xl">
+        <!-- Desktop header row only -->
+        <div class="hidden lg:flex items-center justify-between p-4 border-b border-white/10">
+            <div class="text-white font-semibold text-sm">جلات طغل خیل</div>
+            <button onclick="toggleSidebar()" style="background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.6);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile sidebar close row -->
+        <div class="flex lg:hidden items-center justify-between p-3 border-b border-white/10">
+            <span style="color:rgba(255,255,255,0.45);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;">Navigation</span>
+            <button onclick="toggleSidebar()" style="background:rgba(255,255,255,0.08);border:none;color:white;width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:13px;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
         <div class="p-6 border-b border-indigo-900">
             <div class="flex items-center space-x-3 mb-2">
                 <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md shrink-0">
@@ -163,15 +202,29 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             </p>
         </div>
 
-        <nav class="p-4 flex gap-2 lg:flex-col lg:gap-0 lg:space-y-2 overflow-x-auto lg:overflow-visible border-b border-indigo-900 lg:border-none shrink-0">
-            <button onclick="navTo('dashboard')" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
+        <!-- SEARCH BAR — above nav buttons -->
+        <div class="p-3 border-b border-indigo-900/60 shrink-0">
+            <input type="text" id="searchBox" placeholder="Search members..." oninput="filterSidebar()"
+                class="w-full bg-indigo-950 border border-indigo-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none placeholder-indigo-400 focus:border-indigo-400 transition-colors">
+            <div id="sidebarSearchResults" style="display:none;margin-top:6px;max-height:200px;overflow-y:auto;"></div>
+        </div>
+
+        <!-- NAV BUTTONS -->
+        <nav class="p-2 flex gap-1 lg:flex-col lg:gap-0 lg:space-y-1 overflow-x-auto lg:overflow-visible shrink-0" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+            <button onclick="navTo('dashboard')" id="navBtn-dashboard" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
                 <i class="fas fa-home w-4 text-center"></i> <span>Dashboard</span>
             </button>
-            <button onclick="navTo('treeSection')" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
+            <button onclick="navTo('membersSection')" id="navBtn-membersSection" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
+                <i class="fas fa-users w-4 text-center"></i> <span>Verified Records</span>
+            </button>
+            <button onclick="navTo('treeSection')" id="navBtn-treeSection" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
                 <i class="fas fa-sitemap w-4 text-center"></i> <span>Visual Tree</span>
             </button>
-            <button onclick="navTo('statsSection')" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
+            <button onclick="navTo('statsSection')" id="navBtn-statsSection" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
                 <i class="fas fa-chart-bar w-4 text-center"></i> <span>Statistics</span>
+            </button>
+            <button onclick="navTo('villageSection')" id="navBtn-villageSection" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
+                <i class="fas fa-mosque w-4 text-center"></i> <span>Our Village</span>
             </button>
             <button onclick="openRelModal()" class="sidebar-btn shrink-0 lg:w-full flex items-center space-x-3 p-3 transition-all font-bold text-xs uppercase tracking-wider">
                 <i class="fas fa-people-arrows w-4 text-center"></i> <span>Relationship</span>
@@ -180,20 +233,12 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                 <i class="fas fa-moon w-4 text-center"></i> <span>Dark Mode</span>
             </button>
         </nav>
-        
-        <div class="p-4 border-b border-indigo-900 bg-indigo-900/30 shrink-0">
-            
-<input type="text" id="searchBox" placeholder="Search lineage..." onkeyup="filterSidebar()" class="w-full bg-indigo-950 border border-indigo-800 rounded-xl px-4 py-2.5 text-xs text-white outline-none placeholder-indigo-400 focus:border-indigo-400 transition-colors">
-        </div>
-        
-        <div id="sidebarList" class="flex-1 space-y-2 lg:p-4"></div>
+
+        <!-- Member list removed from sidebar -->
+        <div id="sidebarList" style="display:none;"></div>
     </aside>
 
     <main class="main-content relative">
-        <!-- Mobile floating menu button (shows when sidebar is hidden) -->
-        <button id="floatingMenuBtn" onclick="toggleSidebar()" class="lg:hidden fixed top-4 left-4 z-50 bg-midnight text-white w-10 h-10 rounded-xl shadow-lg flex items-center justify-center">
-            <i class="fas fa-bars"></i>
-        </button>
         <button id="globalBackBtn" onclick="goBack()" class="hidden fixed bottom-6 right-6 lg:top-6 lg:right-6 lg:bottom-auto bg-midnight text-white px-5 py-3 rounded-full shadow-lg font-bold text-sm hover:bg-indigo-900 transition-all z-50 flex items-center">
             <i class="fas fa-arrow-left mr-2"></i> Back
         </button>
@@ -393,6 +438,39 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                         <div id="leafNodes" class="space-y-1 max-h-48 overflow-y-auto"></div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- VERIFIED RECORDS SECTION -->
+        <section id="membersSection" class="hidden animate-in fade-in duration-500 max-w-6xl mx-auto">
+            <div class="executive-card p-6 mt-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+                    <div>
+                        <h2 class="text-xl font-black text-midnight uppercase tracking-widest">Verified Records</h2>
+                        <p class="text-xs text-slate-400 mt-1">Click any member to view full profile</p>
+                    </div>
+                    <span id="memberCountBadge" class="text-xs font-black text-indigo-500 bg-indigo-50 px-3 py-1 rounded-xl border border-indigo-100"></span>
+                </div>
+                <input type="text" id="membersSearchInput" placeholder="Search by name, Urdu or ID..." oninput="filterMembersSection()"
+                    class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-indigo-400 transition-colors mb-4">
+                <div id="genFilterBtns" class="flex gap-2 flex-wrap mb-5"></div>
+                <div id="membersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            </div>
+        </section>
+
+        <!-- OUR VILLAGE SECTION -->
+        <section id="villageSection" class="hidden animate-in fade-in duration-500 max-w-5xl mx-auto">
+            <div class="executive-card p-8 mt-4">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-midnight rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-mosque text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-black text-midnight uppercase tracking-widest">Our Village</h2>
+                        <p class="text-xs text-slate-400 mt-1">Bannu, Khyber Pakhtunkhwa</p>
+                    </div>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed">Jalat Tughal Khel is a distinguished sub-tribe of the Tughal Khel clan, deeply rooted in the Bannu district of Khyber Pakhtunkhwa. More details will be added in upcoming updates.</p>
             </div>
         </section>
 
@@ -670,11 +748,22 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
 
         function renderState() {
             const state = navStack[navStack.length - 1];
-            ['dashboard', 'profileView', 'treeSection', 'statsSection'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+
+            // Hide all sections
+            ['dashboard', 'profileView', 'treeSection', 'statsSection', 'membersSection', 'villageSection'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.add('hidden');
             });
+
             document.getElementById('globalBackBtn').classList.toggle('hidden', navStack.length === 1);
-            
+
+            // Update active nav highlight
+            ['dashboard','membersSection','treeSection','statsSection','villageSection'].forEach(s => {
+                const btn = document.getElementById('navBtn-' + s);
+                if(btn) btn.classList.toggle('active-nav', state.section === s);
+            });
+
+            // Show correct section
             if(state.section === 'dashboard') {
                 document.getElementById('dashboard').classList.remove('hidden');
             } else if (state.section === 'profileView') {
@@ -686,46 +775,53 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             } else if (state.section === 'statsSection') {
                 document.getElementById('statsSection').classList.remove('hidden');
                 renderStats();
+            } else if (state.section === 'membersSection') {
+                document.getElementById('membersSection').classList.remove('hidden');
+                renderMembersSection(state.params);
+            } else if (state.section === 'villageSection') {
+                document.getElementById('villageSection').classList.remove('hidden');
+            }
+
+            // Close sidebar on mobile
+            if(window.innerWidth < 1024) {
+                document.getElementById('sidebar').classList.remove('mobile-open');
             }
             window.scrollTo(0,0);
         }
 
         function renderSidebar() {
-            const list = document.getElementById('sidebarList');
-            list.innerHTML = "";
-            let count = 0;
-            
-            Object.values(familyData).forEach(m => {
-                count++;
-                const gen = getGeneration(m.id);
-                const btn = document.createElement('button');
-                btn.className = "sidebar-item w-full text-left p-3 flex items-center space-x-3 text-indigo-100 transition-all";
-                btn.dataset.urdu = m.urdu;
-                btn.onclick = () => navTo('profileView', m.id);
-                btn.innerHTML = `
-                    <div class="w-8 h-8 bg-indigo-950 rounded-lg flex items-center justify-center text-xs font-black shadow-inner shrink-0 border border-indigo-800">${m.name.charAt(0)}</div>
-                    <div class="overflow-hidden flex-1">
-                        <p class="text-[11px] font-bold truncate text-white">${m.name}</p>
-                        <p class="text-[9px] uppercase font-bold text-indigo-300 tracking-widest">${m.bId}</p>
-                    </div>
-                    <span class="gen-badge shrink-0">G${gen}</span>
-                `;
-                list.appendChild(btn);
-            });
-            
-            document.getElementById('statCount').innerText = count;
+            // Update counts only — member list no longer in sidebar
+            document.getElementById('statCount').innerText = Object.keys(familyData).length;
             document.getElementById('statGenerations').innerText = calculateGenerations();
             renderLeaders();
         }
 
         function filterSidebar() {
-            const query = document.getElementById('searchBox').value.toLowerCase();
-            const items = document.querySelectorAll('#sidebarList button');
-            items.forEach(item => {
-                const text = item.innerText.toLowerCase();
-                const urdu = item.dataset.urdu || '';
-                item.style.display = (text.includes(query) || urdu.includes(query)) ? 'flex' : 'none';
-            });
+            const query = document.getElementById('searchBox').value.toLowerCase().trim();
+            const resultsDiv = document.getElementById('sidebarSearchResults');
+            if(!query) { resultsDiv.style.display = 'none'; resultsDiv.innerHTML = ''; return; }
+
+            const matches = Object.values(familyData).filter(m =>
+                m.name.toLowerCase().includes(query) ||
+                (m.urdu && m.urdu.includes(query)) ||
+                m.bId.toLowerCase().includes(query)
+            ).slice(0, 10);
+
+            if(!matches.length) {
+                resultsDiv.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:10px;text-align:center;padding:8px;">No results found</p>';
+                resultsDiv.style.display = 'block';
+                return;
+            }
+
+            resultsDiv.innerHTML = matches.map(m => `
+                <div onclick="navTo('profileView','${m.id}')" style="display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:9px;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='rgba(99,102,241,0.2)'" onmouseout="this.style.background='transparent'">
+                    <div style="width:28px;height:28px;background:#1a237e;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:white;flex-shrink:0;">${m.name.charAt(0)}</div>
+                    <div style="overflow:hidden;flex:1;">
+                        <p style="font-size:11px;font-weight:700;color:white;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.name}</p>
+                        <p style="font-size:8px;color:#a5b4fc;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin:0;">${m.bId} · G${getGeneration(m.id)}</p>
+                    </div>
+                </div>`).join('');
+            resultsDiv.style.display = 'block';
         }
 
         function getGeneration(id) {
@@ -752,6 +848,69 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             const children = Object.values(familyData).filter(c => c.parent === id);
             if(children.length === 0) return 0;
             return children.length + children.reduce((sum, c) => sum + countDescendants(c.id), 0);
+        }
+
+        // ─── VERIFIED RECORDS / MEMBERS SECTION ───
+        let activeGenFilter = null;
+
+        function renderMembersSection(presetGen) {
+            if(presetGen !== undefined && presetGen !== null) activeGenFilter = presetGen;
+            const all = Object.values(familyData);
+            const genMap = {};
+            all.forEach(m => { const g = getGeneration(m.id); genMap[g] = (genMap[g]||0)+1; });
+            const maxGen = Math.max(...Object.keys(genMap).map(Number));
+
+            const btnsEl = document.getElementById('genFilterBtns');
+            if(btnsEl) {
+                btnsEl.innerHTML = `<button class="gf-btn ${activeGenFilter===null?'gf-active':''}" onclick="setGenFilter(null,this)">All (${all.length})</button>`;
+                for(let g=1; g<=maxGen; g++){
+                    btnsEl.innerHTML += `<button class="gf-btn ${activeGenFilter===g?'gf-active':''}" onclick="setGenFilter(${g},this)">Gen ${g} <span style="opacity:0.6;">(${genMap[g]||0})</span></button>`;
+                }
+            }
+            filterMembersSection();
+        }
+
+        function setGenFilter(gen, btn) {
+            activeGenFilter = gen;
+            document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('gf-active'));
+            if(btn) btn.classList.add('gf-active');
+            filterMembersSection();
+        }
+
+        function filterMembersSection() {
+            const q = (document.getElementById('membersSearchInput')?.value || '').toLowerCase();
+            const all = Object.values(familyData);
+            const filtered = all.filter(m => {
+                const gOk = activeGenFilter === null || getGeneration(m.id) === activeGenFilter;
+                const sOk = !q || m.name.toLowerCase().includes(q) || (m.urdu && m.urdu.includes(q)) || m.bId.toLowerCase().includes(q);
+                return gOk && sOk;
+            });
+            const badge = document.getElementById('memberCountBadge');
+            if(badge) badge.innerText = filtered.length + ' members';
+            const grid = document.getElementById('membersGrid');
+            if(!grid) return;
+            if(!filtered.length) {
+                grid.innerHTML = '<p class="text-sm text-slate-400 col-span-3 text-center py-10">No members found.</p>';
+                return;
+            }
+            grid.innerHTML = filtered.map(m => {
+                const savedImg = localStorage.getItem('pimg_'+m.id);
+                const avatar = savedImg
+                    ? `<img src="${savedImg}" style="width:100%;height:100%;object-fit:cover;border-radius:9px;">`
+                    : `<span style="font-size:15px;font-weight:900;color:white;">${m.name.charAt(0)}</span>`;
+                return `<div onclick="navTo('profileView','${m.id}')"
+                    style="background:white;border-radius:12px;border:1px solid #e0e0e0;padding:13px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.2s;"
+                    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(13,23,87,0.1)';this.style.borderColor='#c5cae9';"
+                    onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='#e0e0e0';">
+                    <div style="width:40px;height:40px;background:#0d1757;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">${avatar}</div>
+                    <div style="overflow:hidden;flex:1;">
+                        <p style="font-size:11px;font-weight:900;color:#0d1757;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.name}</p>
+                        <p style="font-size:9px;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:2px 0 0;">${m.bId} · Gen ${getGeneration(m.id)}</p>
+                        <p style="font-size:10px;color:#6b7280;margin:2px 0 0;" dir="rtl">${m.urdu}</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color:#e5e7eb;font-size:10px;flex-shrink:0;"></i>
+                </div>`;
+            }).join('');
         }
 
         function renderLeaders() {
@@ -1166,24 +1325,21 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.querySelector('.main-content');
-    const floatingBtn = document.getElementById('floatingMenuBtn');
+    const reopenBtn = document.getElementById('sidebarReopenBtn');
     if (!sidebar) return;
 
     if (window.innerWidth < 1024) {
         // Mobile: toggle mobile-open class
-        const isOpen = sidebar.classList.toggle('mobile-open');
-        // Hide floating button when sidebar is open (menuToggle inside sidebar will close it)
-        if (floatingBtn) {
-            floatingBtn.style.display = isOpen ? 'none' : 'flex';
-        }
+        sidebar.classList.toggle('mobile-open');
     } else {
-        // Desktop: toggle sidebar-hidden
+        // Desktop: toggle sidebar-hidden, adjust main content margin
         const isHidden = sidebar.classList.toggle('sidebar-hidden');
         if (mainContent) {
             mainContent.style.marginLeft = isHidden ? '0' : '320px';
         }
-        if (floatingBtn) {
-            floatingBtn.style.display = isHidden ? 'flex' : 'none';
+        // Show/hide the reopen button
+        if (reopenBtn) {
+            reopenBtn.style.display = isHidden ? 'flex' : 'none';
         }
     }
 }
@@ -1196,6 +1352,7 @@ function toggleSidebar() {
         // Load from URL share param
         loadFromURL();
         if(!new URLSearchParams(window.location.search).get('id')) renderState();
+
     </script>
 </body>
 </html>
