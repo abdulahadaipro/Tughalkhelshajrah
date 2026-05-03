@@ -81,7 +81,35 @@
         .tree-node.highlight { border-color: #0d1757; background-color: #e8eaf6; box-shadow: 0 0 15px rgba(26, 35, 126, 0.3); transform: scale(1.1); z-index: 10; position: relative;}
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
-        .gallery-img { width: 100%; height: 100px; object-fit: cover; border-radius: 12px; border: 2px solid #e0e0e0; }
+        .gallery-img { width: 100%; height: 100px; object-fit: cover; border-radius: 12px; border: 2px solid #e0e0e0; cursor: zoom-in; transition: transform 0.2s; }
+        .gallery-img:hover { transform: scale(1.03); }
+
+        /* Mobile responsive fixes */
+        @media (max-width: 640px) {
+            /* Stats grid 2-col on mobile */
+            #statsCardsGrid { grid-template-columns: 1fr 1fr !important; }
+            /* Back button bottom-right on mobile */
+            #globalBackBtn { bottom: 20px !important; right: 16px !important; top: auto !important; left: auto !important; position: fixed !important; }
+            /* Hero slider height */
+            #heroSlider { height: 185px !important; border-radius: 14px !important; }
+            /* Gen bars smaller font */
+            .gen-bar .bar-label { font-size: 7px !important; }
+            .gen-bar .bar-val { font-size: 7px !important; }
+            /* Profile image smaller on mobile */
+            #profileImgBox { width: 64px !important; height: 64px !important; }
+            /* Footer grid single col */
+            .footer-grid-resp { grid-template-columns: 1fr !important; gap: 28px !important; }
+        }
+
+        @media (min-width: 641px) and (max-width: 1023px) {
+            /* Back button top-right on tablet */
+            #globalBackBtn { top: 70px !important; right: 16px !important; bottom: auto !important; position: fixed !important; }
+        }
+
+        @media (min-width: 1024px) {
+            /* Back button top-right on desktop */
+            #globalBackBtn { top: 24px !important; right: 24px !important; bottom: auto !important; position: fixed !important; }
+        }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -121,14 +149,27 @@ body.dark-mode { background-color: #0f172a !important; color: #cbd5e1 !important
 body.dark-mode .executive-card { background: #1e293b !important; border-color: #334155 !important; }
 body.dark-mode .bg-gray-50 { background: #1e293b !important; }
 body.dark-mode .border-gray-100 { border-color: #334155 !important; }
+body.dark-mode .border-gray-200 { border-color: #334155 !important; }
 body.dark-mode .text-slate-900 { color: #f1f5f9 !important; }
 body.dark-mode .text-slate-grey { color: #94a3b8 !important; }
 body.dark-mode .text-slate-400 { color: #64748b !important; }
+body.dark-mode .text-slate-500 { color: #64748b !important; }
+body.dark-mode .text-slate-600 { color: #94a3b8 !important; }
 body.dark-mode .bg-white { background: #1e293b !important; }
-body.dark-mode .border-gray-200 { border-color: #334155 !important; }
 body.dark-mode .bg-indigo-50 { background: #1e3a5f !important; }
 body.dark-mode #treeView { background: #1e293b !important; border-color: #334155 !important; }
 body.dark-mode .tree li a { background: #1e293b !important; color: #a5b4fc !important; border-color: #334155 !important; }
+body.dark-mode #relModal .modal-box { background: #1e293b !important; color: #cbd5e1 !important; }
+body.dark-mode input[type="text"], body.dark-mode textarea { background: #0f172a !important; color: #cbd5e1 !important; border-color: #334155 !important; }
+body.dark-mode .gf-btn { background: #1e293b !important; color: #94a3b8 !important; border-color: #334155 !important; }
+body.dark-mode .gf-btn.gf-active { background: #0d1757 !important; color: white !important; border-color: #0d1757 !important; }
+body.dark-mode .text-midnight { color: #a5b4fc !important; }
+body.dark-mode .text-indigo-600 { color: #818cf8 !important; }
+body.dark-mode .text-indigo-500 { color: #818cf8 !important; }
+body.dark-mode .bg-emerald-50 { background: #064e3b !important; }
+body.dark-mode .border-emerald-200 { border-color: #065f46 !important; }
+body.dark-mode .text-slate-700 { color: #94a3b8 !important; }
+body.dark-mode #profileImgBox { background: #1e293b !important; border-color: #334155 !important; }
 
 /* Stats charts */
 .gen-bar-wrap { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
@@ -239,12 +280,49 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
     </aside>
 
     <main class="main-content relative">
-        <button id="globalBackBtn" onclick="goBack()" class="hidden fixed bottom-6 right-6 lg:top-6 lg:right-6 lg:bottom-auto bg-midnight text-white px-5 py-3 rounded-full shadow-lg font-bold text-sm hover:bg-indigo-900 transition-all z-50 flex items-center">
-            <i class="fas fa-arrow-left mr-2"></i> Back
+        <button id="globalBackBtn" onclick="goBack()" class="hidden" style="background:#0d1757;color:white;border:none;padding:10px 20px;border-radius:30px;font-size:12px;font-weight:700;cursor:pointer;z-index:50;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(13,23,87,0.3);letter-spacing:0.05em;text-transform:uppercase;">
+            <i class="fas fa-arrow-left"></i> Back
         </button>
 
         <section id="dashboard" class="animate-in fade-in duration-500 max-w-6xl mx-auto">
-            
+
+            <!-- HERO IMAGE SLIDER -->
+            <div id="heroSlider" style="position:relative;width:100%;height:300px;border-radius:20px;overflow:hidden;margin-bottom:24px;box-shadow:0 8px 32px rgba(13,23,87,0.18);">
+                <!-- Slides -->
+                <div class="hero-slide active" style="position:absolute;inset:0;opacity:1;transition:opacity 0.9s ease;">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80" alt="Heritage" style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,23,87,0.7) 0%,rgba(13,23,87,0.1) 60%,transparent 100%);"></div>
+                    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;color:white;">
+                        <p style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.2em;margin:0 0 4px;">Bannu, Khyber Pakhtunkhwa</p>
+                        <h2 style="font-size:22px;font-weight:900;margin:0;">Our Ancestral Land</h2>
+                    </div>
+                </div>
+                <div class="hero-slide" style="position:absolute;inset:0;opacity:0;transition:opacity 0.9s ease;">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80" alt="Mountains" style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,23,87,0.7) 0%,rgba(13,23,87,0.1) 60%,transparent 100%);"></div>
+                    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;color:white;">
+                        <p style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.2em;margin:0 0 4px;">Khyber Pakhtunkhwa</p>
+                        <h2 style="font-size:22px;font-weight:900;margin:0;">Heritage of the Mountains</h2>
+                    </div>
+                </div>
+                <div class="hero-slide" style="position:absolute;inset:0;opacity:0;transition:opacity 0.9s ease;">
+                    <img src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=1200&q=80" alt="Culture" style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,23,87,0.7) 0%,rgba(13,23,87,0.1) 60%,transparent 100%);"></div>
+                    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;color:white;">
+                        <p style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.2em;margin:0 0 4px;">Jalat Tughal Khel</p>
+                        <h2 style="font-size:22px;font-weight:900;margin:0;">Preserving Our Legacy</h2>
+                    </div>
+                </div>
+                <!-- Arrows -->
+                <button onclick="sliderPrev()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.2);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:3;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="sliderNext()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.2);border:none;color:white;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:3;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.35)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'"><i class="fas fa-chevron-right"></i></button>
+                <!-- Dots -->
+                <div style="position:absolute;bottom:14px;right:16px;display:flex;gap:6px;z-index:3;" id="sliderDots">
+                    <button onclick="goToSlide(0)" class="slider-dot active" style="width:8px;height:8px;border-radius:50%;background:white;border:none;cursor:pointer;padding:0;transition:all 0.3s;opacity:1;"></button>
+                    <button onclick="goToSlide(1)" class="slider-dot" style="width:8px;height:8px;border-radius:50%;background:white;border:none;cursor:pointer;padding:0;transition:all 0.3s;opacity:0.4;"></button>
+                    <button onclick="goToSlide(2)" class="slider-dot" style="width:8px;height:8px;border-radius:50%;background:white;border:none;cursor:pointer;padding:0;transition:all 0.3s;opacity:0.4;"></button>
+                </div>
+            </div>
             <header class="relative bg-midnight text-white p-10 mb-10 overflow-hidden rounded-[30px] shadow-2xl border-2 border-indigo-500/30">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500 opacity-10 rounded-full -mr-24 -mt-24 animate-pulse"></div>
                 
@@ -288,51 +366,95 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                 </div>
             </header>
 
-           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div onclick="document.getElementById('sidebarList').scrollIntoView({behavior: 'smooth'})" 
-                     class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
+            <!-- 5 STAT CARDS — 3 top, 2 bottom -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div onclick="navTo('membersSection')" class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
                     <div class="flex justify-between items-center mb-4">
                         <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Verified Records</p>
                         <i class="fas fa-users text-indigo-500 text-2xl opacity-80"></i>
                     </div>
-                    <h3 id="statCount" class="text-4xl font-black text-midnight">164</h3>
-                    <p class="text-xs text-slate-400 mt-2 font-medium">Click to view registry</p>
-                </div>
-                
-                <div onclick="navTo('treeSection')" 
-                     class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
-                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Lineage Mapping</p>
-                        <i class="fas fa-project-diagram text-indigo-500 text-2xl opacity-80"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-midnight">Visual Tree</h3>
-                    <p class="text-xs text-slate-400 mt-2 font-medium">Explore interactive map</p>
+                    <h3 id="statCount" class="text-4xl font-black text-midnight">0</h3>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">View all members →</p>
                 </div>
 
-                <div onclick="navTo('treeSection')" 
-                     class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
+                <div onclick="navTo('treeSection')" class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
                     <div class="flex justify-between items-center mb-4">
-                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Lineage Depth</p>
+                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Visual Tree</p>
+                        <i class="fas fa-sitemap text-indigo-500 text-2xl opacity-80"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-midnight">Lineage Map</h3>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Explore interactive map →</p>
+                </div>
+
+                <div onclick="navTo('treeSection')" class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Generations</p>
                         <i class="fas fa-layer-group text-indigo-500 text-2xl opacity-80"></i>
                     </div>
-                    <h3 id="statGenerations" class="text-4xl font-black text-midnight">14</h3>
-                    <p class="text-xs text-slate-400 mt-2 font-medium">Total Generations</p>
+                    <h3 id="statGenerations" class="text-4xl font-black text-midnight">0</h3>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Total depth</p>
                 </div>
             </div>
 
-            <div class="mb-8 executive-card p-1 border-l-4 border-l-emerald-500 bg-gradient-to-r from-emerald-50 to-white cursor-pointer" onclick="navTo('profileView', 'ID-62')">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div onclick="navTo('statsSection')" class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Statistics</p>
+                        <i class="fas fa-chart-bar text-indigo-500 text-2xl opacity-80"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-midnight">Analytics</h3>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">View charts & insights →</p>
+                </div>
+
+                <div onclick="openRelModal()" class="executive-card p-6 cursor-pointer border-l-4 border-l-indigo-500 bg-white shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-slate-grey text-[10px] font-black uppercase tracking-widest">Relationship Calculator</p>
+                        <i class="fas fa-people-arrows text-indigo-500 text-2xl opacity-80"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-midnight">Find Relation</h3>
+                    <p class="text-xs text-slate-400 mt-2 font-medium">Calculate between any two members →</p>
+                </div>
+            </div>
+
+            <!-- SARPARAST CARD -->
+            <div class="mb-4 executive-card border-l-4 border-l-emerald-500 cursor-pointer" onclick="navTo('profileView', 'ID-62')" style="background:linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);">
                 <div class="p-5 flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl shadow-sm shrink-0">
+                        <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl shadow-sm shrink-0 border-2 border-emerald-200">
                             <i class="fas fa-user-tie"></i>
                         </div>
                         <div>
                             <span class="bg-emerald-500 text-white px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest shadow-sm mb-1 inline-block">Current Sarparast</span>
                             <h3 class="text-xl font-black text-slate-900">Malik Akhlaq Ali Khan</h3>
-                            <p class="text-xs text-slate-500 font-medium">Active Leader • ID: #AAK-1</p>
+                            <p class="text-xs text-slate-500 font-medium">Active Leader · ID: #AAK-1</p>
                         </div>
                     </div>
-                    <i class="fas fa-chevron-right text-emerald-200"></i>
+                    <span class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-1 shrink-0">View Profile <i class="fas fa-chevron-right text-emerald-400 ml-1"></i></span>
+                </div>
+            </div>
+
+            <!-- MESSAGE FROM SARPARAST -->
+            <div class="mb-10 executive-card overflow-hidden" style="border-left:4px solid #0d1757;">
+                <div class="px-6 py-3 flex items-center gap-2" style="background:#0d1757;">
+                    <i class="fas fa-quote-left text-indigo-300 text-sm"></i>
+                    <p class="text-[10px] font-black text-indigo-200 uppercase tracking-widest">Message from the Sarparast</p>
+                </div>
+                <div class="p-7" style="background:linear-gradient(135deg,#f8faff 0%,#ffffff 100%);">
+                    <p class="text-slate-600 text-sm leading-loose italic mb-5">
+                        "Our greatest strength lies in our unity, our roots, and our shared legacy. This vault is a testament to every ancestor who built the foundation we stand on today. We must never forget where we come from — our land, our traditions, and our bond as a tribe are what define us. I urge every member of Jalat Tughal Khel to honor this heritage, to pass it on to their children, and to keep the spirit of our ancestors alive in everything they do. May the generations to come carry forward the honor, dignity, and strength of Jalat Tughal Khel."
+                    </p>
+                    <div class="flex items-center gap-4 pt-4" style="border-top:1px solid #e8eaf6;">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm shrink-0 border border-emerald-200">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <p class="font-black text-midnight text-sm">Malik Akhlaq Ali Khan</p>
+                            <p class="text-xs text-slate-400 font-medium">Sarparast, Jalat Tughal Khel · Bannu, KP</p>
+                        </div>
+                        <div class="ml-auto">
+                            <i class="fas fa-quote-right text-indigo-100 text-3xl"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -341,18 +463,39 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="leadersGrid"></div>
             </div>
 
+            <!-- OUR VILLAGE PREVIEW -->
+            <div class="executive-card p-6 mb-6">
+                <div class="flex justify-between items-center mb-5">
+                    <div>
+                        <h3 class="text-sm font-black text-midnight uppercase tracking-widest flex items-center gap-2">
+                            <i class="fas fa-mosque text-indigo-500"></i> Our Village
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Bannu, Khyber Pakhtunkhwa</p>
+                    </div>
+                    <button onclick="navTo('villageSection')" class="bg-midnight text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-indigo-900 transition-all flex items-center gap-2">
+                        <i class="fas fa-arrow-right"></i> Explore Our Village
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Village" onclick="openLightbox(this.src)" class="w-full h-40 object-cover rounded-xl border border-gray-100 cursor-zoom-in hover:scale-[1.02] transition-transform">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="Mountains" onclick="openLightbox(this.src)" class="w-full h-40 object-cover rounded-xl border border-gray-100 cursor-zoom-in hover:scale-[1.02] transition-transform">
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed">Jalat Tughal Khel is a distinguished sub-tribe of the Tughal Khel clan, deeply rooted in the Bannu district of Khyber Pakhtunkhwa. Known for their hospitality, valor, and strong tribal unity — the people of this village carry a heritage that spans many generations across the fertile plains of Bannu.</p>
+            </div>
+
+            <!-- VILLAGE PHOTO ARCHIVE -->
             <div class="executive-card p-6 mb-10">
                 <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-4">
                     <h3 class="text-sm font-black text-midnight uppercase tracking-wider flex items-center">
-                        <i class="fas fa-images mr-2 text-indigo-500"></i> Village Archive
+                        <i class="fas fa-images mr-2 text-indigo-500"></i> Village Photo Archive
                     </h3>
-                    <label class="bg-indigo-50 text-midnight px-4 py-2 rounded-xl text-xs font-bold cursor-pointer hover:bg-indigo-100 transition-all border border-indigo-100">
-                        Upload Photo
+                    <label class="bg-indigo-50 text-midnight px-4 py-2 rounded-xl text-xs font-bold cursor-pointer hover:bg-indigo-100 transition-all border border-indigo-100 flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Add Photo
                         <input type="file" class="hidden" accept="image/*" onchange="addGalleryImage(this)">
                     </label>
                 </div>
                 <div id="villageGallery" class="gallery-grid">
-                    <p id="noImgText" class="text-xs text-slate-400 col-span-full py-4 text-center border-2 border-dashed border-gray-200 rounded-xl">No archive images uploaded yet.</p>
+                    <p id="noImgText" class="text-xs text-slate-400 col-span-full py-6 text-center border-2 border-dashed border-gray-200 rounded-xl">No photos uploaded yet. Click "Add Photo" to start building your archive.</p>
                 </div>
             </div>
         </section>
@@ -369,16 +512,33 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                             <span id="genTag" class="gen-badge">Gen ?</span>
                             <button id="shareBtn" onclick="shareProfile()" class="ml-auto bg-indigo-50 text-midnight px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest border border-indigo-100 hover:bg-indigo-100 transition-all flex items-center gap-1"><i class="fas fa-share-alt"></i> Share</button>
                         </div>
-                        <h2 id="engName" class="text-4xl font-black text-slate-900 tracking-tight mb-1">Name</h2>
-                        <h3 id="urduName" class="text-2xl font-serif text-slate-grey mb-3" dir="rtl">نام</h3>
 
-                        <!-- Parent link -->
-                        <div id="parentLinkWrap" class="mb-6 flex items-center gap-2">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Son of:</span>
-                            <button id="parentLink" onclick="" class="text-xs font-black text-indigo-600 hover:underline"></button>
+                        <!-- Name row with profile image -->
+                        <div class="flex items-start gap-4 mb-3">
+                            <!-- Profile image box -->
+                            <div id="profileImgBox" onclick="document.getElementById('profileImgInput').click()" title="Click to upload photo"
+                                style="width:88px;height:88px;border-radius:14px;background:#e8eaf6;border:2px solid #c5cae9;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;flex-shrink:0;transition:border-color 0.2s;">
+                                <span id="profileImgLetter" style="font-size:32px;font-weight:900;color:#0d1757;line-height:1;"></span>
+                                <img id="profileImgPreview" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:12px;">
+                                <!-- Camera hover overlay -->
+                                <div id="profileImgHover" style="position:absolute;inset:0;background:rgba(13,23,87,0.5);display:none;align-items:center;justify-content:center;border-radius:12px;">
+                                    <i class="fas fa-camera" style="color:white;font-size:20px;"></i>
+                                </div>
+                            </div>
+                            <input type="file" id="profileImgInput" accept="image/*" style="display:none;" onchange="uploadProfileImage(this)">
+
+                            <div class="flex-1">
+                                <h2 id="engName" class="text-4xl font-black text-slate-900 tracking-tight mb-1">Name</h2>
+                                <h3 id="urduName" class="text-2xl font-serif text-slate-grey mb-3" dir="rtl">نام</h3>
+                                <!-- Parent link -->
+                                <div id="parentLinkWrap" class="flex items-center gap-2">
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Son of:</span>
+                                    <button id="parentLink" onclick="" class="text-xs font-black text-indigo-600 hover:underline"></button>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="bg-gray-50 p-5 rounded-xl border border-gray-100">
+                        <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 mt-4">
                             <div class="flex justify-between items-center mb-3">
                                 <h4 class="text-[10px] font-black text-slate-grey uppercase tracking-widest flex items-center">
                                     <i class="fas fa-file-alt mr-2 text-indigo-400"></i> Vault Details
@@ -458,19 +618,60 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             </div>
         </section>
 
-        <!-- OUR VILLAGE SECTION -->
+        <!-- OUR VILLAGE FULL SECTION -->
         <section id="villageSection" class="hidden animate-in fade-in duration-500 max-w-5xl mx-auto">
-            <div class="executive-card p-8 mt-4">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 bg-midnight rounded-xl flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-mosque text-white text-xl"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-black text-midnight uppercase tracking-widest">Our Village</h2>
-                        <p class="text-xs text-slate-400 mt-1">Bannu, Khyber Pakhtunkhwa</p>
+            <div class="executive-card mt-4 overflow-hidden">
+                <!-- Header -->
+                <div class="p-7 border-b border-gray-100">
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-midnight rounded-xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-mosque text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-black text-midnight uppercase tracking-widest">Our Village</h2>
+                                <p class="text-xs text-slate-400 mt-1 flex items-center gap-1"><i class="fas fa-map-marker-alt text-indigo-400"></i> Bannu, Khyber Pakhtunkhwa, Pakistan</p>
+                            </div>
+                        </div>
+                        <label class="bg-indigo-50 text-midnight px-4 py-2 rounded-xl text-xs font-bold cursor-pointer hover:bg-indigo-100 transition-all border border-indigo-100 flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Add Photo
+                            <input type="file" class="hidden" accept="image/*" onchange="addVillagePhoto(this)">
+                        </label>
                     </div>
                 </div>
-                <p class="text-slate-500 text-sm leading-relaxed">Jalat Tughal Khel is a distinguished sub-tribe of the Tughal Khel clan, deeply rooted in the Bannu district of Khyber Pakhtunkhwa. More details will be added in upcoming updates.</p>
+
+                <!-- Photos Grid -->
+                <div class="p-7 border-b border-gray-100">
+                    <div id="villagePhotoGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Village" onclick="openLightbox(this.src)" class="w-full h-44 object-cover rounded-xl border border-gray-100 cursor-zoom-in hover:scale-[1.02] transition-transform">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="Mountains" onclick="openLightbox(this.src)" class="w-full h-44 object-cover rounded-xl border border-gray-100 cursor-zoom-in hover:scale-[1.02] transition-transform">
+                        <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&q=80" alt="Culture" onclick="openLightbox(this.src)" class="w-full h-44 object-cover rounded-xl border border-gray-100 cursor-zoom-in hover:scale-[1.02] transition-transform">
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="p-7 space-y-4">
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                        <h3 class="text-[10px] font-black text-midnight uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-landmark text-indigo-400"></i> History</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Jalat Tughal Khel traces its lineage to Malik Tughal Khan — the supreme ancestor from whom all branches descend. The tribe has been settled in Bannu for many generations, with deep roots in the land and a proud history of tribal leadership and unity. <span class="text-indigo-400 font-bold">[Update with information from your elders]</span></p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                        <h3 class="text-[10px] font-black text-midnight uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-map-marked-alt text-indigo-400"></i> Geography & Location</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Located in Bannu District, Khyber Pakhtunkhwa, the village sits in a fertile plain region. The area is known for its agricultural land and traditional Pashtun architecture. Bannu is one of the oldest cities in KP with a rich cultural history. <span class="text-indigo-400 font-bold">[Update with precise details from your elders]</span></p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                        <h3 class="text-[10px] font-black text-midnight uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-users text-indigo-400"></i> Our People</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">The people of Jalat Tughal Khel are known for their hospitality (Melmastia), courage, and strong sense of tribal unity. Decisions are made through the traditional Jirga system, where tribal elders gather to resolve matters and maintain justice within the community. <span class="text-indigo-400 font-bold">[Update with character details from your elders]</span></p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                        <h3 class="text-[10px] font-black text-midnight uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-star-and-crescent text-indigo-400"></i> Culture & Traditions</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Rooted in Pashtunwali — the Pashtun code of life — the tribe observes customs of honor (Nang), hospitality, and justice. Weddings, Eid gatherings, and tribal events are celebrated with traditional Pashtun music and food. The primary language spoken is Pashto. <span class="text-indigo-400 font-bold">[Update with specific customs from your elders]</span></p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                        <h3 class="text-[10px] font-black text-midnight uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-briefcase text-indigo-400"></i> Occupation & Economy</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Historically, the tribe engaged in agriculture, livestock rearing, and trade. In recent generations, many members have pursued education and moved into professions such as government service, military, medicine, and business while maintaining strong ties to their ancestral village. <span class="text-indigo-400 font-bold">[Update with specific details]</span></p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -789,10 +990,55 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             window.scrollTo(0,0);
         }
 
+        // ─── COUNT UP ANIMATION ───
+        function countUp(el, target, duration) {
+            if(!el) return;
+            const end = parseInt(target);
+            if(isNaN(end)) { el.innerText = target; return; }
+            const startTime = performance.now();
+            function tick(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // ease-out expo
+                const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                el.innerText = Math.round(eased * end);
+                if(progress < 1) {
+                    requestAnimationFrame(tick);
+                } else {
+                    el.innerText = end;
+                    el.style.transform = 'scale(1.12)';
+                    el.style.transition = 'transform 0.15s ease';
+                    setTimeout(() => { el.style.transform = 'scale(1)'; }, 150);
+                }
+            }
+            requestAnimationFrame(tick);
+        }
+
+        function animateOnVisible(el, target, duration) {
+            if(!el) return;
+            el.innerText = '0';
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if(e.isIntersecting) {
+                        countUp(el, target, duration);
+                        obs.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.3 });
+            obs.observe(el);
+        }
+
         function renderSidebar() {
-            // Update counts only — member list no longer in sidebar
-            document.getElementById('statCount').innerText = Object.keys(familyData).length;
-            document.getElementById('statGenerations').innerText = calculateGenerations();
+            const total = Object.keys(familyData).length;
+            const gens = calculateGenerations();
+            // Animate dashboard stat cards
+            animateOnVisible(document.getElementById('statCount'), total, 1400);
+            animateOnVisible(document.getElementById('statGenerations'), gens, 1200);
+            // Footer counts
+            const fc = document.getElementById('footerMemberCount');
+            const fg = document.getElementById('footerGenCount');
+            if(fc) fc.innerText = total;
+            if(fg) fg.innerText = gens;
             renderLeaders();
         }
 
@@ -945,6 +1191,25 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             const gen = getGeneration(id);
             document.getElementById('genTag').innerText = 'Gen ' + gen;
 
+            // Profile image — load from localStorage or show first letter
+            const savedImg = localStorage.getItem('pimg_' + id);
+            const letterEl = document.getElementById('profileImgLetter');
+            const previewEl = document.getElementById('profileImgPreview');
+            const imgBox = document.getElementById('profileImgBox');
+            letterEl.innerText = m.name.charAt(0);
+            if(savedImg) {
+                previewEl.src = savedImg;
+                previewEl.style.display = 'block';
+                letterEl.style.display = 'none';
+            } else {
+                previewEl.style.display = 'none';
+                previewEl.src = '';
+                letterEl.style.display = 'block';
+            }
+            // Camera hover effect
+            imgBox.onmouseover = () => { document.getElementById('profileImgHover').style.display = 'flex'; };
+            imgBox.onmouseout = () => { document.getElementById('profileImgHover').style.display = 'none'; };
+
             // Saved note from localStorage
             const savedNote = localStorage.getItem('note_' + id);
             const bioText = savedNote || m.bio || "No historical details recorded in the vault for this member.";
@@ -985,7 +1250,6 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             const cList = document.getElementById('childList');
             cList.innerHTML = "";
             const children = Object.values(familyData).filter(c => c.parent === id);
-            
             if(children.length === 0) {
                 cList.innerHTML = "<p class='text-xs text-slate-400 italic bg-white p-3 rounded-xl border border-gray-100'>No direct descendants registered.</p>";
             } else {
@@ -1003,6 +1267,22 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                     cList.appendChild(d);
                 });
             }
+        }
+
+        function uploadProfileImage(input) {
+            if(!input.files || !input.files[0] || !currentProfileId) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Save to localStorage
+                localStorage.setItem('pimg_' + currentProfileId, e.target.result);
+                // Show in profile
+                const previewEl = document.getElementById('profileImgPreview');
+                const letterEl = document.getElementById('profileImgLetter');
+                previewEl.src = e.target.result;
+                previewEl.style.display = 'block';
+                letterEl.style.display = 'none';
+            };
+            reader.readAsDataURL(input.files[0]);
         }
 
         function toggleNoteEditor() {
@@ -1143,6 +1423,20 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             document.getElementById('treeContainer').style.transform = `translate(0px, 0px) scale(1)`;
         }
 
+        function addVillagePhoto(input) {
+            if (!input.files || !input.files[0]) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = 'Village Photo';
+                img.className = 'w-full h-44 object-cover rounded-xl border border-gray-100 cursor-zoom-in hover:scale-[1.02] transition-transform';
+                img.onclick = () => openLightbox(e.target.result);
+                document.getElementById('villagePhotoGrid').appendChild(img);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
         function addGalleryImage(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -1191,29 +1485,35 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             });
             const maxGen = Math.max(...Object.keys(genMap).map(Number));
             const maxCount = Math.max(...Object.values(genMap));
+            const largestGen = Object.entries(genMap).sort((a,b)=>b[1]-a[1])[0][0];
 
-            // Stats cards
+            // Stats cards with countUp animation
             const grid = document.getElementById('statsCardsGrid');
             grid.innerHTML = `
                 <div class="executive-card p-4 border-l-4 border-l-indigo-500">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Members</p>
-                    <p class="text-3xl font-black text-midnight">${total}</p>
+                    <p class="text-3xl font-black text-midnight" id="sc-total">0</p>
                 </div>
                 <div class="executive-card p-4 border-l-4 border-l-emerald-500">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Generations</p>
-                    <p class="text-3xl font-black text-midnight">${maxGen}</p>
+                    <p class="text-3xl font-black text-midnight" id="sc-gens">0</p>
                 </div>
                 <div class="executive-card p-4 border-l-4 border-l-amber-500">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Leaf Nodes</p>
-                    <p class="text-3xl font-black text-midnight">${leafCount}</p>
+                    <p class="text-3xl font-black text-midnight" id="sc-leaf">0</p>
                 </div>
                 <div class="executive-card p-4 border-l-4 border-l-rose-500">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Largest Gen</p>
-                    <p class="text-3xl font-black text-midnight">Gen ${Object.entries(genMap).sort((a,b)=>b[1]-a[1])[0][0]}</p>
+                    <p class="text-3xl font-black text-midnight" id="sc-largest">0</p>
                 </div>
             `;
+            // Animate all 4 stat cards
+            animateOnVisible(document.getElementById('sc-total'), total, 1400);
+            animateOnVisible(document.getElementById('sc-gens'), maxGen, 1200);
+            animateOnVisible(document.getElementById('sc-leaf'), leafCount, 1300);
+            animateOnVisible(document.getElementById('sc-largest'), largestGen, 1000);
 
-            // Bars
+            // Bars — clickable to filter membersSection
             const barsWrap = document.getElementById('genBarsWrap');
             barsWrap.innerHTML = '';
             for(let g = 1; g <= maxGen; g++) {
@@ -1222,8 +1522,18 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                 const bar = document.createElement('div');
                 bar.className = 'gen-bar';
                 bar.style.height = heightPct + '%';
-                bar.title = `Gen ${g}: ${cnt} members`;
+                bar.style.cursor = 'pointer';
+                bar.title = `Gen ${g}: ${cnt} members — click to filter`;
                 bar.innerHTML = `<span class="bar-val">${cnt}</span><span class="bar-label">G${g}</span>`;
+                // Click → navigate to membersSection with that gen pre-filtered
+                bar.onclick = (function(gen) {
+                    return function() {
+                        activeGenFilter = gen;
+                        navTo('membersSection', gen);
+                    };
+                })(g);
+                bar.onmouseover = function() { this.style.opacity = '0.75'; };
+                bar.onmouseout = function() { this.style.opacity = '1'; };
                 barsWrap.appendChild(bar);
             }
 
@@ -1277,9 +1587,8 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             const idB = relSelectedIds.B;
             const resultEl = document.getElementById('relResult');
             if(!idA || !idB) { resultEl.innerText = 'Please select both persons.'; resultEl.classList.remove('hidden'); return; }
-            if(idA === idB) { resultEl.innerText = 'Same person!'; resultEl.classList.remove('hidden'); return; }
+            if(idA === idB) { resultEl.innerText = 'Same person selected!'; resultEl.classList.remove('hidden'); return; }
 
-            // Build ancestor paths
             function getAncestorList(id) {
                 const list = [];
                 let curr = id;
@@ -1289,29 +1598,69 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             const pathA = getAncestorList(idA);
             const pathB = getAncestorList(idB);
 
-            // Find LCA
+            // Find Lowest Common Ancestor
             let lca = null, stepsA = 0, stepsB = 0;
             for(let i = 0; i < pathA.length; i++) {
                 const j = pathB.indexOf(pathA[i]);
                 if(j !== -1) { lca = pathA[i]; stepsA = i; stepsB = j; break; }
             }
 
-            if(!lca) { resultEl.innerText = 'No common ancestor found.'; resultEl.classList.remove('hidden'); return; }
+            if(!lca) { resultEl.innerText = 'No common ancestor found in this family tree.'; resultEl.classList.remove('hidden'); return; }
 
             const nameA = familyData[idA].name;
             const nameB = familyData[idB].name;
             const lcaName = familyData[lca].name;
 
             let relation = '';
-            if(stepsA === 0) relation = `${nameA} is the ${stepsB === 1 ? 'father' : 'ancestor'} of ${nameB}`;
-            else if(stepsB === 0) relation = `${nameB} is the ${stepsA === 1 ? 'father' : 'ancestor'} of ${nameA}`;
-            else if(stepsA === 1 && stepsB === 1) relation = `${nameA} and ${nameB} are brothers (same father: ${lcaName})`;
-            else if(stepsA === 1 && stepsB === 2) relation = `${nameA} is the uncle of ${nameB} (via ${lcaName})`;
-            else if(stepsA === 2 && stepsB === 1) relation = `${nameB} is the uncle of ${nameA} (via ${lcaName})`;
-            else if(stepsA === 2 && stepsB === 2) relation = `${nameA} and ${nameB} are 1st cousins (common grandfather: ${lcaName})`;
-            else if(stepsA === 3 && stepsB === 3) relation = `${nameA} and ${nameB} are 2nd cousins (common ancestor: ${lcaName})`;
-            else relation = `${nameA} is ${stepsA} generation(s) down and ${nameB} is ${stepsB} generation(s) down from their common ancestor ${lcaName}`;
 
+            // A is ancestor of B
+            if(stepsA === 0 && stepsB === 1) relation = `${nameA} is the father of ${nameB}.`;
+            else if(stepsA === 0 && stepsB === 2) relation = `${nameA} is the grandfather of ${nameB}.`;
+            else if(stepsA === 0 && stepsB === 3) relation = `${nameA} is the great-grandfather of ${nameB}.`;
+            else if(stepsA === 0 && stepsB >= 4) relation = `${nameA} is a ${stepsB - 1}x great-grandfather of ${nameB}.`;
+
+            // B is ancestor of A
+            else if(stepsB === 0 && stepsA === 1) relation = `${nameB} is the father of ${nameA}.`;
+            else if(stepsB === 0 && stepsA === 2) relation = `${nameB} is the grandfather of ${nameA}.`;
+            else if(stepsB === 0 && stepsA === 3) relation = `${nameB} is the great-grandfather of ${nameA}.`;
+            else if(stepsB === 0 && stepsA >= 4) relation = `${nameB} is a ${stepsA - 1}x great-grandfather of ${nameA}.`;
+
+            // Same level
+            else if(stepsA === 1 && stepsB === 1) relation = `${nameA} and ${nameB} are brothers.\n(Same father: ${lcaName})`;
+            else if(stepsA === 2 && stepsB === 2) relation = `${nameA} and ${nameB} are 1st cousins.\n(Common grandfather: ${lcaName})`;
+            else if(stepsA === 3 && stepsB === 3) relation = `${nameA} and ${nameB} are 2nd cousins.\n(Common ancestor: ${lcaName})`;
+            else if(stepsA === 4 && stepsB === 4) relation = `${nameA} and ${nameB} are 3rd cousins.\n(Common ancestor: ${lcaName})`;
+            else if(stepsA === stepsB) relation = `${nameA} and ${nameB} are ${stepsA - 1}th cousins.\n(Common ancestor: ${lcaName})`;
+
+            // Uncle / Nephew — A is closer
+            else if(stepsA === 1 && stepsB === 2) relation = `${nameA} is the uncle of ${nameB}.\n(Via ${lcaName})`;
+            else if(stepsA === 1 && stepsB === 3) relation = `${nameA} is the great-uncle of ${nameB}.\n(Via ${lcaName})`;
+            else if(stepsA === 1 && stepsB >= 4) relation = `${nameA} is a ${stepsB - 1}x great-uncle of ${nameB}.\n(Via ${lcaName})`;
+
+            // Uncle / Nephew — B is closer
+            else if(stepsB === 1 && stepsA === 2) relation = `${nameB} is the uncle of ${nameA}.\n(Via ${lcaName})`;
+            else if(stepsB === 1 && stepsA === 3) relation = `${nameB} is the great-uncle of ${nameA}.\n(Via ${lcaName})`;
+            else if(stepsB === 1 && stepsA >= 4) relation = `${nameB} is a ${stepsA - 1}x great-uncle of ${nameA}.\n(Via ${lcaName})`;
+
+            // 1st Cousin removed
+            else if(stepsA === 2 && stepsB === 3) relation = `${nameA} is the 1st cousin once removed of ${nameB}.\n(Via ${lcaName})`;
+            else if(stepsA === 3 && stepsB === 2) relation = `${nameB} is the 1st cousin once removed of ${nameA}.\n(Via ${lcaName})`;
+            else if(stepsA === 2 && stepsB === 4) relation = `${nameA} is the 1st cousin twice removed of ${nameB}.\n(Via ${lcaName})`;
+            else if(stepsA === 4 && stepsB === 2) relation = `${nameB} is the 1st cousin twice removed of ${nameA}.\n(Via ${lcaName})`;
+
+            // 2nd Cousin removed
+            else if(stepsA === 3 && stepsB === 4) relation = `${nameA} is the 2nd cousin once removed of ${nameB}.\n(Via ${lcaName})`;
+            else if(stepsA === 4 && stepsB === 3) relation = `${nameB} is the 2nd cousin once removed of ${nameA}.\n(Via ${lcaName})`;
+
+            // Fallback
+            else {
+                const [closer, further, nCloser, nFurther] = stepsA <= stepsB
+                    ? [stepsA, stepsB, nameA, nameB]
+                    : [stepsB, stepsA, nameB, nameA];
+                relation = `${nCloser} is ${closer} generation(s) and ${nFurther} is ${further} generation(s) from their common ancestor ${lcaName}.`;
+            }
+
+            resultEl.style.whiteSpace = 'pre-line';
             resultEl.innerText = relation;
             resultEl.classList.remove('hidden');
         }
@@ -1343,6 +1692,31 @@ function toggleSidebar() {
         }
     }
 }
+        // ─── HERO SLIDER ───
+        let currentSlide = 0;
+        let sliderTimer = null;
+        const totalSlides = 3;
+
+        function goToSlide(n) {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            slides[currentSlide].style.opacity = '0';
+            dots[currentSlide].style.opacity = '0.4';
+            currentSlide = ((n % totalSlides) + totalSlides) % totalSlides;
+            slides[currentSlide].style.opacity = '1';
+            dots[currentSlide].style.opacity = '1';
+        }
+
+        function sliderNext() { goToSlide(currentSlide + 1); }
+        function sliderPrev() { goToSlide(currentSlide - 1); }
+
+        function startSlider() {
+            sliderTimer = setInterval(sliderNext, 4500);
+        }
+        function stopSlider() {
+            if(sliderTimer) clearInterval(sliderTimer);
+        }
+
         renderSidebar();
         // Load dark mode preference
         if(localStorage.getItem('darkMode') === '1') {
@@ -1353,6 +1727,87 @@ function toggleSidebar() {
         loadFromURL();
         if(!new URLSearchParams(window.location.search).get('id')) renderState();
 
+        // Start hero slider
+        startSlider();
+        const heroEl = document.getElementById('heroSlider');
+        if(heroEl) {
+            heroEl.addEventListener('mouseenter', stopSlider);
+            heroEl.addEventListener('mouseleave', startSlider);
+        }
+
     </script>
+    <!-- PROFESSIONAL FOOTER -->
+    <footer style="background:#0d1757;color:white;margin-top:60px;padding:50px 0 0;">
+        <div style="max-width:1100px;margin:0 auto;padding:0 28px;">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;" class="footer-grid-resp">
+                <!-- Col 1: Tribe Info -->
+                <div>
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                        <div style="width:42px;height:42px;background:rgba(255,255,255,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fas fa-shield-halved" style="color:white;font-size:18px;"></i>
+                        </div>
+                        <div>
+                            <p style="color:white;font-weight:900;font-size:16px;margin:0;">جلات طغل خیل</p>
+                            <p style="color:#a5b4fc;font-size:9px;text-transform:uppercase;letter-spacing:0.15em;margin:0;">Jalat Tughal Khel</p>
+                        </div>
+                    </div>
+                    <p style="color:rgba(165,180,252,0.7);font-size:12px;line-height:1.75;margin:0 0 14px;">Preserving the lineage and honoring the legacy of Jalat Tughal Khel — a heritage vault for generations to come.</p>
+                    <p style="color:rgba(165,180,252,0.5);font-size:11px;display:flex;align-items:center;gap:6px;">
+                        <i class="fas fa-map-marker-alt" style="color:#818cf8;"></i> Bannu, Khyber Pakhtunkhwa, Pakistan
+                    </p>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <p style="font-size:9px;font-weight:900;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.18em;margin:0 0 16px;">Quick Links</p>
+                    <div style="display:flex;flex-direction:column;gap:8px;">
+                        <button onclick="navTo('dashboard')" style="background:none;border:none;color:rgba(197,202,233,0.75);font-size:12px;font-weight:600;cursor:pointer;text-align:left;padding:0;display:flex;align-items:center;gap:8px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(197,202,233,0.75)'"><i class="fas fa-home" style="width:14px;"></i> Dashboard</button>
+                        <button onclick="navTo('membersSection')" style="background:none;border:none;color:rgba(197,202,233,0.75);font-size:12px;font-weight:600;cursor:pointer;text-align:left;padding:0;display:flex;align-items:center;gap:8px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(197,202,233,0.75)'"><i class="fas fa-users" style="width:14px;"></i> Verified Records</button>
+                        <button onclick="navTo('treeSection')" style="background:none;border:none;color:rgba(197,202,233,0.75);font-size:12px;font-weight:600;cursor:pointer;text-align:left;padding:0;display:flex;align-items:center;gap:8px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(197,202,233,0.75)'"><i class="fas fa-sitemap" style="width:14px;"></i> Visual Tree</button>
+                        <button onclick="navTo('statsSection')" style="background:none;border:none;color:rgba(197,202,233,0.75);font-size:12px;font-weight:600;cursor:pointer;text-align:left;padding:0;display:flex;align-items:center;gap:8px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(197,202,233,0.75)'"><i class="fas fa-chart-bar" style="width:14px;"></i> Statistics</button>
+                        <button onclick="navTo('villageSection')" style="background:none;border:none;color:rgba(197,202,233,0.75);font-size:12px;font-weight:600;cursor:pointer;text-align:left;padding:0;display:flex;align-items:center;gap:8px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(197,202,233,0.75)'"><i class="fas fa-mosque" style="width:14px;"></i> Our Village</button>
+                        <button onclick="openRelModal()" style="background:none;border:none;color:rgba(197,202,233,0.75);font-size:12px;font-weight:600;cursor:pointer;text-align:left;padding:0;display:flex;align-items:center;gap:8px;transition:color 0.2s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(197,202,233,0.75)'"><i class="fas fa-people-arrows" style="width:14px;"></i> Relationship</button>
+                    </div>
+                </div>
+
+                <!-- Col 3: Heritage Info -->
+                <div>
+                    <p style="font-size:9px;font-weight:900;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.18em;margin:0 0 16px;">Heritage Info</p>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        <div style="display:flex;align-items:center;gap:8px;color:rgba(197,202,233,0.7);font-size:12px;">
+                            <i class="fas fa-users" style="color:#818cf8;width:14px;"></i>
+                            <span><span id="footerMemberCount" style="font-weight:900;color:white;">200</span> Registered Members</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;color:rgba(197,202,233,0.7);font-size:12px;">
+                            <i class="fas fa-layer-group" style="color:#818cf8;width:14px;"></i>
+                            <span><span id="footerGenCount" style="font-weight:900;color:white;">15</span> Generations</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;color:rgba(197,202,233,0.7);font-size:12px;">
+                            <i class="fas fa-circle" style="color:#34d399;width:14px;font-size:8px;"></i>
+                            Live Records Active
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;color:rgba(197,202,233,0.7);font-size:12px;">
+                            <i class="fas fa-map-marker-alt" style="color:#818cf8;width:14px;"></i>
+                            Bannu, KP
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom Bar -->
+            <div style="border-top:1px solid rgba(255,255,255,0.08);margin-top:40px;padding:18px 0;text-align:center;">
+                <p style="color:rgba(255,255,255,0.25);font-size:10px;text-transform:uppercase;letter-spacing:0.15em;margin:0;">
+                    © 2025 Jalat Tughal Khel Heritage Vault · Bannu, Khyber Pakhtunkhwa · All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        @media(max-width:640px) {
+            .footer-grid-resp { grid-template-columns: 1fr !important; gap: 28px !important; }
+        }
+    </style>
+
 </body>
 </html>
