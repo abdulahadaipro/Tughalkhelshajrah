@@ -1671,6 +1671,7 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.querySelector('.main-content');
             const reopenBtn = document.getElementById('sidebarReopenBtn');
+            const footer = document.querySelector('footer');
             if (!sidebar) return;
 
             if (window.innerWidth < 1024) {
@@ -1683,6 +1684,7 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                     sidebar.style.display = 'none';
                     mainContent.style.marginLeft = '0';
                     mainContent.style.transition = 'margin-left 0.3s ease';
+                    if(footer){ footer.style.marginLeft = '0'; footer.style.transition = 'margin-left 0.3s ease'; }
                     reopenBtn.style.display = 'flex';
                     sidebarVisible = false;
                 } else {
@@ -1690,6 +1692,7 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
                     sidebar.style.display = 'flex';
                     mainContent.style.marginLeft = '320px';
                     mainContent.style.transition = 'margin-left 0.3s ease';
+                    if(footer){ footer.style.marginLeft = '320px'; footer.style.transition = 'margin-left 0.3s ease'; }
                     reopenBtn.style.display = 'none';
                     sidebarVisible = true;
                 }
@@ -1740,7 +1743,7 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
 
     </script>
     <!-- PROFESSIONAL FOOTER -->
-    <footer style="background:#121B4C;color:white;margin-top:60px;padding:50px 0 0;">
+    <footer style="background:#121B4C;color:white;margin-top:60px;padding:50px 0 0;margin-left:320px;transition:margin-left 0.3s ease;">
         <div style="max-width:1100px;margin:0 auto;padding:0 28px;">
             <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;" class="footer-grid-resp">
                 <!-- Col 1: Tribe Info -->
@@ -1800,15 +1803,15 @@ body.dark-mode #relModal .modal-box { background: #1e293b; }</style>
             <!-- Footer Bottom Bar -->
             <div style="border-top:1px solid rgba(255,255,255,0.08);margin-top:40px;padding:18px 0;text-align:center;">
                 <p style="color:rgba(255,255,255,0.25);font-size:10px;text-transform:uppercase;letter-spacing:0.15em;margin:0;">
-                    © 2025 Jalat Tughal Khel Heritage Vault · Bannu, Khyber Pakhtunkhwa · All Rights Reserved
+                    © 2026 Jalat Tughal Khel Heritage Vault · Bannu, Khyber Pakhtunkhwa · All Rights Reserved
                 </p>
             </div>
         </div>
     </footer>
 
     <style>
-        @media(max-width:640px) {
-            .footer-grid-resp { grid-template-columns: 1fr !important; gap: 28px !important; }
+        @media (max-width: 1023px) {
+            footer { margin-left: 0 !important; }
         }
     </style>
 
